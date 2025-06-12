@@ -1,0 +1,24 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /HiVision
+
+spring:
+  datasource:
+    driver-class-name: "com.microsoft.sqlserver.jdbc.SQLServerDriver"
+    url: "jdbc:sqlserver://localhost:1433;databaseName=HI_Vision;encrypt=true;trustServerCertificate=true"
+    username: "sa"
+    password: "12345"
+
+
+  jpa:
+    properties:
+      hibernate:
+        dialect: "org.hibernate.dialect.SQLServerDialect"
+    hibernate:
+      ddl-auto: none
+
+
+
+jwt:
+  signerKey: "0g0avXnDMtvyD/NQA5jLi3d6/xYtNwMlYsETTarZ6g8smHtHp+p6u2Pa4r1Zpyzr"

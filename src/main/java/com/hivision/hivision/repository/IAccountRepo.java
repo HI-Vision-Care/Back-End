@@ -1,0 +1,17 @@
+package com.hivision.hivision.repository;
+
+import com.hivision.hivision.pojo.Account;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import java.util.Optional;
+
+@Repository
+public interface IAccountRepo extends JpaRepository<Account,String> {
+    Optional<Account> findByUsername(String username);
+    Account findAccountByUsername(String username);
+    Account findAccountById(String id);
+    boolean existsByUsername(String username);
+    boolean existsByEmail(String email);
+    boolean existsByPhone(String phone);
+}
