@@ -6,6 +6,7 @@ import com.hivision.hivision.payload.request.RegisterRequest;
 import com.hivision.hivision.payload.response.ApiResponse;
 import com.hivision.hivision.payload.response.LoginResponse;
 import com.hivision.hivision.service.IAccountService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -14,10 +15,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+
 @RestController
 @RequestMapping("/account")
 @RequiredArgsConstructor
 @CrossOrigin("*")
+@SecurityRequirement(name = "api")
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class AccountController {
     IAccountService iAccountService;
@@ -33,5 +36,10 @@ public class AccountController {
     @PostMapping("/login")
     LoginResponse login(@RequestBody LoginRequest request) {
         return iAccountService.login(request);
+    }
+
+    @GetMapping
+    public ResponseEntity<ApiResponse<?>> getAllAccounts() {
+        return ResponseEntity.ok(ApiResponse.builder().data(iAccountService.getAllAccounts()).build());
     }
 }

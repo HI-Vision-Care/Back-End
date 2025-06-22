@@ -6,12 +6,12 @@ import lombok.experimental.FieldDefaults;
 
 @Getter
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public enum Role {
-    GUEST,
-    PATIENT,
-    DOCTOR,
-    FACILITY,
-    ADMIN,
-    BANNED,
+public enum AppointmentStatus {
+    PENDING,
+    CONFIRMED,
+    CANCELLED,
+    COMPLETED
     ;
+
+
 }
