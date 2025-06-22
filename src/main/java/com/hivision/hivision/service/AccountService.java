@@ -2,6 +2,7 @@ package com.hivision.hivision.service;
 
 import com.hivision.hivision.dto.AccountDTO;
 import com.hivision.hivision.enums.ErrorCode;
+import com.hivision.hivision.enums.Role;
 import com.hivision.hivision.exception.AppException;
 import com.hivision.hivision.mapper.IAccountMapper;
 import com.hivision.hivision.payload.request.LoginRequest;
@@ -15,6 +16,8 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 
 @RequiredArgsConstructor
@@ -32,6 +35,9 @@ public class AccountService implements IAccountService{
         var user = iAccountRepository.findByUsername(request.getUsername())
 
                 .orElseThrow(() -> new AppException(ErrorCode.UNAUTHENTICATED_USERNAME));
+
+//        var user = iAccountRepository.findByEmail(request.getUsername())
+//                .orElseThrow(() -> new AppException(ErrorCode.INVALID_EMAIL));
         boolean authenticated = passwordEncoder.matches(request.getPassword(), user.getPassword());
         if(!authenticated) {
             throw new AppException(ErrorCode.UNAUTHENTICATED_PASSWORD);
@@ -58,7 +64,8 @@ public class AccountService implements IAccountService{
 
         Account account = iAccountMapper.toAccount(request);
         account.setPassword(this.passwordEncoder.encode(request.getPassword()));
-        //account.setRole(Role.BIDDER);
+        account.setRole(Role.PATIENT);
+        account.setIsDeleted(false); // mặc định là false
         account = iAccountRepository.save(account);
 
 
@@ -76,5 +83,10 @@ public class AccountService implements IAccountService{
 
 
         return iAccountMapper.toAccountDTO(iAccountRepository.save(account));
+    }
+
+    @Override
+    public List<Account> getAllAccounts() {
+        return iAccountRepository.findAll();
     }
 }
