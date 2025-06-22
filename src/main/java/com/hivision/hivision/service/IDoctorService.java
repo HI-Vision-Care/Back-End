@@ -1,0 +1,12 @@
+package com.hivision.hivision.service;
+
+import com.hivision.hivision.dto.DoctorDTO;
+import com.hivision.hivision.pojo.Doctor;
+
+import java.util.List;
+
+public interface IDoctorService {
+    List<DoctorDTO> getAllDoctors();
+    List<Doctor> findDoctorsBySpecialty(String specialty);
+
+}

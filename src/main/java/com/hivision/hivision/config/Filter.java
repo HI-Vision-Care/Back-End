@@ -37,15 +37,15 @@ public class Filter extends OncePerRequestFilter {
 
     private final List<String> AUTH_PERMISSIONS = List.of(
             "/HiVision/account/**",
-            "/HiVision/account/register"
+            "/HiVision/account/register",
 //            "/BidKoi/ws/**",
 //            "/BidKoi/account/creation",
 //            "/BidKoi/account",
 
-//            "/BidKoi/swagger-ui/index.html",
-//            "/BidKoi/v3/api-docs/**",     // Allow OpenAPI docs
-//            "/BidKoi/swagger-ui/**",       // Allow Swagger UI access
-//            "/BidKoi/swagger-resources/**", // Allow Swagger resources
+            "/HiVision/swagger-ui/index.html",
+            "/HiVision/v3/api-docs/**",     // Allow OpenAPI docs
+            "/HiVision/swagger-ui/**",       // Allow Swagger UI access
+            "/HiVision/swagger-resources/**" // Allow Swagger resources
 //
 //            "/BidKoi/shipping/**",
 //            "/BidKoi/account/number/**"
@@ -129,10 +129,19 @@ public class Filter extends OncePerRequestFilter {
         }
     }
 
-    public String getToken (HttpServletRequest request) {
-        String authHedear = request.getHeader("Authorization");
-        if(authHedear == null) return null;
-        return authHedear.substring(7);
+//    public String getToken (HttpServletRequest request) {
+//        String authHedear = request.getHeader("Authorization");
+//        if(authHedear == null) return null;
+//        return authHedear.substring(7);
+//    }
+
+    public String getToken(HttpServletRequest request) {
+        String authHeader = request.getHeader("Authorization");
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            return authHeader.substring(7);
+        }
+        return null;
     }
+
 
 }
