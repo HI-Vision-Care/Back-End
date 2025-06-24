@@ -3,7 +3,6 @@ package com.hivision.hivision.controller;
 import com.hivision.hivision.dto.AccountDTO;
 import com.hivision.hivision.payload.request.LoginRequest;
 import com.hivision.hivision.payload.request.RegisterRequest;
-import com.hivision.hivision.payload.response.ApiResponse;
 import com.hivision.hivision.payload.response.LoginResponse;
 import com.hivision.hivision.service.IAccountService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -26,20 +25,18 @@ public class AccountController {
     IAccountService iAccountService;
 
     @PostMapping("/register")
-    public ResponseEntity<ApiResponse<AccountDTO>> register(@RequestBody @Valid RegisterRequest request) {
-        AccountDTO accountDTO = iAccountService.register(request);
-        ApiResponse<AccountDTO> response = ApiResponse.<AccountDTO>builder().data(accountDTO).build();
+    public ResponseEntity<AccountDTO> register(@RequestBody @Valid RegisterRequest request) {
 
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
+        return new ResponseEntity<>(iAccountService.register(request), HttpStatus.CREATED);
     }
 
     @PostMapping("/login")
-    LoginResponse login(@RequestBody LoginRequest request) {
-        return iAccountService.login(request);
+    ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) {
+        return ResponseEntity.ok(iAccountService.login(request));
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponse<?>> getAllAccounts() {
-        return ResponseEntity.ok(ApiResponse.builder().data(iAccountService.getAllAccounts()).build());
+    public ResponseEntity<?> getAllAccounts() {
+        return ResponseEntity.ok(iAccountService.getAllAccounts());
     }
 }

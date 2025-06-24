@@ -47,6 +47,7 @@ public class AccountService implements IAccountService{
         return LoginResponse.builder()
                 .token(token)
                 .username(user.getUsername())
+                .avatar(user.getAvatar())
                 .role(user.getRole())
                 .build();
     }

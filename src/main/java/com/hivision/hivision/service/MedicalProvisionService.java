@@ -1,5 +1,6 @@
 package com.hivision.hivision.service;
 
+import com.hivision.hivision.dto.MedicalServiceDTO;
 import com.hivision.hivision.pojo.MedicalService;
 import com.hivision.hivision.repository.IMedicalServiceRepo;
 import lombok.AccessLevel;
@@ -19,4 +20,11 @@ public class MedicalProvisionService implements IMedicalService {
     public List<MedicalService> getAllMedicalServices() {
         return medicalServiceRepo.findAll();
     }
+
+    @Override
+    public MedicalServiceDTO getMedicalServiceById(Long id) {
+        return medicalServiceRepo.findMedicalServiceByServiceID(id);
+    }
+
+
 }

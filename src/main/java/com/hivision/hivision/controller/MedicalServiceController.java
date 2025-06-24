@@ -1,15 +1,14 @@
 package com.hivision.hivision.controller;
 
+import com.hivision.hivision.dto.MedicalServiceDTO;
 import com.hivision.hivision.pojo.MedicalService;
 import com.hivision.hivision.service.IMedicalService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -24,7 +23,12 @@ public class MedicalServiceController {
 
 
     @GetMapping
-    public List<MedicalService> getAllMedicalServices() {
-        return medicalServiceService.getAllMedicalServices();
+    public ResponseEntity<List<MedicalService>> getAllMedicalServices() {
+        return ResponseEntity.ok(medicalServiceService.getAllMedicalServices());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<MedicalServiceDTO> getMedicalServicesByid(@PathVariable Long id) {
+        return ResponseEntity.ok(medicalServiceService.getMedicalServiceById(id));
     }
 }

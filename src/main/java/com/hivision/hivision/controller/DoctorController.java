@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,10 +26,10 @@ public class DoctorController {
     IDoctorService doctorService;
 
     @GetMapping
-    public List<DoctorDTO> getAllDoctors() { return doctorService.getAllDoctors(); }
+    public ResponseEntity<List<DoctorDTO>> getAllDoctors() { return ResponseEntity.ok(doctorService.getAllDoctors()); }
 
     @GetMapping("/specialty/{specialty}")
-    public List<Doctor> findDoctorsBySpecialty(String specialty) {
-        return doctorService.findDoctorsBySpecialty(specialty);
+    public ResponseEntity<List<Doctor>> findDoctorsBySpecialty(String specialty) {
+        return ResponseEntity.ok(doctorService.findDoctorsBySpecialty(specialty));
     }
 }

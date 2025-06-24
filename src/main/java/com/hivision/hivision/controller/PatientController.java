@@ -22,7 +22,7 @@ public class PatientController {
     IPatientService patientService;
 
     @GetMapping
-    public List<PatientDTO> getAllPatients() { return patientService.getAllPatients(); }
+    public ResponseEntity<List<PatientDTO>> getAllPatients() { return ResponseEntity.ok(patientService.getAllPatients()); }
 
     @GetMapping("/profile/{accountId}")
     public ResponseEntity<Patient> getPatientByAccountID(@PathVariable String accountId) {
