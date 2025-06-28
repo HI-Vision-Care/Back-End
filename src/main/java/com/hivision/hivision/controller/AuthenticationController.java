@@ -3,7 +3,7 @@ package com.hivision.hivision.controller;
 import com.hivision.hivision.payload.request.GoogleLoginRequest;
 import com.hivision.hivision.payload.response.ApiResponse;
 import com.hivision.hivision.payload.response.GoogleLoginResponse;
-import com.hivision.hivision.service.AuthenticationService;
+import com.hivision.hivision.service.cservice.AuthenticationService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;

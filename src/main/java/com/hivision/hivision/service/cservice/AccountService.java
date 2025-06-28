@@ -1,4 +1,4 @@
-package com.hivision.hivision.service;
+package com.hivision.hivision.service.cservice;
 
 import com.hivision.hivision.dto.AccountDTO;
 import com.hivision.hivision.enums.ErrorCode;
@@ -15,6 +15,8 @@ import com.hivision.hivision.pojo.Patient;
 import com.hivision.hivision.repository.IAccountRepo;
 import com.hivision.hivision.repository.IDoctorRepo;
 import com.hivision.hivision.repository.IPatientRepo;
+import com.hivision.hivision.service.cservice.TokenService;
+import com.hivision.hivision.service.iservice.IAccountService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -28,7 +30,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Service
-public class AccountService implements IAccountService{
+public class AccountService implements IAccountService {
     IAccountRepo iAccountRepository;
     IAccountMapper iAccountMapper;
     IDoctorRepo doctorRepo;
@@ -55,6 +57,7 @@ public class AccountService implements IAccountService{
                 .username(user.getUsername())
                 .avatar(user.getAvatar())
                 .role(user.getRole())
+                .patient(patientRepo.findPatientByAccount(user))
                 .build();
     }
 
