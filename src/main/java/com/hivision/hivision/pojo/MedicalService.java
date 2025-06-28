@@ -28,6 +28,9 @@ public class MedicalService {
     @Column(name = "Price")
     Double price;
 
+    @Column(name = "Img")
+    String img;
+
     @Column(name = "IsActive")
     Boolean isActive;
 

@@ -9,5 +9,5 @@ import java.util.List;
 @Repository
 public interface IMedicalRecordRepo extends JpaRepository<MedicalRecord, String> {
 
-    List<MedicalRecord> findByAppointment_AppointmentID(String appointmentId);
+    List<MedicalRecord> findByAppointment_AppointmentIDIn(List<String> appointmentIds);
 }
