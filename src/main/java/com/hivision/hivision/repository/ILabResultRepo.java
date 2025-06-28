@@ -9,5 +9,5 @@ import java.util.List;
 
 @Repository
 public interface ILabResultRepo extends JpaRepository<LabResult, String> {
-    List<LabResult> findByMedicalRecord_RecordId(String recordId);
+    List<LabResult> findByMedicalRecord_RecordIdIn(List<String> recordIds);
 }

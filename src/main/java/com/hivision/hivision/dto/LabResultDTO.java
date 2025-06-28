@@ -13,7 +13,8 @@ import java.time.Instant;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class LabResultDTO {
 
-    MedicalRecord medicalRecord;
+    //MedicalRecord medicalRecord;
+    String recordId;
     String testType;
     String resultValue;
     Instant testDate;
