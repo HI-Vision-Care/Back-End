@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -32,12 +33,14 @@ public class Filter extends OncePerRequestFilter {
     TokenService tokenService;
 
     @Autowired
+    @Lazy // Lazy để tránh vòng lặp phụ thuộc giữa các bean
     @Qualifier("handlerExceptionResolver")
     HandlerExceptionResolver handlerExceptionResolver;
 
     private final List<String> AUTH_PERMISSIONS = List.of(
             "/HiVision/account/**",
             "/HiVision/account/register",
+            "/HiVision/auth/**",
 //            "/BidKoi/ws/**",
 //            "/BidKoi/account/creation",
 //            "/BidKoi/account",
@@ -45,8 +48,11 @@ public class Filter extends OncePerRequestFilter {
             "/HiVision/swagger-ui/index.html",
             "/HiVision/v3/api-docs/**",     // Allow OpenAPI docs
             "/HiVision/swagger-ui/**",       // Allow Swagger UI access
-            "/HiVision/swagger-resources/**" // Allow Swagger resources
-//
+            "/HiVision/swagger-resources/**", // Allow Swagger resources
+            "/HiVision/oauth2/**",
+
+            "/HiVision/appointment/book-consultation-guest"
+
 //            "/BidKoi/shipping/**",
 //            "/BidKoi/account/number/**"
 
@@ -69,7 +75,8 @@ public class Filter extends OncePerRequestFilter {
 
 
         //response.setHeader("Access-Control-Allow-Origin", "https://auctionkoi.azurewebsites.net"); // Hoặc thay thế "*" bằng nguồn cụ thể nếu muốn bảo mật
-        response.setHeader("Access-Control-Allow-Origin", "http://localhost:5174");
+//        response.setHeader("Access-Control-Allow-Origin", "http://localhost:5174");
+        response.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
         //response.setHeader("Access-Control-Allow-Origin", "https://bid-koi-n1yy.vercel.app");
 
 
