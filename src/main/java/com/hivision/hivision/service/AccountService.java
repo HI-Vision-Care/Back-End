@@ -5,15 +5,20 @@ import com.hivision.hivision.enums.ErrorCode;
 import com.hivision.hivision.enums.Role;
 import com.hivision.hivision.exception.AppException;
 import com.hivision.hivision.mapper.IAccountMapper;
+import com.hivision.hivision.payload.request.AccountCreationRequest;
 import com.hivision.hivision.payload.request.LoginRequest;
 import com.hivision.hivision.payload.request.RegisterRequest;
 import com.hivision.hivision.payload.response.LoginResponse;
 import com.hivision.hivision.pojo.Account;
+import com.hivision.hivision.pojo.Doctor;
+import com.hivision.hivision.pojo.Patient;
 import com.hivision.hivision.repository.IAccountRepo;
+import com.hivision.hivision.repository.IDoctorRepo;
+import com.hivision.hivision.repository.IPatientRepo;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -26,18 +31,19 @@ import java.util.List;
 public class AccountService implements IAccountService{
     IAccountRepo iAccountRepository;
     IAccountMapper iAccountMapper;
+    IDoctorRepo doctorRepo;
+    IPatientRepo patientRepo;
 
     private final TokenService tokenService;
     private final PasswordEncoder passwordEncoder;
 
     @Override
     public LoginResponse login(LoginRequest request) {
-        var user = iAccountRepository.findByUsername(request.getUsername())
+//        var user = iAccountRepository.findByUsername(request.getUsername())
+//                .orElseThrow(() -> new AppException(ErrorCode.UNAUTHENTICATED_USERNAME));
 
-                .orElseThrow(() -> new AppException(ErrorCode.UNAUTHENTICATED_USERNAME));
-
-//        var user = iAccountRepository.findByEmail(request.getUsername())
-//                .orElseThrow(() -> new AppException(ErrorCode.INVALID_EMAIL));
+        var user = iAccountRepository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new AppException(ErrorCode.INVALID_EMAIL));
         boolean authenticated = passwordEncoder.matches(request.getPassword(), user.getPassword());
         if(!authenticated) {
             throw new AppException(ErrorCode.UNAUTHENTICATED_PASSWORD);
@@ -77,7 +83,9 @@ public class AccountService implements IAccountService{
 //        emailService.sendEmail(emailDetail);
 
 
-
+        Patient patient = new Patient();
+        patient.setAccount(account);
+        patientRepo.save(patient);
 
 
 
@@ -86,7 +94,73 @@ public class AccountService implements IAccountService{
     }
 
     @Override
+    public AccountDTO createAccount(AccountCreationRequest request) {
+        String role = request.getRole().toUpperCase();
+
+        if(!Role.DOCTOR.name().equals(role) && !Role.ADMIN.name().equals(role)) {
+            throw new AppException(ErrorCode.ROLE_ERROR);
+        }
+        // Check if username already exists
+        if (iAccountRepository.existsByUsername(request.getUsername())) {
+            throw new AppException(ErrorCode.USER_EXISTED);
+        }
+
+        Account account = iAccountMapper.toAccountCreation(request);
+        account.setPassword(this.passwordEncoder.encode(request.getPassword()));
+
+        iAccountRepository.save(account);
+
+        if(Role.DOCTOR.name().equals(role)){
+            account.setRole(Role.DOCTOR);
+            Doctor doctor = new Doctor();
+            doctor.setAccount(account);
+            doctorRepo.save(doctor);
+        }
+        else{
+            account.setRole(Role.ADMIN);
+            //
+            //
+            //
+        }
+        return iAccountMapper.toAccountDTO(iAccountRepository.save(account));
+    }
+
+
+    @Override
     public List<Account> getAllAccounts() {
         return iAccountRepository.findAll();
+    }
+
+    @Override
+    public Account findOrCreateByEmail(String email, String name, String avatar) {
+        return iAccountRepository.findByEmail(email)
+                .orElseGet(() -> {
+                    Account newAccount = Account.builder()
+                            .username(email.split("@")[0]) // Sử dụng email làm username,
+                            .email(email)
+                            .avatar(avatar)
+                            .password(null)
+//                            .role(Role.PATIENT) // Mặc định là bệnh nhân
+                            .isDeleted(false)
+                            .build();
+                    return iAccountRepository.save(newAccount);
+                });
+    }
+
+    @Override
+    public void deleteAccount(String accountId) {
+        Account account = iAccountRepository.findById(accountId)
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+//        if (account.getRole() == Role.ADMIN) {
+//            throw new AppException(ErrorCode.ADMIN_CANNOT_BE_DELETED);
+//        }
+        account.setIsDeleted(true);
+        iAccountRepository.save(account);
+    }
+
+
+    public Account getCurrentAccount() {
+        Account account = (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return iAccountRepository.findAccountById(account.getId());
     }
 }
