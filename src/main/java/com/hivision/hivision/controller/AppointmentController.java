@@ -3,15 +3,13 @@ package com.hivision.hivision.controller;
 import com.hivision.hivision.dto.AppointmentDTO;
 import com.hivision.hivision.payload.request.AppointmentRequest;
 import com.hivision.hivision.payload.request.ConsultationRequest;
-import com.hivision.hivision.pojo.Account;
 import com.hivision.hivision.pojo.Appointment;
-import com.hivision.hivision.service.IAppointmentService;
+import com.hivision.hivision.service.iservice.IAppointmentService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

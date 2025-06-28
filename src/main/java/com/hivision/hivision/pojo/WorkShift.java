@@ -8,7 +8,7 @@ import lombok.experimental.FieldDefaults;
 import java.time.Instant;
 
 @Entity
-@Table(name = "Appointment")
+@Table(name = "WorkShift")
 @Data
 @Builder
 @NoArgsConstructor
@@ -28,8 +28,8 @@ public class WorkShift {
     @Column(name = "Slot", length = 50)
     String slot;
 
-    @Column(name = "\"Date\"")
-    Instant date;
+    @Column(name = "Date")
+    String date;
 
     @Column(name = "StartTime")
     Instant startTime;

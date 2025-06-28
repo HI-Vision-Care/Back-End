@@ -1,9 +1,10 @@
-package com.hivision.hivision.service;
+package com.hivision.hivision.service.cservice;
 
 import com.hivision.hivision.dto.DoctorDTO;
 import com.hivision.hivision.mapper.IDoctorMapper;
 import com.hivision.hivision.pojo.Doctor;
 import com.hivision.hivision.repository.IDoctorRepo;
+import com.hivision.hivision.service.iservice.IDoctorService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -14,7 +15,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Service
-public class DoctorService implements IDoctorService{
+public class DoctorService implements IDoctorService {
 
     IDoctorRepo doctorRepo;
     IDoctorMapper doctorMapper;

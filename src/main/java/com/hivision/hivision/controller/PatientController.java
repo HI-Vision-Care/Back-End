@@ -2,7 +2,7 @@ package com.hivision.hivision.controller;
 
 import com.hivision.hivision.dto.PatientDTO;
 import com.hivision.hivision.pojo.Patient;
-import com.hivision.hivision.service.IPatientService;
+import com.hivision.hivision.service.iservice.IPatientService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;

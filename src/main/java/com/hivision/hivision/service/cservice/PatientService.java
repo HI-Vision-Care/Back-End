@@ -1,4 +1,4 @@
-package com.hivision.hivision.service;
+package com.hivision.hivision.service.cservice;
 
 import com.hivision.hivision.dto.PatientDTO;
 import com.hivision.hivision.enums.ErrorCode;
@@ -8,6 +8,7 @@ import com.hivision.hivision.pojo.Account;
 import com.hivision.hivision.pojo.Patient;
 import com.hivision.hivision.repository.IAccountRepo;
 import com.hivision.hivision.repository.IPatientRepo;
+import com.hivision.hivision.service.iservice.IPatientService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -18,7 +19,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class PatientService implements IPatientService{
+public class PatientService implements IPatientService {
 
     IAccountRepo accountRepo;
     IPatientRepo patientRepo;

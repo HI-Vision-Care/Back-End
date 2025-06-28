@@ -1,4 +1,4 @@
-package com.hivision.hivision.service;
+package com.hivision.hivision.service.iservice;
 
 import com.hivision.hivision.dto.MedicalServiceDTO;
 import com.hivision.hivision.pojo.MedicalService;

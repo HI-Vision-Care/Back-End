@@ -2,6 +2,7 @@ package com.hivision.hivision.payload.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.hivision.hivision.enums.Role;
+import com.hivision.hivision.pojo.Patient;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -16,4 +17,5 @@ public class LoginResponse {
     String username;
     String avatar;
     Role role;
+    Patient patient;
 }

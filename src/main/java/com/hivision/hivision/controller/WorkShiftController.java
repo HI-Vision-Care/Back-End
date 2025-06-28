@@ -2,13 +2,12 @@ package com.hivision.hivision.controller;
 
 import com.hivision.hivision.dto.WorkShiftDTO;
 import com.hivision.hivision.payload.request.WorkShiftRequest;
-import com.hivision.hivision.service.WorkShiftService;
+import com.hivision.hivision.service.cservice.WorkShiftService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

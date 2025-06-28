@@ -1,4 +1,4 @@
-package com.hivision.hivision.service;
+package com.hivision.hivision.service.cservice;
 
 import com.hivision.hivision.dto.AppointmentDTO;
 import com.hivision.hivision.enums.AppointmentStatus;
@@ -9,6 +9,7 @@ import com.hivision.hivision.payload.request.AppointmentRequest;
 import com.hivision.hivision.payload.request.ConsultationRequest;
 import com.hivision.hivision.pojo.*;
 import com.hivision.hivision.repository.*;
+import com.hivision.hivision.service.iservice.IAppointmentService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;

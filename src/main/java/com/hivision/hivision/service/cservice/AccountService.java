@@ -1,4 +1,4 @@
-package com.hivision.hivision.service;
+package com.hivision.hivision.service.cservice;
 
 import com.hivision.hivision.dto.AccountDTO;
 import com.hivision.hivision.enums.ErrorCode;
@@ -9,11 +9,13 @@ import com.hivision.hivision.payload.request.LoginRequest;
 import com.hivision.hivision.payload.request.RegisterRequest;
 import com.hivision.hivision.payload.response.LoginResponse;
 import com.hivision.hivision.pojo.Account;
+import com.hivision.hivision.pojo.Patient;
 import com.hivision.hivision.repository.IAccountRepo;
+import com.hivision.hivision.repository.IPatientRepo;
+import com.hivision.hivision.service.iservice.IAccountService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -23,9 +25,10 @@ import java.util.List;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Service
-public class AccountService implements IAccountService{
+public class AccountService implements IAccountService {
     IAccountRepo iAccountRepository;
     IAccountMapper iAccountMapper;
+    IPatientRepo iPatientRepository;
 
     private final TokenService tokenService;
     private final PasswordEncoder passwordEncoder;
@@ -49,6 +52,7 @@ public class AccountService implements IAccountService{
                 .username(user.getUsername())
                 .avatar(user.getAvatar())
                 .role(user.getRole())
+                .patient(iPatientRepository.findPatientByAccount(user))
                 .build();
     }
 
@@ -69,6 +73,9 @@ public class AccountService implements IAccountService{
         account.setIsDeleted(false); // mặc định là false
         account = iAccountRepository.save(account);
 
+        Patient patient = new Patient();
+        patient.setAccount(account);
+        iPatientRepository.save(patient);
 
         //gui email ve cho nguoi dung
 //        EmailDetail emailDetail = new EmailDetail();

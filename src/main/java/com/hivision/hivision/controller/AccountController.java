@@ -4,7 +4,7 @@ import com.hivision.hivision.dto.AccountDTO;
 import com.hivision.hivision.payload.request.LoginRequest;
 import com.hivision.hivision.payload.request.RegisterRequest;
 import com.hivision.hivision.payload.response.LoginResponse;
-import com.hivision.hivision.service.IAccountService;
+import com.hivision.hivision.service.iservice.IAccountService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
