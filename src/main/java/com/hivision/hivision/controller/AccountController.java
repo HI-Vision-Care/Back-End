@@ -39,4 +39,11 @@ public class AccountController {
     public ResponseEntity<?> getAllAccounts() {
         return ResponseEntity.ok(iAccountService.getAllAccounts());
     }
+
+    @DeleteMapping("/{accountId}")
+    public ResponseEntity<ApiResponse<String>> deleteAccount(@PathVariable String accountId) {
+        iAccountService.deleteAccount(accountId);
+        ApiResponse<String> response = ApiResponse.<String>builder().data("Account deleted successfully!").build();
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 }

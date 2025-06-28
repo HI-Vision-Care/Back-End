@@ -23,10 +23,12 @@ import java.util.List;
 @Service
 public class AppointmentService implements IAppointmentService {
     IAccountRepo accountRepo;
+    AccountService accountService;
     IAppointmentRepo appointmentRepo;
     IPatientRepo patientRepo;
     IDoctorRepo doctorRepo;
     IMedicalServiceRepo serviceRepo;
+    IConsultationNoteRepo consultationNoteRepo;
 
     IAppointmentMapper mapper;
 
@@ -117,5 +119,53 @@ public class AppointmentService implements IAppointmentService {
 //            appointment.setPatient(patient);
         }
         return mapper.toAppointmentDTO(appointmentRepo.save(appointment));
+    }
+
+    @Override
+    public AppointmentDTO createOnlineAppointmentForLoggedInUser(ConsultationRequest request) {
+        Doctor doctor = doctorRepo.findById(request.getDoctorID())
+                .orElseThrow(() -> new AppException(ErrorCode.DOCTOR_NOT_FOUND));
+        MedicalService medicalService = serviceRepo.findById(request.getServiceID())
+                .orElseThrow(() -> new AppException(ErrorCode.SERVICE_NOT_FOUND));
+
+
+        Appointment appointment = Appointment.builder()
+                .doctor(doctor)
+                .medicalService(medicalService)
+                .appointmentDate(request.getAppointmentDate())
+                .isAnonymous(request.getIsAnonymous())
+                .note(request.getNote())
+                .status(AppointmentStatus.PENDING.name())
+                .createAt(Instant.now())
+                .build();
+
+        if(Boolean.TRUE.equals(request.getIsAnonymous())){
+            appointment.setPatient(null);
+        }
+        else {
+
+            Account persistedAccount = accountService.getCurrentAccount();
+
+            Patient patient = patientRepo.findPatientByAccount(persistedAccount);
+            if (patient == null) {
+                throw new AppException(ErrorCode.PATIENT_NOT_FOUND);
+            }
+            appointment.setPatient(patient);
+        }
+        return mapper.toAppointmentDTO(appointmentRepo.save(appointment));
+    }
+
+    @Override
+    public void createOnlineAppointmentForGuest(ConsultationNote consultationNote) {
+
+        consultationNote.setPhone(consultationNote.getPhone());
+        consultationNote.setEmail(consultationNote.getEmail().trim());
+        consultationNote.setNote(consultationNote.getNote());
+        consultationNote.setCreateAt(Instant.now());
+        if (consultationNote.getPhone() == null || consultationNote.getPhone().isBlank()) {
+            throw new AppException(ErrorCode.PHONE_REQUIRED);
+        }
+        consultationNoteRepo.save(consultationNote);
+
     }
 }

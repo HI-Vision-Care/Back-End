@@ -28,6 +28,9 @@ public class MedicalService {
     @Column(name = "Price")
     Double price;
 
+    @Column(name = "Img")
+    String img;
+
     @Column(name = "IsActive")
     Boolean isActive;
 
@@ -40,6 +43,6 @@ public class MedicalService {
     @Column(name = "CreateAt")
     Instant createAt;
 
-    @Column(name = "Img")
-    String img;
+//    @Column(name = "Img")
+//    String img;
 }

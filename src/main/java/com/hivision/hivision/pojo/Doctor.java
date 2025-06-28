@@ -18,7 +18,7 @@ public class Doctor {
 
     @OneToOne
     @JoinColumn(name = "AccountID", referencedColumnName = "AccountID")
-    Account accountID;
+    Account account;
 
     @Column(name = "FullName")
     String name;
@@ -32,4 +32,6 @@ public class Doctor {
     @Column(name = "Degrees")
     String degrees;
 
+    @Column(name = "Img")
+    String img;
 }

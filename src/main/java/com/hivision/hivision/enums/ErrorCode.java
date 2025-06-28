@@ -26,6 +26,8 @@ public enum ErrorCode {
     EXPIRE_TOKEN(401, "Token has expired"),
     ERROR_TOKEN(401,"Invalid Token"),
     EMPTY_TOKEN(400, "Empty token!"),
+    ROLE_ERROR(401,"Role Error!"),
+    INVALID_GOOGLE_TOKEN(401, "Invalid Google token!"),
     ;
 
     int code;

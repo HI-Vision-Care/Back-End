@@ -25,11 +25,11 @@ public class Appointment {
     @JoinColumn(name = "PatientID", referencedColumnName = "PatientID")
     Patient patient;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "DoctorID", referencedColumnName = "DoctorID")
     Doctor doctor;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne
     @JoinColumn(name = "ServiceID", referencedColumnName = "ServiceID")
     MedicalService medicalService;
 
