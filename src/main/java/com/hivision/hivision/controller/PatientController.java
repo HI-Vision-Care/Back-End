@@ -4,7 +4,7 @@ import com.hivision.hivision.dto.LabResultDTO;
 import com.hivision.hivision.dto.PatientDTO;
 import com.hivision.hivision.payload.request.PatientRequest;
 import com.hivision.hivision.pojo.Patient;
-import com.hivision.hivision.service.IPatientService;
+import com.hivision.hivision.service.iservice.IPatientService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;

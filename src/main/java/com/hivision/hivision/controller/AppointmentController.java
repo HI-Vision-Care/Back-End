@@ -6,15 +6,13 @@ import com.hivision.hivision.payload.request.ConsultationRequest;
 import com.hivision.hivision.pojo.Account;
 import com.hivision.hivision.pojo.Appointment;
 import com.hivision.hivision.pojo.ConsultationNote;
-import com.hivision.hivision.service.IAccountService;
-import com.hivision.hivision.service.IAppointmentService;
+import com.hivision.hivision.service.iservice.IAppointmentService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -39,6 +37,15 @@ public class AppointmentController {
         return ResponseEntity.ok(appointmentService.createOnlineAppointment(phone, request));
     }
 
+    @GetMapping("/get-appointment/{patientId}")
+    public ResponseEntity<List<Appointment>> getAppointmentsByPatient(@PathVariable String patientId) {
+        return ResponseEntity.ok(appointmentService.getAppointmentsByPatient(patientId));
+    }
+
+    @PutMapping("/update-appointment/{appointmentId}")
+    public ResponseEntity<AppointmentDTO> updateAppointment(@PathVariable String appointmentId, @RequestBody AppointmentDTO appointmentDTO) {
+        return ResponseEntity.ok(appointmentService.updateAppointment(appointmentId, appointmentDTO));
+    }
     // đặt lịch hẹn với tài khoản đã đăng nhập
     @PostMapping("/book-consultation-with-account")
     public ResponseEntity<AppointmentDTO> bookConsultationWithAccount(@RequestBody ConsultationRequest request) {
@@ -52,15 +59,5 @@ public class AppointmentController {
         return ResponseEntity.ok("Gửi yêu cầu thành công. Chúng tôi sẽ liên hệ lại.");
     }
 
-
-    @GetMapping("/get-appointment/{patientId}")
-    public ResponseEntity<List<Appointment>> getAppointmentsByPatient(@PathVariable String patientId) {
-        return ResponseEntity.ok(appointmentService.getAppointmentsByPatient(patientId));
-    }
-
-    @PutMapping("/update-appointment/{appointmentId}")
-    public ResponseEntity<AppointmentDTO> updateAppointment(@PathVariable String appointmentId, @RequestBody AppointmentDTO appointmentDTO) {
-        return ResponseEntity.ok(appointmentService.updateAppointment(appointmentId, appointmentDTO));
-    }
 
 }

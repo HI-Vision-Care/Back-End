@@ -3,7 +3,7 @@ package com.hivision.hivision.config;
 import com.hivision.hivision.enums.ErrorCode;
 import com.hivision.hivision.exception.AppException;
 import com.hivision.hivision.pojo.Account;
-import com.hivision.hivision.service.TokenService;
+import com.hivision.hivision.service.cservice.TokenService;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import jakarta.servlet.FilterChain;

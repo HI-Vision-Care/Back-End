@@ -43,6 +43,6 @@ public class MedicalService {
     @Column(name = "CreateAt")
     Instant createAt;
 
-    @Column(name = "Img")
-    String img;
+//    @Column(name = "Img")
+//    String img;
 }

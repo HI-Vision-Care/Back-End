@@ -1,4 +1,4 @@
-package com.hivision.hivision.service;
+package com.hivision.hivision.service.cservice;
 
 import com.hivision.hivision.dto.LabResultDTO;
 import com.hivision.hivision.dto.PatientDTO;
@@ -9,6 +9,7 @@ import com.hivision.hivision.mapper.IPatientMapper;
 import com.hivision.hivision.payload.request.PatientRequest;
 import com.hivision.hivision.pojo.*;
 import com.hivision.hivision.repository.*;
+import com.hivision.hivision.service.iservice.IPatientService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -23,7 +24,6 @@ import java.util.List;
 public class PatientService implements IPatientService{
 
     IAccountRepo accountRepo;
-
     IPatientRepo patientRepo;
     IPatientMapper patientMapper;
 
@@ -32,7 +32,6 @@ public class PatientService implements IPatientService{
 
     ILabResultRepo labResultRepo;
     ILabResultMapper labResultMapper;
-
 //    @Override
 //    public List<Patient> getAllPatients() { return patientRepo.findAll(); }
 
@@ -96,5 +95,6 @@ public class PatientService implements IPatientService{
 
         return labResultMapper.toLabResultDTO(results);
     }
+
 
 }

@@ -1,10 +1,11 @@
-package com.hivision.hivision.service;
+package com.hivision.hivision.service.cservice;
 
 import com.hivision.hivision.enums.ErrorCode;
 import com.hivision.hivision.exception.AppException;
 import com.hivision.hivision.payload.request.GoogleLoginRequest;
 import com.hivision.hivision.payload.response.GoogleLoginResponse;
 import com.hivision.hivision.pojo.Account;
+import com.hivision.hivision.service.iservice.IAccountService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -23,7 +24,7 @@ import java.util.Map;
 @Slf4j
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class AuthenticationService {
-    final  IAccountService accountService;
+    final IAccountService accountService;
     final TokenService tokenService;
     final RestTemplate restTemplate = new RestTemplate(); // RestTemplate để gọi API bên ngoài
 

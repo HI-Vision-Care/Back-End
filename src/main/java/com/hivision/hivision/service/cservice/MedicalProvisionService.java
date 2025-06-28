@@ -1,8 +1,9 @@
-package com.hivision.hivision.service;
+package com.hivision.hivision.service.cservice;
 
 import com.hivision.hivision.dto.MedicalServiceDTO;
 import com.hivision.hivision.pojo.MedicalService;
 import com.hivision.hivision.repository.IMedicalServiceRepo;
+import com.hivision.hivision.service.iservice.IMedicalService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;

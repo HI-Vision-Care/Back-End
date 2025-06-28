@@ -12,7 +12,7 @@ import java.time.Instant;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class WorkShiftRequest {
     String slot;
-    Instant date;
+    String date;
     Instant startTime;
     Instant endTime;
 }
