@@ -11,7 +11,6 @@ import java.time.Instant;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class AppointmentRequest {
-    String patientID;
     Long serviceID;
     String doctorID;
     Instant appointmentDate;

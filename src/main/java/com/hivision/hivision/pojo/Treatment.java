@@ -17,34 +17,34 @@ import java.time.Instant;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Treatment {
     @Id
-    @Size(max = 255)
     @Column(name = "RegimentID", nullable = false)
-    private String regimentID;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    String regimentID;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "PatientID")
-    private Patient patient;
+    Patient patient;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ARV_ID")
-    private Arv arv;
+    Arv arv;
 
     @Column(name = "StartDate")
-    private Instant startDate;
+    Instant startDate;
 
     @Column(name = "EndDate")
-    private Instant endDate;
+    Instant endDate;
 
     @Size(max = 255)
     @Column(name = "PrescribeBy")
-    private String prescribeBy;
+    String prescribeBy;
 
     @Size(max = 255)
     @Column(name = "Status")
-    private String status;
+    String status;
 
     @Lob
     @Column(name = "Note")
-    private String note;
+    String note;
 
 }
