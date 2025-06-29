@@ -34,8 +34,8 @@ public class AppointmentService implements IAppointmentService {
 
 
     @Override
-    public AppointmentDTO bookAppointment(AppointmentRequest request) {
-        Patient patient = patientRepo.findById(request.getPatientID())
+    public AppointmentDTO bookAppointment(AppointmentRequest request,String patientId) {
+        Patient patient = patientRepo.findById(patientId)
                 .orElseThrow(() -> new AppException(ErrorCode.PATIENT_NOT_FOUND));
         Doctor doctor = doctorRepo.findById(request.getDoctorID())
                 .orElseThrow(() -> new AppException(ErrorCode.DOCTOR_NOT_FOUND));

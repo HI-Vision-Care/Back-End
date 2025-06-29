@@ -4,6 +4,8 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @Builder
@@ -12,7 +14,7 @@ import java.time.Instant;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class WorkShiftRequest {
     String slot;
-    String date;
-    Instant startTime;
-    Instant endTime;
+    LocalDateTime  date;
+    LocalDateTime startTime;
+    LocalDateTime endTime;
 }
