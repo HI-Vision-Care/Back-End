@@ -7,37 +7,36 @@ import lombok.experimental.FieldDefaults;
 
 import java.time.Instant;
 
-@Entity
-@Table(name = "Treatment")
 @Getter
 @Setter
+@Entity
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Treatment {
+public class Prescription {
     @Id
-    @Column(name = "TreatmentID", nullable = false)
+    @Size(max = 255)
+    @Column(name = "PrescriptionID", nullable = false)
     @GeneratedValue(strategy = GenerationType.UUID)
-    String treatmentID;
+    String prescriptionID;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "PatientID")
     Patient patient;
 
+    @Size(max = 255)
+    @Column(name = "Dosage")
+    String dosage;
 
-    @Column(name = "StartDate")
-    Instant startDate;
+    @Column(name = "Duration")
+    String duration;
 
-    @Column(name = "EndDate")
-    Instant endDate;
+    @Column(name = "\"Date\"")
+    Instant date;
 
     @Size(max = 255)
-    @Column(name = "Status")
-    String status;
-
-    @Lob
-    @Column(name = "Note")
-    String note;
+    @Column(name = "PrescribeBy")
+    String prescribeBy;
 
 }

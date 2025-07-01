@@ -56,7 +56,6 @@ public class WorkShiftService implements IWSService {
         // 1. Tính toán ngày bắt đầu và kết thúc của tuần
         // Giả sử tuần bắt đầu từ Thứ Hai (Monday)
         LocalDate startOfWeek = dateInWeek.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
-
         // Nếu bạn muốn tuần bắt đầu từ Chủ Nhật (Sunday)
         // LocalDate startOfWeek = dateInWeek.with(TemporalAdjusters.previousOrSame(DayOfWeek.SUNDAY));
 
