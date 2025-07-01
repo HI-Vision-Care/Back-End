@@ -1,8 +1,13 @@
 package com.hivision.hivision.service.cservice;
 
 import com.hivision.hivision.dto.DoctorDTO;
+import com.hivision.hivision.enums.AppointmentStatus;
+import com.hivision.hivision.enums.ErrorCode;
+import com.hivision.hivision.exception.AppException;
 import com.hivision.hivision.mapper.IDoctorMapper;
+import com.hivision.hivision.pojo.Appointment;
 import com.hivision.hivision.pojo.Doctor;
+import com.hivision.hivision.repository.IAppointmentRepo;
 import com.hivision.hivision.repository.IDoctorRepo;
 import com.hivision.hivision.service.iservice.IDoctorService;
 import lombok.AccessLevel;
@@ -19,6 +24,7 @@ public class DoctorService implements IDoctorService {
 
     IDoctorRepo doctorRepo;
     IDoctorMapper doctorMapper;
+    IAppointmentRepo appointmentRepo;
 
 //    @Override
 //    public List<DoctorDTO> getAllDoctors() {
@@ -39,4 +45,20 @@ public class DoctorService implements IDoctorService {
     public List<Doctor> findDoctorsBySpecialty(String specialty) {
         return doctorRepo.findBySpecialty(specialty);
     }
+
+    @Override
+    public void confirm(String appointmentId) {
+        Appointment appointment = appointmentRepo.findById(appointmentId)
+                .orElseThrow(() -> new AppException(ErrorCode.APPOINTMENT_NOT_FOUND));
+        appointment.setStatus(AppointmentStatus.ONGOING);
+    }
+
+    @Override
+    public void complete(String appointmentId) {
+        Appointment appointment = appointmentRepo.findById(appointmentId)
+                .orElseThrow(() -> new AppException(ErrorCode.APPOINTMENT_NOT_FOUND));
+        appointment.setStatus(AppointmentStatus.COMPLETED);
+    }
+
+
 }

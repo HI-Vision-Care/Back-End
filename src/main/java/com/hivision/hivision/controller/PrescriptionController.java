@@ -4,7 +4,6 @@ import com.hivision.hivision.payload.request.PreArvRequest;
 import com.hivision.hivision.payload.request.PrescriptionRequest;
 import com.hivision.hivision.pojo.Prescription;
 import com.hivision.hivision.pojo.PrescriptionARV;
-import com.hivision.hivision.service.iservice.IPreArvService;
 import com.hivision.hivision.service.iservice.IPrescriptionService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.AccessLevel;
@@ -24,7 +23,6 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class PrescriptionController {
     IPrescriptionService prescriptionService;
-    IPreArvService preArvService;
 
     @PostMapping("/create")
     public ResponseEntity<Prescription> createPrescriptions(@RequestBody PrescriptionRequest request) {
@@ -37,7 +35,7 @@ public class PrescriptionController {
     public ResponseEntity<List<PrescriptionARV>> addARVtoPre(@RequestBody PreArvRequest request) {
 ////        try {
 //            List<PrescriptionARV> addPreArv = preArvService.addPreArv(request);
-            return new ResponseEntity<>(preArvService.addPreArv(request), HttpStatus.CREATED);
+            return new ResponseEntity<>(prescriptionService.addPreArv(request), HttpStatus.CREATED);
 //        } catch (Exception e) {
 //            // Có thể tạo một lớp xử lý lỗi toàn cục (GlobalExceptionHandler) để code sạch hơn
 //            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);

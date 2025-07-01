@@ -8,10 +8,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -31,5 +28,17 @@ public class DoctorController {
     @GetMapping("/specialty/{specialty}")
     public ResponseEntity<List<Doctor>> findDoctorsBySpecialty(String specialty) {
         return ResponseEntity.ok(doctorService.findDoctorsBySpecialty(specialty));
+    }
+
+    @PatchMapping("/confirm/{appointmentID}")
+    public ResponseEntity<Void> confirm(@PathVariable String appointmentID) {
+        doctorService.confirm(appointmentID);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("/complete/{appointmentID}")
+    public ResponseEntity<Void> complete(@PathVariable String appointmentID) {
+        doctorService.complete(appointmentID);
+        return ResponseEntity.noContent().build();
     }
 }

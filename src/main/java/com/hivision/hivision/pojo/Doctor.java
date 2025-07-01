@@ -32,6 +32,5 @@ public class Doctor {
     @Column(name = "Degrees")
     String degrees;
 
-    @Column(name = "Img")
-    String img;
+
 }

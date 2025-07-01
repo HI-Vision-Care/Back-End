@@ -49,7 +49,7 @@ public class AppointmentService implements IAppointmentService {
                 .appointmentDate(request.getAppointmentDate())
                 .isAnonymous(request.getIsAnonymous())
                 .note(request.getNote())
-                .status(String.valueOf(AppointmentStatus.PENDING))
+                .status(AppointmentStatus.SCHEDULED)
                 .createAt(Instant.now())
                 .build();
         appointment = appointmentRepo.save(appointment);
@@ -95,7 +95,7 @@ public class AppointmentService implements IAppointmentService {
                 .appointmentDate(request.getAppointmentDate())
                 .isAnonymous(request.getIsAnonymous())
                 .note(request.getNote())
-                .status(String.valueOf(AppointmentStatus.PENDING))
+                .status(AppointmentStatus.SCHEDULED)
                 .createAt(Instant.now())
                 .build();
 
@@ -135,7 +135,7 @@ public class AppointmentService implements IAppointmentService {
                 .appointmentDate(request.getAppointmentDate())
                 .isAnonymous(request.getIsAnonymous())
                 .note(request.getNote())
-                .status(AppointmentStatus.PENDING.name())
+                .status(AppointmentStatus.SCHEDULED)
                 .createAt(Instant.now())
                 .build();
 
