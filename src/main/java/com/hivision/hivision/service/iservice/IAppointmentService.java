@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface IAppointmentService {
     // Người dùng đăng ký lịch khám & điều trị HIV
-     AppointmentDTO bookAppointment(AppointmentRequest request);
+     AppointmentDTO bookAppointment(AppointmentRequest request,String patientId);
 
     // Lấy danh sách lịch hẹn của người dùng
      List<Appointment> getAppointmentsByPatient(String patientID);

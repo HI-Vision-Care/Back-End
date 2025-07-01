@@ -6,6 +6,8 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "WorkShift")
@@ -22,20 +24,20 @@ public class WorkShift {
 
     @ManyToOne
     @JoinColumn(name = "DoctorID")
-    Doctor doctorID;
+    Doctor doctor;
 
     @Size(max = 50)
     @Column(name = "Slot", length = 50)
     String slot;
 
     @Column(name = "Date")
-    String date;
+    LocalDateTime  date;
 
     @Column(name = "StartTime")
-    Instant startTime;
+    LocalDateTime startTime;
 
     @Column(name = "EndTime")
-    Instant endTime;
+    LocalDateTime endTime;
 
     @Size(max = 50)
     @Column(name = "Status", length = 50)

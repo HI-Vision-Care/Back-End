@@ -5,6 +5,7 @@ import lombok.Value;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.time.LocalDateTime;
 
 /**
  * DTO for {@link com.hivision.hivision.pojo.WorkShift}
@@ -14,9 +15,9 @@ public class WorkShiftDTO implements Serializable {
     Integer id;
     @Size(max = 50)
     String slot;
-    Instant date;
-    Instant startTime;
-    Instant endTime;
+    LocalDateTime date;
+    LocalDateTime startTime;
+    LocalDateTime endTime;
     @Size(max = 50)
     String status;
     String note;

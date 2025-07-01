@@ -13,6 +13,8 @@ public enum ErrorCode {
     PATIENT_NOT_FOUND(404,"Patient not found"),
     SERVICE_NOT_FOUND(404,"Service not found"),
     APPOINTMENT_NOT_FOUND(404,"Appointment not found"),
+    ARV_NOT_FOUND(404,"ARV not found"),
+    PRE_NOT_FOUND(404,"Prescription not found"),
     EMAIL_EXISTED(422, "Email already existed!"),
     INVALID_EMAIL(401,"Invalid email address!"),
     PHONE_EXISTED(422, "Phone already existed!"),

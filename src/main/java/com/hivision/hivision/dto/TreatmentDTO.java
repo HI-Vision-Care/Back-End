@@ -1,6 +1,5 @@
 package com.hivision.hivision.dto;
 
-import com.hivision.hivision.pojo.Arv;
 import com.hivision.hivision.pojo.Patient;
 import jakarta.validation.constraints.Size;
 import lombok.Value;
@@ -14,7 +13,7 @@ import java.time.Instant;
 @Value
 public class TreatmentDTO implements Serializable {
     Patient patient;
-    Arv arv;
+    //Arv arv;
     Instant startDate;
     Instant endDate;
     @Size(max = 255)

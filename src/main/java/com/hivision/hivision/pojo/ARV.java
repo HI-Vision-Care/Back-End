@@ -1,20 +1,21 @@
 package com.hivision.hivision.pojo;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 import java.time.Instant;
 
 @Getter
 @Setter
 @Entity
-@Table(name = "ARV")
-public class Arv {
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
+@Access(AccessType.FIELD)
+public class ARV {
     @Id
     @Size(max = 255)
     @Column(name = "ARV_ID", nullable = false)
@@ -52,7 +53,7 @@ public class Arv {
     @Column(name = "RegimenLevel", length = 50)
     private String regimenLevel;
 
-    @Column(name = "Last_Updated")
+    @Column(name = "LastUpdated")
     private Instant lastUpdated;
 
 }

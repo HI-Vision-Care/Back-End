@@ -13,4 +13,7 @@ public interface IDoctorRepo extends JpaRepository<Doctor, String> {
     // Tìm bác sĩ theo chuyên khoa
     List<Doctor> findBySpecialty(String specialty);
     Doctor findDoctorByAccount(Account account);
+    Doctor findDoctorByDoctorID(String doctorID);
+    boolean existsByDoctorID(String doctorID);
+
 }
