@@ -30,6 +30,11 @@ public enum ErrorCode {
     EMPTY_TOKEN(400, "Empty token!"),
     ROLE_ERROR(401,"Role Error!"),
     INVALID_GOOGLE_TOKEN(401, "Invalid Google token!"),
+    ACCOUNT_DELETED(404, "Account has been deleted. Please contact support!"),
+    WALLET_NOT_FOUND(404, "Wallet not found!"),
+    TRANSACTION_NOT_FOUND(404, "Transaction not found!"),
+    TRANSACTION_COMPLETED(409, "Transaction already completed!"),
+    MEDICAL_SERVICE_NOT_FOUND(404, "Medical service not found!"),
     ;
 
     int code;
