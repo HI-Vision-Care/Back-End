@@ -93,10 +93,10 @@ public class AccountService implements IAccountService {
         patient.setAccount(account);
         patientRepo.save(patient);
 
-//        Wallet wallet = new Wallet();
-//        wallet.setAccount(account);
-//        wallet.setBalance(0.0); // Khởi tạo số dư ví là 0
-//        walletRepo.save(wallet);
+        Wallet wallet = new Wallet();
+        wallet.setAccount(account);
+        wallet.setBalance(0.0); // Khởi tạo số dư ví là 0
+        walletRepo.save(wallet);
 
 
         return iAccountMapper.toAccountDTO(iAccountRepository.save(account));

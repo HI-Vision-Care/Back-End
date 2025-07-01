@@ -28,8 +28,8 @@ public class AppointmentController {
     IAppointmentService appointmentService;
 
     @PostMapping("/book-appointment/{patientId}")
-    public ResponseEntity<AppointmentDTO> bookAppointment(@RequestBody AppointmentRequest request) {
-        return ResponseEntity.ok(appointmentService.bookAppointment(request));
+    public ResponseEntity<AppointmentDTO> bookAppointment(@RequestBody AppointmentRequest request, @PathVariable String patientId) {
+        return ResponseEntity.ok(appointmentService.bookAppointment(request, patientId));
     }
 
     @PostMapping("/book-consultation")

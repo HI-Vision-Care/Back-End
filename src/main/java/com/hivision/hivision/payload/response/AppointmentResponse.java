@@ -20,4 +20,5 @@ public class AppointmentResponse {
     String note;
     Instant createAt;
     String status;
+
 }
