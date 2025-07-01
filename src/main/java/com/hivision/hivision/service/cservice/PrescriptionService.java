@@ -1,8 +1,9 @@
 package com.hivision.hivision.service.cservice;
 
 import com.hivision.hivision.enums.ErrorCode;
+import com.hivision.hivision.enums.PresStatus;
 import com.hivision.hivision.exception.AppException;
-import com.hivision.hivision.payload.request.PreArvRequest;
+import com.hivision.hivision.payload.request.ArvRequest;
 import com.hivision.hivision.payload.request.PrescriptionRequest;
 import com.hivision.hivision.pojo.ARV;
 import com.hivision.hivision.pojo.Patient;
@@ -16,6 +17,7 @@ import com.hivision.hivision.service.iservice.IPrescriptionService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.security.access.method.P;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -42,52 +44,30 @@ public class PrescriptionService implements IPrescriptionService {
                 .patient(patient)
                 .date(Instant.now())
                 .prescribeBy(request.getPrescribeBy())
+                .status(PresStatus.CREATED)
                 .build();
-
-//        List<String> arvIds = Arrays.asList(request.getRegimenString().split("\\s*\\+\\s*"));
-//
-//        List<ARV> arvs = arvRepo.findAllById(arvIds);
-//
-//        if (arvs.size() != arvIds.size()) {
-//            List<String> foundIds = arvs.stream().map(ARV::getArvId).toList();
-//            arvIds.removeAll(foundIds);
-//            throw new AppException(ErrorCode.ARV_NOT_FOUND);
-//        }
-//        List<Prescription> prescriptionsToSave = new ArrayList<>();
-//        for(ARV arv : arvs) {
-//            Prescription prescription = Prescription.builder()
-//                    .patient(patient)
-//                    .dosage(request.getDosage())
-//                    .duration(request.getDuration())
-//                    .prescribeBy(request.getPrescribeBy())
-//                    .date(Instant.now())
-//                    .build();
-//            prescriptionsToSave.add(prescription);
-//        }
         return prescriptionRepo.save(prescription);
     }
 
     @Override
-    public List<PrescriptionARV> addPreArv(PreArvRequest request) {
-        Prescription prescription = prescriptionRepo.findById(request.getPrescriptionId())
-                .orElseThrow(() -> new AppException(ErrorCode.PRE_NOT_FOUND));
-        List<String> arvIds = Arrays.asList(request.getRegimenString().split("\\s*\\+\\s*"));
-
-        List<ARV> arvs = arvRepo.findAllById(arvIds);
-
-        if (arvs.size() != arvIds.size()) {
-            List<String> foundIds = arvs.stream().map(ARV::getArvId).toList();
-            arvIds.removeAll(foundIds);
-            throw new AppException(ErrorCode.ARV_NOT_FOUND);
-        }
+    public List<PrescriptionARV> addArvToPres(List<ArvRequest> requests,String patientId) {
         List<PrescriptionARV> preARVsToSave = new ArrayList<>();
-        for(ARV arv : arvs) {
+        for (ArvRequest request : requests) {
+            Patient patient = patientRepo.findById(patientId)
+                    .orElseThrow(() -> new AppException(ErrorCode.PATIENT_NOT_FOUND));
+
+            Prescription prescription = prescriptionRepo.findByPatientAndStatus(patient, PresStatus.CREATED);
+
+
             PrescriptionARV preArv = PrescriptionARV.builder()
-                    .arv(arv)
+                    .arv(arvRepo.findByArvId(request.getArvID()))
                     .prescription(prescription)
                     .build();
             preARVsToSave.add(preArv);
         }
+
+
+
         return preARVRepo.saveAll(preARVsToSave);
     }
 
