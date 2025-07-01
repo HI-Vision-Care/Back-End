@@ -1,6 +1,6 @@
 package com.hivision.hivision.controller;
 
-import com.hivision.hivision.payload.request.PreArvRequest;
+import com.hivision.hivision.payload.request.ArvRequest;
 import com.hivision.hivision.payload.request.PrescriptionRequest;
 import com.hivision.hivision.pojo.Prescription;
 import com.hivision.hivision.pojo.PrescriptionARV;
@@ -31,11 +31,11 @@ public class PrescriptionController {
 
     }
 
-    @PostMapping("/add")
-    public ResponseEntity<List<PrescriptionARV>> addARVtoPre(@RequestBody PreArvRequest request) {
+    @PostMapping("/add/{patientId}")
+    public ResponseEntity<List<PrescriptionARV>> addARVtoPre(@RequestBody List<ArvRequest> requests, @PathVariable("patientId") String patientId) {
 ////        try {
 //            List<PrescriptionARV> addPreArv = preArvService.addPreArv(request);
-            return new ResponseEntity<>(prescriptionService.addPreArv(request), HttpStatus.CREATED);
+            return new ResponseEntity<>(prescriptionService.addArvToPres(requests,patientId), HttpStatus.CREATED);
 //        } catch (Exception e) {
 //            // Có thể tạo một lớp xử lý lỗi toàn cục (GlobalExceptionHandler) để code sạch hơn
 //            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);

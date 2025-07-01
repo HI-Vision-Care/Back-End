@@ -11,7 +11,6 @@ import java.util.List;
 public interface IDoctorService {
     List<DoctorDTO> getAllDoctors();
 
-    List<Doctor> findDoctorsBySpecialty(String specialty);
     void confirm(String appointmentId);
     void complete(String appointmentId);
 

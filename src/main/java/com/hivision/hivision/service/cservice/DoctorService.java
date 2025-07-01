@@ -42,7 +42,6 @@ public class DoctorService implements IDoctorService {
     IDoctorMapper doctorMapper;
     IAppointmentRepo appointmentRepo;
 
-    IAppointmentRepo appointmentRepo;
     IAppointmentMapper appointmentMapper;
 
     IMedicalServiceRepo medicalServiceRepo;

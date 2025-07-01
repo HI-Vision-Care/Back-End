@@ -8,7 +8,6 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class PreArvRequest {
-    String regimenString;
-    String prescriptionId;
+public class ArvRequest {
+    String arvID;
 }
