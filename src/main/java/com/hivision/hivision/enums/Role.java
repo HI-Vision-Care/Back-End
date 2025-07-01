@@ -7,9 +7,11 @@ import lombok.experimental.FieldDefaults;
 @Getter
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public enum Role {
+    GUEST,
     PATIENT,
     DOCTOR,
     FACILITY,
+    STAFF,
     ADMIN,
     BANNED,
     ;

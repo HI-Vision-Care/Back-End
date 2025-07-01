@@ -1,6 +1,6 @@
 package com.hivision.hivision.payload.request;
 
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.Email;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -10,8 +10,8 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class AccountCreationRequest {
-    @Size(min = 5, max = 16,message = "USERNAME_INVALID")
-    String username;
+    @Email(message = "INVALID_EMAIL")
+    String email;
     String password;
     String role;
 }

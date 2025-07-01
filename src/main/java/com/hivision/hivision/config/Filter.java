@@ -3,7 +3,7 @@ package com.hivision.hivision.config;
 import com.hivision.hivision.enums.ErrorCode;
 import com.hivision.hivision.exception.AppException;
 import com.hivision.hivision.pojo.Account;
-import com.hivision.hivision.service.TokenService;
+import com.hivision.hivision.service.cservice.TokenService;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import jakarta.servlet.FilterChain;
@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -32,21 +33,26 @@ public class Filter extends OncePerRequestFilter {
     TokenService tokenService;
 
     @Autowired
+    @Lazy // Lazy để tránh vòng lặp phụ thuộc giữa các bean
     @Qualifier("handlerExceptionResolver")
     HandlerExceptionResolver handlerExceptionResolver;
 
     private final List<String> AUTH_PERMISSIONS = List.of(
             "/HiVision/account/**",
-            "/HiVision/account/register"
+            "/HiVision/account/register",
+            "/HiVision/auth/**",
 //            "/BidKoi/ws/**",
 //            "/BidKoi/account/creation",
 //            "/BidKoi/account",
 
-//            "/BidKoi/swagger-ui/index.html",
-//            "/BidKoi/v3/api-docs/**",     // Allow OpenAPI docs
-//            "/BidKoi/swagger-ui/**",       // Allow Swagger UI access
-//            "/BidKoi/swagger-resources/**", // Allow Swagger resources
-//
+            "/HiVision/swagger-ui/index.html",
+            "/HiVision/v3/api-docs/**",     // Allow OpenAPI docs
+            "/HiVision/swagger-ui/**",       // Allow Swagger UI access
+            "/HiVision/swagger-resources/**", // Allow Swagger resources
+            "/HiVision/oauth2/**",
+
+            "/HiVision/appointment/book-consultation-guest"
+
 //            "/BidKoi/shipping/**",
 //            "/BidKoi/account/number/**"
 
@@ -69,7 +75,8 @@ public class Filter extends OncePerRequestFilter {
 
 
         //response.setHeader("Access-Control-Allow-Origin", "https://auctionkoi.azurewebsites.net"); // Hoặc thay thế "*" bằng nguồn cụ thể nếu muốn bảo mật
-        response.setHeader("Access-Control-Allow-Origin", "http://localhost:5174");
+//        response.setHeader("Access-Control-Allow-Origin", "http://localhost:5174");
+        response.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
         //response.setHeader("Access-Control-Allow-Origin", "https://bid-koi-n1yy.vercel.app");
 
 
@@ -129,10 +136,19 @@ public class Filter extends OncePerRequestFilter {
         }
     }
 
-    public String getToken (HttpServletRequest request) {
-        String authHedear = request.getHeader("Authorization");
-        if(authHedear == null) return null;
-        return authHedear.substring(7);
+//    public String getToken (HttpServletRequest request) {
+//        String authHedear = request.getHeader("Authorization");
+//        if(authHedear == null) return null;
+//        return authHedear.substring(7);
+//    }
+
+    public String getToken(HttpServletRequest request) {
+        String authHeader = request.getHeader("Authorization");
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            return authHeader.substring(7);
+        }
+        return null;
     }
+
 
 }

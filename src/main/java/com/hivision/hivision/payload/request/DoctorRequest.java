@@ -1,0 +1,16 @@
+package com.hivision.hivision.payload.request;
+
+import lombok.*;
+import lombok.experimental.FieldDefaults;
+
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
+public class DoctorRequest {
+    String fullName;
+    String gender;
+    String specialty;
+    String degrees;
+}

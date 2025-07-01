@@ -20,6 +20,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
+@Access(AccessType.FIELD)
 public class Account implements Serializable, UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -34,6 +35,9 @@ public class Account implements Serializable, UserDetails {
 
     @Enumerated(EnumType.STRING)
     Role role;
+
+    @Column(name = "Is_Deleted")
+    Boolean isDeleted;
 
     @JsonIgnore
     @Override
