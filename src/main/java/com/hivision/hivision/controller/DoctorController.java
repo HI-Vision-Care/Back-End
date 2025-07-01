@@ -46,10 +46,11 @@ public class DoctorController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/specialty/{serviceId}")
-    public ResponseEntity<List<DoctorDTO>> findDoctorsBySpecialty(@PathVariable Long serviceId) {
-        return ResponseEntity.ok(doctorService.findDoctorsBySpecialty(serviceId));
+    @GetMapping("/specialty/{specialty}")
+    public ResponseEntity<List<DoctorDTO>> findDoctorsBySpecialty(@PathVariable String specialty) {
+        return ResponseEntity.ok(doctorService.findDoctorsBySpecialty(specialty));
     }
+
     @GetMapping("/view-appointment/{doctorID}")
     public ResponseEntity<List<AppointmentResponse>> getAppointmentsByDoctor(@PathVariable String doctorID) {
         return ResponseEntity.ok(doctorService.getAppointmentsByDoctor(doctorID));

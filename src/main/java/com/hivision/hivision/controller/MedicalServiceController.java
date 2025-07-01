@@ -28,7 +28,7 @@ public class MedicalServiceController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<MedicalServiceDTO> getMedicalServicesByid(@PathVariable Long id) {
+    public ResponseEntity<MedicalServiceDTO> getMedicalServicesById(@PathVariable Long id) {
         return ResponseEntity.ok(medicalServiceService.getMedicalServiceById(id));
     }
 }
