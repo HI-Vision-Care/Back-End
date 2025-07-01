@@ -27,10 +27,8 @@ public class TreatmentService implements ITreatmentService {
     public TreatmentDTO createTreatment(TreatmentRequest request,String patientId) {
         Treatment treatment = Treatment.builder()
                 .patient(patientRepo.findPatientByPatientID(patientId))
-                .arv(arvRepo.findByArvId(request.getArvID()))
                 .startDate(request.getStartDate())
                 .endDate(request.getEndDate())
-                .prescribeBy(request.getPrescribeBy())
                 .build();
         return treatmentMapper.toTreatmentDTO(treatmentRepo.save(treatment));
     }
