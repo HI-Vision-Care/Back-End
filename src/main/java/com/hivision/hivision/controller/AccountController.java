@@ -1,6 +1,7 @@
 package com.hivision.hivision.controller;
 
 import com.hivision.hivision.dto.AccountDTO;
+import com.hivision.hivision.payload.request.AccountCreationRequest;
 import com.hivision.hivision.payload.request.LoginRequest;
 import com.hivision.hivision.payload.request.RegisterRequest;
 import com.hivision.hivision.payload.response.ApiResponse;
@@ -39,6 +40,11 @@ public class AccountController {
     @GetMapping
     public ResponseEntity<?> getAllAccounts() {
         return ResponseEntity.ok(iAccountService.getAllAccounts());
+    }
+
+    @PostMapping("/creation")
+    public ResponseEntity<AccountDTO> createAccount(@Valid @RequestBody AccountCreationRequest request) {
+        return new ResponseEntity<>(iAccountService.createAccount(request), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{accountId}")

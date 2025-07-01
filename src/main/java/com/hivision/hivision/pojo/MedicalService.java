@@ -31,6 +31,12 @@ public class MedicalService {
     @Column(name = "Img")
     String img;
 
+    @Column(name = "Type")
+    String type;
+
+    @Column(name = "Specialty")
+    String specialty;
+
     @Column(name = "IsActive")
     Boolean isActive;
 
@@ -42,6 +48,5 @@ public class MedicalService {
 
     @Column(name = "CreateAt")
     Instant createAt;
-
-
+  
 }

@@ -9,12 +9,8 @@ import com.hivision.hivision.payload.request.AccountCreationRequest;
 import com.hivision.hivision.payload.request.LoginRequest;
 import com.hivision.hivision.payload.request.RegisterRequest;
 import com.hivision.hivision.payload.response.LoginResponse;
-import com.hivision.hivision.pojo.Account;
-import com.hivision.hivision.pojo.Doctor;
-import com.hivision.hivision.pojo.Patient;
-import com.hivision.hivision.repository.IAccountRepo;
-import com.hivision.hivision.repository.IDoctorRepo;
-import com.hivision.hivision.repository.IPatientRepo;
+import com.hivision.hivision.pojo.*;
+import com.hivision.hivision.repository.*;
 import com.hivision.hivision.service.cservice.TokenService;
 import com.hivision.hivision.service.iservice.IAccountService;
 import lombok.AccessLevel;
@@ -35,6 +31,8 @@ public class AccountService implements IAccountService {
     IAccountMapper iAccountMapper;
     IDoctorRepo doctorRepo;
     IPatientRepo patientRepo;
+    IStaffRepo staffRepo;
+    IWalletRepo walletRepo;
 
     private final TokenService tokenService;
     private final PasswordEncoder passwordEncoder;
@@ -43,9 +41,13 @@ public class AccountService implements IAccountService {
     public LoginResponse login(LoginRequest request) {
 //        var user = iAccountRepository.findByUsername(request.getUsername())
 //                .orElseThrow(() -> new AppException(ErrorCode.UNAUTHENTICATED_USERNAME));
-
         var user = iAccountRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new AppException(ErrorCode.INVALID_EMAIL));
+
+        if(user.getIsDeleted() != null && user.getIsDeleted()) {
+            throw new AppException(ErrorCode.ACCOUNT_DELETED);
+        }
+
         boolean authenticated = passwordEncoder.matches(request.getPassword(), user.getPassword());
         if(!authenticated) {
             throw new AppException(ErrorCode.UNAUTHENTICATED_PASSWORD);
@@ -91,7 +93,10 @@ public class AccountService implements IAccountService {
         patient.setAccount(account);
         patientRepo.save(patient);
 
-
+//        Wallet wallet = new Wallet();
+//        wallet.setAccount(account);
+//        wallet.setBalance(0.0); // Khởi tạo số dư ví là 0
+//        walletRepo.save(wallet);
 
 
         return iAccountMapper.toAccountDTO(iAccountRepository.save(account));
@@ -101,17 +106,17 @@ public class AccountService implements IAccountService {
     public AccountDTO createAccount(AccountCreationRequest request) {
         String role = request.getRole().toUpperCase();
 
-        if(!Role.DOCTOR.name().equals(role) && !Role.ADMIN.name().equals(role)) {
+        if(!Role.DOCTOR.name().equals(role) && !Role.STAFF.name().equals(role)) {
             throw new AppException(ErrorCode.ROLE_ERROR);
         }
-        // Check if username already exists
-        if (iAccountRepository.existsByUsername(request.getUsername())) {
-            throw new AppException(ErrorCode.USER_EXISTED);
+        // Check if email already exists
+        if (iAccountRepository.existsByEmail(request.getEmail())) {
+            throw new AppException(ErrorCode.EMAIL_EXISTED);
         }
 
         Account account = iAccountMapper.toAccountCreation(request);
         account.setPassword(this.passwordEncoder.encode(request.getPassword()));
-
+        account.setIsDeleted(false);
         iAccountRepository.save(account);
 
         if(Role.DOCTOR.name().equals(role)){
@@ -121,10 +126,10 @@ public class AccountService implements IAccountService {
             doctorRepo.save(doctor);
         }
         else{
-            account.setRole(Role.ADMIN);
-            //
-            //
-            //
+            account.setRole(Role.STAFF);
+            Staff staff = new Staff();
+            staff.setAccount(account);
+            staffRepo.save(staff);
         }
         return iAccountMapper.toAccountDTO(iAccountRepository.save(account));
     }
@@ -144,7 +149,7 @@ public class AccountService implements IAccountService {
                             .email(email)
                             .avatar(avatar)
                             .password(null)
-//                            .role(Role.PATIENT) // Mặc định là bệnh nhân
+//                            .role(Role.PATIENT)
                             .isDeleted(false)
                             .build();
                     return iAccountRepository.save(newAccount);
@@ -158,6 +163,7 @@ public class AccountService implements IAccountService {
 //        if (account.getRole() == Role.ADMIN) {
 //            throw new AppException(ErrorCode.ADMIN_CANNOT_BE_DELETED);
 //        }
+        account.setRole(Role.BANNED);
         account.setIsDeleted(true);
         iAccountRepository.save(account);
     }
