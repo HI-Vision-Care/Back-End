@@ -1,5 +1,6 @@
 package com.hivision.hivision.pojo;
 
+import com.hivision.hivision.enums.AppointmentStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.*;
@@ -36,9 +37,9 @@ public class Appointment {
     @Column(name = "AppointmentDate")
     Instant appointmentDate;
 
-    @Size(max = 50)
-    @Column(name = "Status", length = 50)
-    String status;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "Status")
+    AppointmentStatus status;
 
     @Column(name = "IsAnonymous")
     Boolean isAnonymous;

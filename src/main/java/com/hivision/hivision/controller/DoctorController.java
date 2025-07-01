@@ -33,6 +33,19 @@ public class DoctorController {
         return ResponseEntity.ok(doctorService.getDoctorByAccountID(accountId));
     }
 
+
+    @PatchMapping("/confirm/{appointmentID}")
+    public ResponseEntity<Void> confirm(@PathVariable String appointmentID) {
+        doctorService.confirm(appointmentID);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("/complete/{appointmentID}")
+    public ResponseEntity<Void> complete(@PathVariable String appointmentID) {
+        doctorService.complete(appointmentID);
+        return ResponseEntity.noContent().build();
+    }
+
     @GetMapping("/specialty/{serviceId}")
     public ResponseEntity<List<DoctorDTO>> findDoctorsBySpecialty(@PathVariable Long serviceId) {
         return ResponseEntity.ok(doctorService.findDoctorsBySpecialty(serviceId));
@@ -47,5 +60,6 @@ public class DoctorController {
         doctorService.updateDoctor(accountId, request);
         return ResponseEntity.noContent().build();
     }
+
 
 }

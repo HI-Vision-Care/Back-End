@@ -1,6 +1,14 @@
 package com.hivision.hivision.service.cservice;
 
 import com.hivision.hivision.dto.DoctorDTO;
+
+import com.hivision.hivision.enums.AppointmentStatus;
+import com.hivision.hivision.enums.ErrorCode;
+import com.hivision.hivision.exception.AppException;
+import com.hivision.hivision.mapper.IDoctorMapper;
+import com.hivision.hivision.pojo.Appointment;
+import com.hivision.hivision.pojo.Doctor;
+
 import com.hivision.hivision.enums.ErrorCode;
 import com.hivision.hivision.exception.AppException;
 import com.hivision.hivision.mapper.IAppointmentMapper;
@@ -12,6 +20,7 @@ import com.hivision.hivision.pojo.Appointment;
 import com.hivision.hivision.pojo.Doctor;
 import com.hivision.hivision.pojo.MedicalService;
 import com.hivision.hivision.repository.IAccountRepo;
+
 import com.hivision.hivision.repository.IAppointmentRepo;
 import com.hivision.hivision.repository.IDoctorRepo;
 import com.hivision.hivision.repository.IMedicalServiceRepo;
@@ -31,6 +40,7 @@ public class DoctorService implements IDoctorService {
 
     IDoctorRepo doctorRepo;
     IDoctorMapper doctorMapper;
+    IAppointmentRepo appointmentRepo;
 
     IAppointmentRepo appointmentRepo;
     IAppointmentMapper appointmentMapper;
@@ -97,4 +107,20 @@ public class DoctorService implements IDoctorService {
         doctorRepo.save(doctor);
         doctorMapper.toDoctorDTO(doctor);
     }
+
+    @Override
+    public void confirm(String appointmentId) {
+        Appointment appointment = appointmentRepo.findById(appointmentId)
+                .orElseThrow(() -> new AppException(ErrorCode.APPOINTMENT_NOT_FOUND));
+        appointment.setStatus(AppointmentStatus.ONGOING);
+    }
+
+    @Override
+    public void complete(String appointmentId) {
+        Appointment appointment = appointmentRepo.findById(appointmentId)
+                .orElseThrow(() -> new AppException(ErrorCode.APPOINTMENT_NOT_FOUND));
+        appointment.setStatus(AppointmentStatus.COMPLETED);
+    }
+
+
 }

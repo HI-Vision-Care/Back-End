@@ -7,7 +7,8 @@ import lombok.experimental.FieldDefaults;
 @Getter
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public enum AppointmentStatus {
-    PENDING,
+    SCHEDULED,
+    ONGOING,
     CONFIRMED,
     CANCELLED,
     COMPLETED
