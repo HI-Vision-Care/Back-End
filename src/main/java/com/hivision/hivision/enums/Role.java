@@ -11,6 +11,7 @@ public enum Role {
     PATIENT,
     DOCTOR,
     FACILITY,
+    STAFF,
     ADMIN,
     BANNED,
     ;
