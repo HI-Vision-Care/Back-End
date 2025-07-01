@@ -42,7 +42,6 @@ public class DoctorService implements IDoctorService {
     IDoctorMapper doctorMapper;
     IAppointmentRepo appointmentRepo;
 
-    IAppointmentRepo appointmentRepo;
     IAppointmentMapper appointmentMapper;
 
     IMedicalServiceRepo medicalServiceRepo;
@@ -62,12 +61,13 @@ public class DoctorService implements IDoctorService {
         return doctorMapper.toDoctorDTO(doctors);
     }
 
-    @Override
-    public List<DoctorDTO> findDoctorsBySpecialty(Long serviceId) {
-        MedicalService medicalService = medicalServiceRepo.findById(serviceId)
-                .orElseThrow(() -> new AppException(ErrorCode.MEDICAL_SERVICE_NOT_FOUND));
 
-        List<Doctor> doctors = doctorRepo.findBySpecialty(medicalService.getSpecialty());
+
+    @Override
+    public List<DoctorDTO> findDoctorsBySpecialty(String specialty) {
+
+        List<Doctor> doctors = doctorRepo.findBySpecialty(specialty);
+
         return doctorMapper.toDoctorDTO(doctors);
     }
 

@@ -11,11 +11,10 @@ import java.util.List;
 public interface IDoctorService {
     List<DoctorDTO> getAllDoctors();
 
-    List<Doctor> findDoctorsBySpecialty(String specialty);
     void confirm(String appointmentId);
     void complete(String appointmentId);
 
-    List<DoctorDTO> findDoctorsBySpecialty(Long serviceId);
+    List<DoctorDTO> findDoctorsBySpecialty(String specialty);
     Doctor getDoctorByAccountID(String accountId);
     List<AppointmentResponse> getAppointmentsByDoctor(String doctorID);
 

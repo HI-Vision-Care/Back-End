@@ -15,4 +15,5 @@ public class DoctorDTO {
     String gender;
     String specialty;
     String degrees;
+    String avatar;
 }
