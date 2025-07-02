@@ -1,6 +1,7 @@
 package com.hivision.hivision.service.cservice;
 
 import com.hivision.hivision.dto.AppointmentDTO;
+import com.hivision.hivision.dto.ConsultationNoteDTO;
 import com.hivision.hivision.enums.AppointmentStatus;
 import com.hivision.hivision.enums.ErrorCode;
 import com.hivision.hivision.exception.AppException;
@@ -90,91 +91,78 @@ public class AppointmentService implements IAppointmentService {
         return mapper.toAppointmentDTO(appointmentRepo.save(appointment));
     }
 
-    @Override
-    public AppointmentDTO createOnlineAppointment(String phone, ConsultationRequest request) {
-
-        if(phone == null || phone.isBlank()){
-            throw new AppException(ErrorCode.PHONE_REQUIRED);
-        }
-
-        Doctor doctor = doctorRepo.findById(request.getDoctorID())
-                .orElseThrow(() -> new AppException(ErrorCode.DOCTOR_NOT_FOUND));
-        MedicalService medicalService = serviceRepo.findById(request.getServiceID())
-                .orElseThrow(() -> new AppException(ErrorCode.SERVICE_NOT_FOUND));
-
-        Appointment appointment = Appointment.builder()
-                .doctor(doctor)
-                .medicalService(medicalService)
-                .appointmentDate(request.getAppointmentDate())
-                .isAnonymous(request.getIsAnonymous())
-                .note(request.getNote())
-                .status(AppointmentStatus.SCHEDULED)
-                .createAt(Instant.now())
-                .build();
-
-        if(Boolean.TRUE.equals(request.getIsAnonymous())){
-            // Nếu là lịch hẹn ẩn danh, không cần thiết lập bệnh nhân
-            appointment.setPatient(null);
-        }
-        else {
-            Account account = accountRepo.findByPhone(phone)
-                    .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
-            // Nếu ko tìm thấy tài khoản, tức là người dùng chưa đăng ký, ta cần lưu lại thông tin cơ bản của họ như tên, phone
-//            if (account.getId() == null) {
-//                account.setPhone(phone);
-//                account.setRole(Role.GUEST);
-//                account = accountRepo.save(account);
-//            }
-            Patient patient = patientRepo.findPatientByAccount(account);
-            appointment.setPatient(patient);
-
+//    @Override
+//    public AppointmentDTO createOnlineAppointment(String phone, ConsultationRequest request) {
+//
+//        if(phone == null || phone.isBlank()){
+//            throw new AppException(ErrorCode.PHONE_REQUIRED);
+//        }
+//
+//        Doctor doctor = doctorRepo.findById(request.getDoctorID())
+//                .orElseThrow(() -> new AppException(ErrorCode.DOCTOR_NOT_FOUND));
+//        MedicalService medicalService = serviceRepo.findById(request.getServiceID())
+//                .orElseThrow(() -> new AppException(ErrorCode.SERVICE_NOT_FOUND));
+//
+//        Appointment appointment = Appointment.builder()
+//                .doctor(doctor)
+//                .medicalService(medicalService)
+//                .appointmentDate(request.getAppointmentDate())
+//                .isAnonymous(request.getIsAnonymous())
+//                .note(request.getNote())
+//                .status(AppointmentStatus.SCHEDULED)
+//                .createAt(Instant.now())
+//                .build();
+//
+//        if(Boolean.TRUE.equals(request.getIsAnonymous())){
+//            // Nếu là lịch hẹn ẩn danh, không cần thiết lập bệnh nhân
+//            appointment.setPatient(null);
+//        }
+//        else {
+//            Account account = accountRepo.findByPhone(phone)
+//                    .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+//            // Nếu ko tìm thấy tài khoản, tức là người dùng chưa đăng ký, ta cần lưu lại thông tin cơ bản của họ như tên, phone
+////            if (account.getId() == null) {
+////                account.setPhone(phone);
+////                account.setRole(Role.GUEST);
+////                account = accountRepo.save(account);
+////            }
 //            Patient patient = patientRepo.findPatientByAccount(account);
 //            appointment.setPatient(patient);
-        }
-        return mapper.toAppointmentDTO(appointmentRepo.save(appointment));
-    }
+//
+////            Patient patient = patientRepo.findPatientByAccount(account);
+////            appointment.setPatient(patient);
+//        }
+//        return mapper.toAppointmentDTO(appointmentRepo.save(appointment));
+//    }
 
     @Override
-    public AppointmentDTO createOnlineAppointmentForLoggedInUser(ConsultationRequest request) {
-        Doctor doctor = doctorRepo.findById(request.getDoctorID())
-                .orElseThrow(() -> new AppException(ErrorCode.DOCTOR_NOT_FOUND));
-        MedicalService medicalService = serviceRepo.findById(request.getServiceID())
-                .orElseThrow(() -> new AppException(ErrorCode.SERVICE_NOT_FOUND));
+    public void createOnlineAppointmentForLoggedInUser(ConsultationRequest request, String patientId) {
 
 
-        Appointment appointment = Appointment.builder()
-                .doctor(doctor)
-                .medicalService(medicalService)
-                .appointmentDate(request.getAppointmentDate())
-                .isAnonymous(request.getIsAnonymous())
+        ConsultationNote consultationNote = ConsultationNote.builder()
+                .patient(patientRepo.findPatientByPatientID(patientId))
+                .name(request.getName())
+                .phone(request.getPhone())
                 .note(request.getNote())
-                .status(AppointmentStatus.SCHEDULED)
                 .createAt(Instant.now())
                 .build();
 
-        if(Boolean.TRUE.equals(request.getIsAnonymous())){
-            appointment.setPatient(null);
-        }
-        else {
 
-            Account persistedAccount = accountService.getCurrentAccount();
 
-            Patient patient = patientRepo.findPatientByAccount(persistedAccount);
-            if (patient == null) {
-                throw new AppException(ErrorCode.PATIENT_NOT_FOUND);
-            }
-            appointment.setPatient(patient);
-        }
-        return mapper.toAppointmentDTO(appointmentRepo.save(appointment));
+
+
+        consultationNoteRepo.save(consultationNote);
     }
 
     @Override
-    public void createOnlineAppointmentForGuest(ConsultationNote consultationNote) {
+    public void createOnlineAppointmentForGuest(ConsultationRequest request) {
 
-        consultationNote.setPhone(consultationNote.getPhone());
-        consultationNote.setEmail(consultationNote.getEmail().trim());
-        consultationNote.setNote(consultationNote.getNote());
-        consultationNote.setCreateAt(Instant.now());
+        ConsultationNote consultationNote = ConsultationNote.builder()
+                .name(request.getName())
+                .phone(request.getPhone())
+                .note(request.getNote())
+                .createAt(Instant.now())
+                .build();
         if (consultationNote.getPhone() == null || consultationNote.getPhone().isBlank()) {
             throw new AppException(ErrorCode.PHONE_REQUIRED);
         }
