@@ -35,6 +35,9 @@ public enum ErrorCode {
     TRANSACTION_NOT_FOUND(404, "Transaction not found!"),
     TRANSACTION_COMPLETED(409, "Transaction already completed!"),
     MEDICAL_SERVICE_NOT_FOUND(404, "Medical service not found!"),
+    INSUFFICIENT_BALANCE(400, "Insufficient balance!"),
+    APPOINTMENT_NOT_SCHEDULED(400, "Appointment not scheduled!"),
+    MEDICAL_RECORD_NOT_FOUND(404, "Medical record not found!")
     ;
 
     int code;

@@ -25,5 +25,6 @@ public interface IAppointmentMapper {
     @Mapping(source = "medicalService.name", target = "serviceName")
     AppointmentResponse toAppointmentResponse(Appointment appointment);
 
+    List<AppointmentDTO> toAppointmentDTOs(List<Appointment> appointments);
     List<AppointmentResponse> toAppointmentResponses(List<Appointment> appointments);
 }

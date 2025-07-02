@@ -27,4 +27,7 @@ public class MedicalRecord {
 
     @Column(name = "CreateDate")
     Instant createDate;
+
+    @Column(name = "Note")
+    String note;
 }

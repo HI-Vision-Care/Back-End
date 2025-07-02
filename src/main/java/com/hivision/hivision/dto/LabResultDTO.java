@@ -16,6 +16,10 @@ public class LabResultDTO {
     //MedicalRecord medicalRecord;
     String recordId;
     String testType;
+    String resultText;
     String resultValue;
+    String unit;
+    String referenceRange;
     Instant testDate;
+    String performedBy;
 }

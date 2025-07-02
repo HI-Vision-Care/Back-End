@@ -2,6 +2,7 @@ package com.hivision.hivision.service.cservice;
 
 import com.hivision.hivision.dto.TransactionsDTO;
 import com.hivision.hivision.enums.ErrorCode;
+import com.hivision.hivision.enums.TransactionsEnum;
 import com.hivision.hivision.exception.AppException;
 import com.hivision.hivision.mapper.ITransactionsMapper;
 import com.hivision.hivision.pojo.Account;
@@ -15,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.List;
 
 @Service
@@ -33,6 +35,35 @@ public class TransactionService implements ITransactionService {
     public void transferToAppointment(String appointmentId, String accountId) {
         Appointment appointment = appointmentRepo.findById(appointmentId)
                 .orElseThrow(() -> new AppException(ErrorCode.APPOINTMENT_NOT_FOUND));
+
+        Account account = accountRepo.findById(accountId)
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+
+        Wallet wallet = walletRepo.findWalletByAccount(account);
+        if (wallet == null) {
+            throw new AppException(ErrorCode.WALLET_NOT_FOUND);
+        }
+
+        double price = appointment.getMedicalService().getPrice();
+
+        if (wallet.getBalance() < price) {
+            throw new AppException(ErrorCode.INSUFFICIENT_BALANCE);
+        }
+        wallet.setBalance(wallet.getBalance() - price);
+        walletRepo.save(wallet);
+
+        Transactions transaction = Transactions.builder()
+                .wallet(wallet)
+                .amount(price)
+                .description("Payment for appointment: " + appointment.getAppointmentID())
+                .date(Instant.now())
+                .type(TransactionsEnum.TRANSFER)
+                .status("COMPLETED")
+                .build();
+        transactionsRepo.save(transaction);
+
+        //appointment.setStatus(Appointment.Status.PAID);
+        //appointmentRepo.save(appointment);
 
 
     }
