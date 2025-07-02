@@ -64,8 +64,8 @@ public class TransactionService implements ITransactionService {
                 .build();
         transactionsRepo.save(transaction);
 
-        //appointment.setStatus(Appointment.Status.PAID);
-        //appointmentRepo.save(appointment);
+        appointment.setPaymentStatus("PAID");
+        appointmentRepo.save(appointment);
 
 
     }

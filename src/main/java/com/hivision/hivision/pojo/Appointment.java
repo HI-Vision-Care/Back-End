@@ -52,6 +52,9 @@ public class Appointment {
     @Column(name = "Note")
     String note;
 
+    @Column(name = "PaymentStatus")
+    String paymentStatus;
+
     @Column(name = "CreateAt")
     Instant createAt;
 
