@@ -1,6 +1,7 @@
 package com.hivision.hivision.controller;
 
 import com.hivision.hivision.dto.AppointmentDTO;
+import com.hivision.hivision.dto.ConsultationNoteDTO;
 import com.hivision.hivision.payload.request.AppointmentRequest;
 import com.hivision.hivision.payload.request.ConsultationRequest;
 import com.hivision.hivision.pojo.Account;
@@ -32,10 +33,10 @@ public class AppointmentController {
         return ResponseEntity.ok(appointmentService.bookAppointment(request, patientId));
     }
 
-    @PostMapping("/book-consultation")
-    public ResponseEntity<AppointmentDTO> bookConsultation(@RequestParam String phone, @RequestBody ConsultationRequest request) {
-        return ResponseEntity.ok(appointmentService.createOnlineAppointment(phone, request));
-    }
+//    @PostMapping("/book-consultation")
+//    public ResponseEntity<AppointmentDTO> bookConsultation(@RequestParam String phone, @RequestBody ConsultationRequest request) {
+//        return ResponseEntity.ok(appointmentService.createOnlineAppointment(phone, request));
+//    }
 
     @GetMapping("/get-all-appointments")
     public ResponseEntity<List<AppointmentDTO>> getAppointments() {
@@ -52,14 +53,15 @@ public class AppointmentController {
         return ResponseEntity.ok(appointmentService.updateAppointment(appointmentId, appointmentDTO));
     }
     // đặt lịch hẹn với tài khoản đã đăng nhập
-    @PostMapping("/book-consultation-with-account")
-    public ResponseEntity<AppointmentDTO> bookConsultationWithAccount(@RequestBody ConsultationRequest request) {
-        return ResponseEntity.ok(appointmentService.createOnlineAppointmentForLoggedInUser(request));
+    @PostMapping("/book-consultation-with-account/{patientId}")
+    public ResponseEntity<String> bookConsultationWithAccount(@RequestBody ConsultationRequest request, @PathVariable String patientId) {
+        appointmentService.createOnlineAppointmentForLoggedInUser(request,patientId);
+        return ResponseEntity.ok("Gửi yêu cầu thành công. Chúng tôi sẽ liên hệ lại.");
     }
 
     // đặt tư vấn online với người dùng chưa đăng nhập
     @PostMapping("/book-consultation-guest")
-    public ResponseEntity<String> bookConsultationForGuest(@RequestBody ConsultationNote request) {
+    public ResponseEntity<String> bookConsultationForGuest(@RequestBody ConsultationRequest request) {
         appointmentService.createOnlineAppointmentForGuest(request);
         return ResponseEntity.ok("Gửi yêu cầu thành công. Chúng tôi sẽ liên hệ lại.");
     }

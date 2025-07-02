@@ -1,6 +1,7 @@
 package com.hivision.hivision.service.iservice;
 
 import com.hivision.hivision.dto.AppointmentDTO;
+import com.hivision.hivision.dto.ConsultationNoteDTO;
 import com.hivision.hivision.payload.request.AppointmentRequest;
 import com.hivision.hivision.payload.request.ConsultationRequest;
 import com.hivision.hivision.pojo.Account;
@@ -24,11 +25,11 @@ public interface IAppointmentService {
      AppointmentDTO updateAppointment(String appointmentID, AppointmentDTO appointmentDTO);
 
      // đặt lịch hẹn trực tuyến với bác sĩ
-    AppointmentDTO createOnlineAppointment(String phone, ConsultationRequest request);
+//    AppointmentDTO createOnlineAppointment(String phone, ConsultationRequest request);
 
-    AppointmentDTO createOnlineAppointmentForLoggedInUser(ConsultationRequest request);
+    void createOnlineAppointmentForLoggedInUser(ConsultationRequest request, String patientId);
 
     // đặt tư vấo online với bác sĩ cho người dùng chưa đăng nhập
-    void createOnlineAppointmentForGuest(ConsultationNote consultationNote);
+    void createOnlineAppointmentForGuest(ConsultationRequest consultationNote);
     void cancelAppointment(String appointmentID,String patientID);
 }
