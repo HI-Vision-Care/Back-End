@@ -4,10 +4,7 @@ import com.hivision.hivision.dto.TransactionsDTO;
 import com.hivision.hivision.enums.ErrorCode;
 import com.hivision.hivision.exception.AppException;
 import com.hivision.hivision.mapper.ITransactionsMapper;
-import com.hivision.hivision.pojo.Account;
-import com.hivision.hivision.pojo.Appointment;
-import com.hivision.hivision.pojo.Transactions;
-import com.hivision.hivision.pojo.Wallet;
+import com.hivision.hivision.pojo.*;
 import com.hivision.hivision.repository.*;
 import com.hivision.hivision.service.iservice.ITransactionService;
 import lombok.AccessLevel;
@@ -15,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -23,6 +21,7 @@ import java.util.List;
 public class TransactionService implements ITransactionService {
 
     IAccountRepo accountRepo;
+    IPatientRepo patientRepo;
     IMedicalServiceRepo medicalServiceRepo;
     IAppointmentRepo appointmentRepo;
     IWalletRepo walletRepo;
@@ -57,5 +56,25 @@ public class TransactionService implements ITransactionService {
             throw new AppException(ErrorCode.TRANSACTION_NOT_FOUND);
         }
         return transactionsMapper.toTransactionsDTO(transactions);
+    }
+
+    @Override
+    public void rollBack(String patientID) {
+        Patient patient = patientRepo.findById(patientID)
+                .orElseThrow(() -> new AppException(ErrorCode.PATIENT_NOT_FOUND));
+        Account account = patient.getAccount();
+        Wallet wallet = walletRepo.findWalletByAccount(account);
+        wallet.setBalance(wallet.getBalance());
+        walletRepo.save(wallet);
+//        Transactions transaction = Transactions.builder()
+//                .amount(deposit)
+//                .date(LocalDateTime.now())
+//                .description("")
+//                .type(TransactionsEnum.REFUND)
+//                .status("COMPLETED")
+//                .description("Refund for bidder")
+//                .wallet(wallet)
+//                .build();
+//        transactionRepo.save(transaction);
     }
 }
