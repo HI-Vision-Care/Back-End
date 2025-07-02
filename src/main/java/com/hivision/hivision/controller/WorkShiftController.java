@@ -37,11 +37,11 @@ public class WorkShiftController {
     }
 
     @GetMapping("/week")
-    public ResponseEntity<List<WorkShift>> getWorkShiftsByWeek(
+    public ResponseEntity<List<WorkShiftDTO>> getWorkShiftsByWeek(
             @RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
             @RequestParam(name = "doctorId", required = false) String doctorId) {
 
-        List<WorkShift> shifts = wsService.getShiftsForWeek(date, doctorId);
+        List<WorkShiftDTO> shifts = wsService.getShiftsForWeek(date, doctorId);
         return ResponseEntity.ok(shifts);
     }
 }
