@@ -60,7 +60,13 @@ public class DoctorService implements IDoctorService {
 
     @Override
     public List<DoctorDTO> getAllDoctors() {
-        List<Doctor> doctors = doctorRepo.findAll();
+//        List<Doctor> doctors = doctorRepo.findAll();
+//        return doctorMapper.toDoctorDTO(doctors);
+        List<Doctor> doctors = doctorRepo.findAll()
+                .stream()
+                .filter(d -> d.getAccount() != null && !Boolean.TRUE.equals(d.getAccount().getIsDeleted()))
+                .toList();
+
         return doctorMapper.toDoctorDTO(doctors);
     }
 
@@ -129,8 +135,8 @@ public class DoctorService implements IDoctorService {
     public MedicalRecordDTO createMedicalRecord(String appointmentId, MedicalRecordRequest request) {
         Appointment appointment = appointmentRepo.findById(appointmentId)
                 .orElseThrow(() -> new AppException(ErrorCode.APPOINTMENT_NOT_FOUND));
-        if( appointment.getStatus() != AppointmentStatus.SCHEDULED) {
-            throw new AppException(ErrorCode.APPOINTMENT_NOT_SCHEDULED);
+        if( appointment.getStatus() != AppointmentStatus.ONGOING) {
+            throw new AppException(ErrorCode.APPOINTMENT_NOT_ONGOING);
         }
         MedicalRecord medicalRecord = MedicalRecord.builder()
                 .appointment(appointment)

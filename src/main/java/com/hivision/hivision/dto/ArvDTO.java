@@ -7,6 +7,7 @@ import lombok.Value;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.List;
 
 /**
  * DTO for {@link ARV}

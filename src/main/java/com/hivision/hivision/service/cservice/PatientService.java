@@ -38,7 +38,14 @@ public class PatientService implements IPatientService{
 
     @Override
     public List<PatientDTO> getAllPatients() {
-        List<Patient> patients = patientRepo.findAll();
+//        List<Patient> patients = patientRepo.findAll();
+//        return patientMapper.toPatientDTO(patients);
+
+        List<Patient> patients = patientRepo.findAll()
+                .stream()
+                .filter(d -> d.getAccount() != null && !Boolean.TRUE.equals(d.getAccount().getIsDeleted()))
+                .toList();
+
         return patientMapper.toPatientDTO(patients);
     }
 
