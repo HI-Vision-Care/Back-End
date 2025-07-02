@@ -2,6 +2,7 @@ package com.hivision.hivision.service.cservice;
 
 import com.hivision.hivision.dto.ArvDTO;
 import com.hivision.hivision.mapper.IArvMapper;
+import com.hivision.hivision.payload.response.ArvResponse;
 import com.hivision.hivision.pojo.ARV;
 import com.hivision.hivision.repository.*;
 import com.hivision.hivision.service.iservice.IArvService;
@@ -10,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -26,19 +28,32 @@ public class ArvService implements IArvService {
 
 
     @Override
-    public List<ArvDTO> getARVs() {
+    public List<ArvResponse> getARVs() {
         List<ARV> arvs = arvRepo.findAll();
-        List<ArvDTO> arvDTOList =  arvMapper.toArvDTOs(arvs);
-//        for (ARV arv : arvs) {
-//            ArvDTO arvdto = ArvDTO.builder()
-//                    .contraindication(arvContraindicationRepo.findArvContraindicationByArv(arv))
-//                    .indication(arvIndicationRepo.findArvContraindicationByArv(arv))
-//                    .sideEffect(arvSideeffectRepo.findArvContraindicationByArv(arv))
-//                    .drugInteraction(arvDruginteractionRepo.findArvContraindicationByArv(arv))
-//                    .targetPopulation(arvTargetpopulationRepo.findArvContraindicationByArv(arv))
-//                    .build();
-//            arvDTOList.add(arvdto);
-//        }
-        return arvDTOList;
+        List<ArvResponse> arvResponses =  new ArrayList<>();
+
+        for (ARV arv : arvs) {
+            ArvResponse response = ArvResponse.builder()
+                .arvId(arv.getArvId())
+                .genericName(arv.getGenericName())
+                .drugClass(arv.getDrugClass())
+                .dosageStrength(arv.getDosageStrength())
+                .admRoute(arv.getAdmRoute())
+                .rcmDosage(arv.getRcmDosage())
+                .shelfLife(arv.getShelfLife())
+                .fundingSource(arv.getFundingSource())
+                .regimenLevel(arv.getRegimenLevel())
+                .lastUpdated(arv.getLastUpdated())
+                .contraindication(arvContraindicationRepo.findContraindicationsByArv(arv))
+                .indication(arvIndicationRepo.findIndicationsByArv(arv))
+                .sideEffect(arvSideeffectRepo.findSideEffectsByArv(arv))
+                .drugInteraction(arvDruginteractionRepo.findDrugInteractionsByArv(arv))
+                .targetPopulation(arvTargetpopulationRepo.findTargetPopulationsByArv(arv))
+                .build();
+            arvResponses.add(response);
+        }
+
+//
+        return arvResponses;
     }
 }

@@ -1,12 +1,16 @@
 package com.hivision.hivision.payload.response;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.hivision.hivision.pojo.*;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.Instant;
+import java.util.List;
 
+//@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 @Data
 @Builder
 @AllArgsConstructor
@@ -32,9 +36,9 @@ public class ArvResponse {
     @Size(max = 50)
     String regimenLevel;
     Instant lastUpdated;
-    ArvContraindication contraindication;
-    ArvIndication arvIndication;
-    ArvSideEffect arvSideeffect;
-    ArvDrugInteraction arvDruginteraction;
-    ArvTargetPopulation arvTargetpopulation;
+    List<String> contraindication;
+    List<String> indication;
+    List<String> sideEffect;
+    List<String> drugInteraction;
+    List<String> targetPopulation;
 }

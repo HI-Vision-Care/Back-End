@@ -2,13 +2,18 @@ package com.hivision.hivision.pojo;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 @Getter
 @Setter
 @Entity
 @Table(name = "ARV_SideEffects")
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
+@Access(AccessType.FIELD)
 public class ArvSideEffect {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
