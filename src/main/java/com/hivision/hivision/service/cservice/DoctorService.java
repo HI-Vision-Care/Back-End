@@ -152,6 +152,7 @@ public class DoctorService implements IDoctorService {
         Appointment appointment = appointmentRepo.findById(appointmentId)
                 .orElseThrow(() -> new AppException(ErrorCode.APPOINTMENT_NOT_FOUND));
         appointment.setStatus(AppointmentStatus.ONGOING);
+        appointmentRepo.save(appointment);
     }
 
     @Override
@@ -159,6 +160,7 @@ public class DoctorService implements IDoctorService {
         Appointment appointment = appointmentRepo.findById(appointmentId)
                 .orElseThrow(() -> new AppException(ErrorCode.APPOINTMENT_NOT_FOUND));
         appointment.setStatus(AppointmentStatus.COMPLETED);
+        appointmentRepo.save(appointment);
     }
 
 
