@@ -23,7 +23,8 @@ public interface IDoctorService {
     Doctor getDoctorByAccountID(String accountId);
     List<AppointmentResponse> getAppointmentsByDoctor(String doctorID);
 
-    void updateDoctor(String accountId, DoctorRequest request);
+    void updateDoctor(String doctorId, DoctorRequest request);
+    void deleteDoctor(String doctorId);
 
     //tạo medical record
     MedicalRecordDTO createMedicalRecord(String appointmentId, MedicalRecordRequest request);
