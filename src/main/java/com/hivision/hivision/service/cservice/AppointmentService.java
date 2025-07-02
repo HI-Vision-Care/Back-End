@@ -138,9 +138,9 @@ public class AppointmentService implements IAppointmentService {
     @Override
     public void createOnlineAppointmentForLoggedInUser(ConsultationRequest request, String patientId) {
 
-
         ConsultationNote consultationNote = ConsultationNote.builder()
-                .patient(patientRepo.findPatientByPatientID(patientId))
+                .patient(patientRepo.findById(patientId)
+                        .orElseThrow(() -> new AppException(ErrorCode.PATIENT_NOT_FOUND)))
                 .name(request.getName())
                 .phone(request.getPhone())
                 .note(request.getNote())
@@ -178,4 +178,17 @@ public class AppointmentService implements IAppointmentService {
 
         appointmentRepo.save(appointment);
     }
+
+    @Override
+    public List<ConsultationNote> getAllConsultationNote() {
+        return consultationNoteRepo.findAll();
+    }
+
+    @Override
+    public List<ConsultationNote> getConsultationNoteForPatient(String patientID) {
+        return consultationNoteRepo.findByPatient(patientRepo.findById(patientID)
+                .orElseThrow(() -> new AppException(ErrorCode.PATIENT_NOT_FOUND)));
+    }
+
+
 }
