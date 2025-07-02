@@ -6,5 +6,5 @@ import com.hivision.hivision.payload.response.ArvResponse;
 import java.util.List;
 
 public interface IArvService {
-    List<ArvDTO> getARVs();
+    List<ArvResponse> getARVs();
 }

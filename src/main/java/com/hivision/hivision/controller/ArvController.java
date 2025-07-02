@@ -2,6 +2,7 @@ package com.hivision.hivision.controller;
 
 import com.hivision.hivision.dto.AppointmentDTO;
 import com.hivision.hivision.dto.ArvDTO;
+import com.hivision.hivision.payload.response.ArvResponse;
 import com.hivision.hivision.repository.IArvRepo;
 import com.hivision.hivision.service.iservice.IArvService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -26,7 +27,7 @@ public class ArvController {
     IArvService arvService;
 
     @GetMapping
-    public ResponseEntity<List<ArvDTO>> getARVs() {
+    public ResponseEntity<List<ArvResponse>> getARVs() {
         return ResponseEntity.ok(arvService.getARVs());
     }
 }

@@ -1,18 +1,24 @@
 package com.hivision.hivision.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.hivision.hivision.pojo.*;
 import jakarta.validation.constraints.Size;
-import lombok.Builder;
-import lombok.Value;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.List;
 
 /**
  * DTO for {@link ARV}
  */
 @Value
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@Data
 @Builder
+@AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class ArvDTO implements Serializable {
     @Size(max = 255)
     String arvId;
@@ -33,9 +39,9 @@ public class ArvDTO implements Serializable {
     @Size(max = 50)
     String regimenLevel;
     Instant lastUpdated;
-    ArvContraindication contraindication;
-    ArvIndication indication;
-    ArvSideEffect sideEffect;
-    ArvDrugInteraction drugInteraction;
-    ArvTargetPopulation targetPopulation;
+    List<String> contraindication;
+    List<String> indication;
+    List<String> sideEffect;
+    List<String> drugInteraction;
+    List<String> targetPopulation;
 }
