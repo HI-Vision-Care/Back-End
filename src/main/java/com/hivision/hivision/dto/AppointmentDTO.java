@@ -18,5 +18,6 @@ public class AppointmentDTO {
     Boolean isAnonymous;
     String note;
     String urlLink;
+    String paymentStatus;
     Instant createAt;
 }

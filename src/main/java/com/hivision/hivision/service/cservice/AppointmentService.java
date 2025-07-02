@@ -52,6 +52,7 @@ public class AppointmentService implements IAppointmentService {
                 .isAnonymous(request.getIsAnonymous())
                 .note(request.getNote())
                 .status(AppointmentStatus.SCHEDULED)
+                .paymentStatus("UNPAID")
                 .createAt(ZonedDateTime.now(ZoneId.of("Asia/Ho_Chi_Minh")).toInstant())
 //                .createAt(Instant.now())
                 .build();
