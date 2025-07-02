@@ -15,4 +15,5 @@ public class MedicalRecordDTO {
     String appointmentId;
     String diagnosis; // chẩn đoán bệnh
     Instant createDate;
+    String note;
 }

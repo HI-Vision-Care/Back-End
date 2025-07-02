@@ -37,6 +37,11 @@ public class AppointmentController {
         return ResponseEntity.ok(appointmentService.createOnlineAppointment(phone, request));
     }
 
+    @GetMapping("/get-all-appointments")
+    public ResponseEntity<List<AppointmentDTO>> getAppointments() {
+        return ResponseEntity.ok(appointmentService.getAppointments());
+    }
+
     @GetMapping("/get-appointment/{patientId}")
     public ResponseEntity<List<Appointment>> getAppointmentsByPatient(@PathVariable String patientId) {
         return ResponseEntity.ok(appointmentService.getAppointmentsByPatient(patientId));

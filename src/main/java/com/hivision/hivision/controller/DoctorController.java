@@ -1,9 +1,13 @@
 package com.hivision.hivision.controller;
 
 import com.hivision.hivision.dto.DoctorDTO;
+import com.hivision.hivision.dto.LabResultDTO;
+import com.hivision.hivision.dto.MedicalRecordDTO;
 import com.hivision.hivision.payload.request.DoctorRequest;
+import com.hivision.hivision.payload.request.MedicalRecordRequest;
 import com.hivision.hivision.payload.response.AppointmentResponse;
 import com.hivision.hivision.pojo.Doctor;
+import com.hivision.hivision.pojo.LabResult;
 import com.hivision.hivision.service.iservice.IDoctorService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
@@ -62,5 +66,15 @@ public class DoctorController {
         return ResponseEntity.noContent().build();
     }
 
+    @PostMapping("/create-medical-record/{appointmentId}")
+    public ResponseEntity<MedicalRecordDTO> createMedicalRecord(@PathVariable String appointmentId, @RequestBody @Valid MedicalRecordRequest request) {
+        return ResponseEntity.ok(doctorService.createMedicalRecord(appointmentId, request));
+    }
+
+
+    @PostMapping("/create-lab-result")
+    public ResponseEntity<LabResultDTO> createLabResult(@RequestBody @Valid LabResultDTO labResultDTO) {
+        return ResponseEntity.ok(doctorService.createLabResult(labResultDTO));
+    }
 
 }

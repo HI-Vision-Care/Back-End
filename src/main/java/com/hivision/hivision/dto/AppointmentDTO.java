@@ -17,5 +17,6 @@ public class AppointmentDTO {
     Instant appointmentDate;
     Boolean isAnonymous;
     String note;
+    String urlLink;
     Instant createAt;
 }

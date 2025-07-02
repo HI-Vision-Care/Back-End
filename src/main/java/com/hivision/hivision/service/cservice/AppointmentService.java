@@ -16,6 +16,8 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -50,7 +52,8 @@ public class AppointmentService implements IAppointmentService {
                 .isAnonymous(request.getIsAnonymous())
                 .note(request.getNote())
                 .status(AppointmentStatus.SCHEDULED)
-                .createAt(Instant.now())
+                .createAt(ZonedDateTime.now(ZoneId.of("Asia/Ho_Chi_Minh")).toInstant())
+//                .createAt(Instant.now())
                 .build();
         appointment = appointmentRepo.save(appointment);
 
@@ -66,6 +69,15 @@ public class AppointmentService implements IAppointmentService {
 //            throw new AppException(ErrorCode.APPOINTMENT_NOT_FOUND);
 //        }
         return appointmentRepo.findByPatient(patient);
+    }
+
+    @Override
+    public List<AppointmentDTO> getAppointments() {
+        List<Appointment> appointments = appointmentRepo.findAll();
+        if (appointments.isEmpty()) {
+            throw new AppException(ErrorCode.APPOINTMENT_NOT_FOUND);
+        }
+        return mapper.toAppointmentDTOs(appointments);
     }
 
     @Override

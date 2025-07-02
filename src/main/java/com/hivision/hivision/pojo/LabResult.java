@@ -25,9 +25,21 @@ public class LabResult {
     @Column(name = "TestType")
     String testType;
 
+    @Column(name = "ResultText")
+    String resultText;
+
     @Column(name = "ResultValue")
     String resultValue;
 
+    @Column(name = "Unit")
+    String unit;
+
+    @Column(name = "ReferenceRange")
+    String referenceRange;
+
     @Column(name = "TestDate")
     Instant testDate;
+
+    @Column(name = "PerformedBy")
+    String performedBy;
 }

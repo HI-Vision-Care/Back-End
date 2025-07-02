@@ -15,6 +15,7 @@ public interface IAppointmentService {
 
     // Lấy danh sách lịch hẹn của người dùng
      List<Appointment> getAppointmentsByPatient(String patientID);
+     List<AppointmentDTO> getAppointments();
 
     // Lấy danh sách lịch hẹn của bác sĩ
     // List<AppointmentDTO> getAppointmentsByDoctor(String doctorID);
