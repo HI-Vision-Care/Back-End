@@ -180,4 +180,13 @@ public class AppointmentService implements IAppointmentService {
         consultationNoteRepo.save(consultationNote);
 
     }
+
+    @Override
+    public void cancelAppointment(String appointmentID,String patientID) {
+        Appointment appointment = appointmentRepo.findById(appointmentID)
+                .orElseThrow(() -> new AppException(ErrorCode.APPOINTMENT_NOT_FOUND));
+        appointment.setStatus(AppointmentStatus.CANCELLED);
+
+        appointmentRepo.save(appointment);
+    }
 }

@@ -1,5 +1,6 @@
 package com.hivision.hivision.dto;
 
+import com.hivision.hivision.pojo.Doctor;
 import jakarta.validation.constraints.Size;
 import lombok.Value;
 
@@ -13,6 +14,7 @@ import java.time.LocalDateTime;
 @Value
 public class WorkShiftDTO implements Serializable {
     Integer id;
+    Doctor doctor;
     @Size(max = 50)
     String slot;
     LocalDateTime date;

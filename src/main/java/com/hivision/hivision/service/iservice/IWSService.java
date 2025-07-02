@@ -11,5 +11,5 @@ import java.util.List;
 public interface IWSService {
     List<WorkShiftDTO> getAll();
     String regisWS(List<WorkShiftRequest> workShifts,String doctorID);
-    List<WorkShift> getShiftsForWeek(LocalDate dateInWeek, String doctorId);
+    List<WorkShiftDTO> getShiftsForWeek(LocalDate dateInWeek, String doctorId);
 }

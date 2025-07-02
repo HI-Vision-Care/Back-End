@@ -52,7 +52,7 @@ public class WorkShiftService implements IWSService {
     }
 
     @Override
-    public List<WorkShift> getShiftsForWeek(LocalDate dateInWeek, String doctorId) {
+    public List<WorkShiftDTO> getShiftsForWeek(LocalDate dateInWeek, String doctorId) {
         // 1. Tính toán ngày bắt đầu và kết thúc của tuần
         // Giả sử tuần bắt đầu từ Thứ Hai (Monday)
         LocalDate startOfWeek = dateInWeek.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
@@ -68,11 +68,11 @@ public class WorkShiftService implements IWSService {
             if (!docRepo.existsByDoctorID(doctorId)) {
                 throw new AppException(ErrorCode.DOCTOR_NOT_FOUND);
             }
-            return wsRepo.findShiftsBetweenDatesForDoctor(doctorId, startDateTime, endDateTime);
+            return wsMapper.toListWorkShiftDTO(wsRepo.findShiftsBetweenDatesForDoctor(doctorId, startDateTime, endDateTime));
         }
             else {
             // Nếu không, gọi phương thức không lọc
-            return wsRepo.findShiftsBetweenDates(startDateTime, endDateTime);
+            return wsMapper.toListWorkShiftDTO(wsRepo.findShiftsBetweenDates(startDateTime, endDateTime));
         }
     }
 }

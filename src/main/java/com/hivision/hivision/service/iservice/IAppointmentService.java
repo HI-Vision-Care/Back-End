@@ -30,4 +30,5 @@ public interface IAppointmentService {
 
     // đặt tư vấo online với bác sĩ cho người dùng chưa đăng nhập
     void createOnlineAppointmentForGuest(ConsultationNote consultationNote);
+    void cancelAppointment(String appointmentID,String patientID);
 }
