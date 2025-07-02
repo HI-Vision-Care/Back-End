@@ -3,6 +3,7 @@ package com.hivision.hivision.service.cservice;
 import com.hivision.hivision.dto.LabResultDTO;
 import com.hivision.hivision.dto.PatientDTO;
 import com.hivision.hivision.enums.ErrorCode;
+import com.hivision.hivision.enums.Role;
 import com.hivision.hivision.exception.AppException;
 import com.hivision.hivision.mapper.ILabResultMapper;
 import com.hivision.hivision.mapper.IPatientMapper;
@@ -49,13 +50,15 @@ public class PatientService implements IPatientService{
     }
 
     @Override
-    public PatientDTO updatePatient(String accountId, PatientRequest request) {
-        Account account = accountRepo.findById(accountId)
-                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
-        Patient patient = patientRepo.findPatientByAccount(account);
-        if (patient == null) {
-            throw new AppException(ErrorCode.PATIENT_NOT_FOUND);
+    public PatientDTO updatePatient(String patientId, PatientRequest request) {
+
+        Patient patient = patientRepo.findById(patientId)
+                .orElseThrow(() -> new AppException(ErrorCode.PATIENT_NOT_FOUND));
+        Account account = patient.getAccount();
+        if(account.getIsDeleted() != null && account.getIsDeleted()) {
+            throw new AppException(ErrorCode.ACCOUNT_DELETED);
         }
+
         patient.setName(request.getName());
         patient.setDob(request.getDob());
         patient.setGender(request.getGender());
@@ -67,6 +70,21 @@ public class PatientService implements IPatientService{
 
         patientRepo.save(patient);
         return patientMapper.toPatientDTO(patient);
+    }
+
+    @Override
+    public void deletePatient(String patientId) {
+        Patient patient = patientRepo.findById(patientId)
+                .orElseThrow(() -> new AppException(ErrorCode.PATIENT_NOT_FOUND));
+
+        Account account = patient.getAccount();
+        if (account == null) {
+            throw new AppException(ErrorCode.USER_NOT_FOUND);
+        }
+
+        account.setRole(Role.BANNED);
+        account.setIsDeleted(true);
+        accountRepo.save(account);
     }
 
 

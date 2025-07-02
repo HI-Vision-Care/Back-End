@@ -60,9 +60,9 @@ public class DoctorController {
         return ResponseEntity.ok(doctorService.getAppointmentsByDoctor(doctorID));
     }
 
-    @PutMapping("/update-profile/{accountId}")
-    public ResponseEntity<Void> updateDoctor(@PathVariable String accountId, @RequestBody @Valid DoctorRequest request) {
-        doctorService.updateDoctor(accountId, request);
+    @PutMapping("/update-profile/{doctorId}")
+    public ResponseEntity<Void> updateDoctor(@PathVariable String doctorId, @RequestBody @Valid DoctorRequest request) {
+        doctorService.updateDoctor(doctorId, request);
         return ResponseEntity.noContent().build();
     }
 
@@ -77,4 +77,9 @@ public class DoctorController {
         return ResponseEntity.ok(doctorService.createLabResult(labResultDTO));
     }
 
+    @DeleteMapping("/delete/{doctorId}")
+    public ResponseEntity<Void> deleteDoctor(@PathVariable String doctorId) {
+        doctorService.deleteDoctor(doctorId);
+        return ResponseEntity.noContent().build();
+    }
 }

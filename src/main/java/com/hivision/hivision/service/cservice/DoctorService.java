@@ -6,6 +6,7 @@ import com.hivision.hivision.dto.LabResultDTO;
 import com.hivision.hivision.dto.MedicalRecordDTO;
 import com.hivision.hivision.enums.AppointmentStatus;
 import com.hivision.hivision.enums.ErrorCode;
+import com.hivision.hivision.enums.Role;
 import com.hivision.hivision.exception.AppException;
 import com.hivision.hivision.mapper.*;
 import com.hivision.hivision.payload.request.MedicalRecordRequest;
@@ -90,14 +91,17 @@ public class DoctorService implements IDoctorService {
     }
 
     @Override
-    public void updateDoctor(String accountId, DoctorRequest request) {
-        Account account = accountRepo.findById(accountId)
-                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
-        Doctor doctor = doctorRepo.findDoctorByAccount(account);
+    public void updateDoctor(String doctorId, DoctorRequest request) {
+//        Account account = accountRepo.findById(accountId)
+//                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+        Doctor doctor = doctorRepo.findById(doctorId)
+                .orElseThrow(() -> new AppException(ErrorCode.DOCTOR_NOT_FOUND));
 
-        if (doctor == null) {
-            throw new AppException(ErrorCode.DOCTOR_NOT_FOUND);
+        Account account = doctor.getAccount();
+        if (account == null || account.getIsDeleted() != null && account.getIsDeleted()) {
+            throw new AppException(ErrorCode.ACCOUNT_DELETED);
         }
+
         doctor.setName(request.getFullName());
         doctor.setGender(request.getGender());
         doctor.setSpecialty(request.getSpecialty());
@@ -106,6 +110,19 @@ public class DoctorService implements IDoctorService {
         doctorMapper.updateDoctor(doctor, request);
         doctorRepo.save(doctor);
         doctorMapper.toDoctorDTO(doctor);
+    }
+
+    @Override
+    public void deleteDoctor(String doctorId) {
+        Doctor doctor = doctorRepo.findById(doctorId)
+                .orElseThrow(() -> new AppException(ErrorCode.DOCTOR_NOT_FOUND));
+        Account account = doctor.getAccount();
+        if (account == null) {
+            throw new AppException(ErrorCode.USER_NOT_FOUND);
+        }
+        account.setRole(Role.BANNED);
+        account.setIsDeleted(true);
+        accountRepo.save(account);
     }
 
     @Override

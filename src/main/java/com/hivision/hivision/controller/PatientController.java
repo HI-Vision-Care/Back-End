@@ -44,9 +44,15 @@ public class PatientController {
 //        return ResponseEntity.ok(patientService.updatePatient(accountId, request));
 //    }
 
-    @PutMapping("/update-profile/{accountId}")
-    public ResponseEntity<Void> updatePatient(@PathVariable String accountId, @RequestBody @Valid PatientRequest request) {
-        patientService.updatePatient(accountId, request);
+    @PutMapping("/update-profile/{patientId}")
+    public ResponseEntity<Void> updatePatient(@PathVariable String patientId, @RequestBody @Valid PatientRequest request) {
+        patientService.updatePatient(patientId, request);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/delete/{patientId}")
+    public ResponseEntity<Void> deletePatient(@PathVariable String patientId) {
+        patientService.deletePatient(patientId);
         return ResponseEntity.noContent().build();
     }
 }
