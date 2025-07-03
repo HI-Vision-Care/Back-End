@@ -4,6 +4,7 @@ import com.hivision.hivision.dto.AccountDTO;
 import com.hivision.hivision.payload.request.AccountCreationRequest;
 import com.hivision.hivision.payload.request.LoginRequest;
 import com.hivision.hivision.payload.request.RegisterRequest;
+import com.hivision.hivision.payload.request.UpdateAccountRequest;
 import com.hivision.hivision.payload.response.ApiResponse;
 import com.hivision.hivision.payload.response.LoginResponse;
 import com.hivision.hivision.service.iservice.IAccountService;
@@ -45,6 +46,13 @@ public class AccountController {
     @PostMapping("/creation")
     public ResponseEntity<AccountDTO> createAccount(@Valid @RequestBody AccountCreationRequest request) {
         return new ResponseEntity<>(iAccountService.createAccount(request), HttpStatus.CREATED);
+    }
+
+    @PutMapping("/{accountId}")
+    public ResponseEntity<ApiResponse<String>> updateAccount(@PathVariable String accountId, @RequestBody @Valid UpdateAccountRequest request) {
+        iAccountService.updateAccount(accountId, request);
+        ApiResponse<String> response = ApiResponse.<String>builder().data("Account updated successfully!").build();
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @DeleteMapping("/{accountId}")

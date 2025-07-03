@@ -16,6 +16,7 @@ public interface IAppointmentMapper {
     @Mapping(source = "patient.patientID", target = "patientID")
     @Mapping(source = "medicalService.serviceID", target = "serviceID")
     @Mapping(source = "doctor.doctorID", target = "doctorID")
+    @Mapping(source = "appointmentID", target = "appointmentID")
     AppointmentDTO toAppointmentDTO(Appointment appointment);
 
 
