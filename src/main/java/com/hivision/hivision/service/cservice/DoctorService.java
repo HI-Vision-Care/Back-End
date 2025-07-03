@@ -170,6 +170,19 @@ public class DoctorService implements IDoctorService {
         return labResultMapper.toLabResultDTO(labResult);
     }
 
+
+    @Override
+    public List<MedicalRecordDTO> getAllMedicalRecord() {
+        List<MedicalRecord> medicalRecords = medicalRecordRepo.findAll();
+        return medicalRecordMapper.toMedicalRecordDTO(medicalRecords);
+    }
+
+    @Override
+    public List<LabResultDTO> getAllLabResults() {
+        List<LabResult> labResults = labResultRepo.findAll();
+        return labResultMapper.toLabResultDTO(labResults);
+    }
+
     @Override
     public void confirm(String appointmentId) {
         Appointment appointment = appointmentRepo.findById(appointmentId)
