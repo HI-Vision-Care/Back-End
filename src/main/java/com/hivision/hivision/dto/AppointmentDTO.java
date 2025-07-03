@@ -11,6 +11,7 @@ import java.time.Instant;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class AppointmentDTO {
+    String appointmentID;
     String patientID;
     Long serviceID;
     String doctorID;
