@@ -28,6 +28,8 @@ public interface IDoctorService {
 
     //tạo medical record
     MedicalRecordDTO createMedicalRecord(String appointmentId, MedicalRecordRequest request);
+    List<MedicalRecordDTO> getAllMedicalRecord();
 
     LabResultDTO createLabResult(LabResultDTO labResultDTO);
+    List<LabResultDTO> getAllLabResults();
 }

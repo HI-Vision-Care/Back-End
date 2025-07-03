@@ -8,6 +8,7 @@ import com.hivision.hivision.payload.request.MedicalRecordRequest;
 import com.hivision.hivision.payload.response.AppointmentResponse;
 import com.hivision.hivision.pojo.Doctor;
 import com.hivision.hivision.pojo.LabResult;
+import com.hivision.hivision.pojo.MedicalRecord;
 import com.hivision.hivision.service.iservice.IDoctorService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
@@ -71,10 +72,20 @@ public class DoctorController {
         return ResponseEntity.ok(doctorService.createMedicalRecord(appointmentId, request));
     }
 
+    @GetMapping("/get-all-medical-records")
+    public ResponseEntity<List<MedicalRecordDTO>> getAllMedicalRecords() {
+        return ResponseEntity.ok(doctorService.getAllMedicalRecord());
+    }
+
 
     @PostMapping("/create-lab-result")
     public ResponseEntity<LabResultDTO> createLabResult(@RequestBody @Valid LabResultDTO labResultDTO) {
         return ResponseEntity.ok(doctorService.createLabResult(labResultDTO));
+    }
+
+    @GetMapping("/get-all-lab-results")
+    public ResponseEntity<List<LabResultDTO>> getAllLabResults() {
+        return ResponseEntity.ok(doctorService.getAllLabResults());
     }
 
     @DeleteMapping("/delete/{doctorId}")
