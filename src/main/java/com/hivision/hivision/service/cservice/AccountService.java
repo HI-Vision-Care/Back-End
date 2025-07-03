@@ -137,11 +137,13 @@ public class AccountService implements IAccountService {
 
     @Override
     public List<Account> getAllAccounts() {
-        Account account = iAccountRepository.findAccountById(getCurrentAccount().getId());
-        if(account.getIsDeleted() != null && account.getIsDeleted()) {
-            throw new AppException(ErrorCode.ACCOUNT_DELETED);
-        }
-        return iAccountRepository.findAll();
+        List<Account> accounts = iAccountRepository.findAll()
+                .stream()
+                .filter(d -> d.getIsDeleted() == null || !d.getIsDeleted())
+                .toList();
+        return accounts;
+//        return iAccountRepository.findByRoleIsNot(Role.ADMIN);
+//        return iAccountRepository.findAll();
     }
 
     @Override
