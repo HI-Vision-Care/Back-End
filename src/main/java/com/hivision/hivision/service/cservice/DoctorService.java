@@ -86,14 +86,14 @@ public class DoctorService implements IDoctorService {
     }
 
     @Override
-    public List<AppointmentResponse> getAppointmentsByDoctor(String doctorID) {
+    public List<Appointment> getAppointmentsByDoctor(String doctorID) {
         Doctor doctor = doctorRepo.findById(doctorID)
                 .orElseThrow(() -> new AppException(ErrorCode.DOCTOR_NOT_FOUND));
         List<Appointment> appointments = appointmentRepo.findByDoctor(doctor);
         if (appointments.isEmpty()) {
             throw new AppException(ErrorCode.APPOINTMENT_NOT_FOUND);
         }
-        return appointmentMapper.toAppointmentResponses(appointments);
+        return appointments;
     }
 
     @Override
