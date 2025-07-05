@@ -8,6 +8,7 @@ import com.hivision.hivision.mapper.IAccountMapper;
 import com.hivision.hivision.payload.request.AccountCreationRequest;
 import com.hivision.hivision.payload.request.LoginRequest;
 import com.hivision.hivision.payload.request.RegisterRequest;
+import com.hivision.hivision.payload.request.UpdateAccountRequest;
 import com.hivision.hivision.payload.response.LoginResponse;
 import com.hivision.hivision.pojo.*;
 import com.hivision.hivision.repository.*;
@@ -139,11 +140,13 @@ public class AccountService implements IAccountService {
 
     @Override
     public List<Account> getAllAccounts() {
-        Account account = iAccountRepository.findAccountById(getCurrentAccount().getId());
-        if(account.getIsDeleted() != null && account.getIsDeleted()) {
-            throw new AppException(ErrorCode.ACCOUNT_DELETED);
-        }
-        return iAccountRepository.findAll();
+        List<Account> accounts = iAccountRepository.findAll()
+                .stream()
+                .filter(d -> d.getIsDeleted() == null || !d.getIsDeleted())
+                .toList();
+        return accounts;
+//        return iAccountRepository.findByRoleIsNot(Role.ADMIN);
+//        return iAccountRepository.findAll();
     }
 
     @Override
@@ -160,6 +163,19 @@ public class AccountService implements IAccountService {
                             .build();
                     return iAccountRepository.save(newAccount);
                 });
+    }
+
+    @Override
+    public void updateAccount(String accountId, UpdateAccountRequest request) {
+        Account account = iAccountRepository.findById(accountId)
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+
+        account.setUsername(request.getUsername());
+        account.setEmail(request.getEmail());
+        account.setPhone(request.getPhone());
+        account.setAvatar(request.getAvatar());
+        iAccountRepository.save(account);
+
     }
 
     @Override

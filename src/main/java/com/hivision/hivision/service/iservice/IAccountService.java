@@ -4,6 +4,7 @@ import com.hivision.hivision.dto.AccountDTO;
 import com.hivision.hivision.payload.request.AccountCreationRequest;
 import com.hivision.hivision.payload.request.LoginRequest;
 import com.hivision.hivision.payload.request.RegisterRequest;
+import com.hivision.hivision.payload.request.UpdateAccountRequest;
 import com.hivision.hivision.payload.response.LoginResponse;
 import com.hivision.hivision.pojo.Account;
 
@@ -15,5 +16,6 @@ public interface IAccountService {
     AccountDTO createAccount(AccountCreationRequest request);
     List<Account> getAllAccounts();
     Account findOrCreateByEmail(String email, String name, String avatar);
+    void updateAccount(String accountId, UpdateAccountRequest request);
     void deleteAccount(String accountId);
 }
