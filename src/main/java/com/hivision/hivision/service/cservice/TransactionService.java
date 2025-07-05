@@ -2,6 +2,7 @@ package com.hivision.hivision.service.cservice;
 
 import com.hivision.hivision.dto.TransactionsDTO;
 import com.hivision.hivision.enums.ErrorCode;
+import com.hivision.hivision.enums.PaymentStatus;
 import com.hivision.hivision.enums.TransactionsEnum;
 import com.hivision.hivision.exception.AppException;
 import com.hivision.hivision.mapper.ITransactionsMapper;
@@ -64,7 +65,7 @@ public class TransactionService implements ITransactionService {
                 .build();
         transactionsRepo.save(transaction);
 
-        appointment.setPaymentStatus("PAID");
+        appointment.setPaymentStatus(PaymentStatus.PAID);
         appointmentRepo.save(appointment);
 
 

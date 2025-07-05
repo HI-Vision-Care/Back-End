@@ -4,6 +4,7 @@ import com.hivision.hivision.dto.AppointmentDTO;
 import com.hivision.hivision.dto.ConsultationNoteDTO;
 import com.hivision.hivision.enums.AppointmentStatus;
 import com.hivision.hivision.enums.ErrorCode;
+import com.hivision.hivision.enums.PaymentStatus;
 import com.hivision.hivision.exception.AppException;
 import com.hivision.hivision.mapper.IAppointmentMapper;
 import com.hivision.hivision.payload.request.AppointmentRequest;
@@ -53,7 +54,7 @@ public class AppointmentService implements IAppointmentService {
                 .isAnonymous(request.getIsAnonymous())
                 .note(request.getNote())
                 .status(AppointmentStatus.SCHEDULED)
-                .paymentStatus("UNPAID")
+                .paymentStatus(PaymentStatus.UNPAID)
                 .createAt(ZonedDateTime.now(ZoneId.of("Asia/Ho_Chi_Minh")).toInstant())
 //                .createAt(Instant.now())
                 .build();

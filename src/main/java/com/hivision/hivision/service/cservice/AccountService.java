@@ -61,15 +61,17 @@ public class AccountService implements IAccountService {
                 .avatar(user.getAvatar())
                 .role(user.getRole())
                 .patient(patientRepo.findPatientByAccount(user))
+                .doctor(doctorRepo.findDoctorByAccount(user))
+//                .staff(staffRepo.findDoctorByAccount(user))
                 .build();
     }
 
     @Override
     public AccountDTO register(RegisterRequest request) {
-        if (iAccountRepository.existsByUsername(request.getUsername())) {
-            throw new AppException(ErrorCode.USER_EXISTED);
-        }
-        else if(iAccountRepository.existsByEmail(request.getEmail())) {
+//        if (iAccountRepository.existsByUsername(request.getUsername())) {
+//            throw new AppException(ErrorCode.USER_EXISTED);
+//        }
+        if(iAccountRepository.existsByEmail(request.getEmail())) {
             throw new AppException(ErrorCode.EMAIL_EXISTED);
         }else if(iAccountRepository.existsByPhone(request.getPhone())) {
             throw new AppException(ErrorCode.PHONE_EXISTED);

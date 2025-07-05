@@ -1,6 +1,7 @@
 package com.hivision.hivision.pojo;
 
 import com.hivision.hivision.enums.AppointmentStatus;
+import com.hivision.hivision.enums.PaymentStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.*;
@@ -53,7 +54,7 @@ public class Appointment {
     String note;
 
     @Column(name = "PaymentStatus")
-    String paymentStatus;
+    PaymentStatus paymentStatus;
 
     @Column(name = "CreateAt")
     Instant createAt;

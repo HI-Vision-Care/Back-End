@@ -14,7 +14,7 @@ import java.time.Instant;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ConsultationRequest {
     @Pattern(regexp="(^$|[0-9]{10})",message = "PHONE_INVALID")
-    @Size(min=10,max=11,message = "PHONE_INVALID")
+//    @Size(min=10,max=11,message = "PHONE_INVALID")
     String phone;
     String name;
     String note;
