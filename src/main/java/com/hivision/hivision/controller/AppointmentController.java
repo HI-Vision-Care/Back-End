@@ -9,6 +9,7 @@ import com.hivision.hivision.pojo.Appointment;
 import com.hivision.hivision.pojo.ConsultationNote;
 import com.hivision.hivision.service.iservice.IAppointmentService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -54,14 +55,14 @@ public class AppointmentController {
     }
     // đặt lịch hẹn với tài khoản đã đăng nhập
     @PostMapping("/book-consultation-with-account/{patientId}")
-    public ResponseEntity<String> bookConsultationWithAccount(@RequestBody ConsultationRequest request, @PathVariable String patientId) {
+    public ResponseEntity<String> bookConsultationWithAccount(@RequestBody @Valid ConsultationRequest request, @PathVariable String patientId) {
         appointmentService.createOnlineAppointmentForLoggedInUser(request,patientId);
         return ResponseEntity.ok("Gửi yêu cầu thành công. Chúng tôi sẽ liên hệ lại.");
     }
 
     // đặt tư vấn online với người dùng chưa đăng nhập
     @PostMapping("/book-consultation-guest")
-    public ResponseEntity<String> bookConsultationForGuest(@RequestBody ConsultationRequest request) {
+    public ResponseEntity<String> bookConsultationForGuest(@RequestBody @Valid ConsultationRequest request) {
         appointmentService.createOnlineAppointmentForGuest(request);
         return ResponseEntity.ok("Gửi yêu cầu thành công. Chúng tôi sẽ liên hệ lại.");
     }

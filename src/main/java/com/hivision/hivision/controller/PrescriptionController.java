@@ -31,7 +31,7 @@ public class PrescriptionController {
 
     }
 
-    @PostMapping("/add/{patientId}")
+    @PostMapping("/add-arv-to-pres/{patientId}")
     public ResponseEntity<List<PrescriptionARV>> addARVtoPre(@RequestBody List<ArvRequest> requests, @PathVariable("patientId") String patientId) {
 ////        try {
 //            List<PrescriptionARV> addPreArv = preArvService.addPreArv(request);

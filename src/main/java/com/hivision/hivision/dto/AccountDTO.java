@@ -10,7 +10,6 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class AccountDTO {
     String id;
-    String username;
     String password;
     String email;
     String phone;

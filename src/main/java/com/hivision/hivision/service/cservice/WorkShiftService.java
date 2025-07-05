@@ -45,6 +45,7 @@ public class WorkShiftService implements IWSService {
                     .date(ws.getDate())
                     .startTime(ws.getStartTime())
                     .endTime(ws.getEndTime())
+                    .status("Available")
                     .build();
             wsRepo.save(workShift);
         }

@@ -20,7 +20,7 @@ public enum ErrorCode {
     PHONE_EXISTED(422, "Phone already existed!"),
     PHONE_REQUIRED(401, "Phone number is required!"),
     USERNAME_INVALID(400,"Username must be between 8 and 16 characters"),
-    PHONE_INVALID(400,"Phone number must be 10 characters!!!"),
+    PHONE_INVALID(400,"Phone number must be 10 characters and must be number!!!"),
     UNAUTHENTICATED_USERNAME(400,"Invalid username!"),
     UNAUTHENTICATED_PASSWORD(401,"Invalid password!"),
     TOKEN_EXPIRED(401, "Token has expired"),
