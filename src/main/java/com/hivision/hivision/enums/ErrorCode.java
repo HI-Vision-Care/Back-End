@@ -37,7 +37,9 @@ public enum ErrorCode {
     MEDICAL_SERVICE_NOT_FOUND(404, "Medical service not found!"),
     INSUFFICIENT_BALANCE(400, "Insufficient balance!"),
     APPOINTMENT_NOT_ONGOING(400, "Appointment not ongoing!"),
-    MEDICAL_RECORD_NOT_FOUND(404, "Medical record not found!")
+    MEDICAL_RECORD_NOT_FOUND(404, "Medical record not found!"),
+    MEDICAL_RECORD_ALREADY_EXISTS(409, "Medical record already exists for this appointment!"),
+    WORK_SHIFT_NOT_FOUND(404, "Work shift not found!"),
     ;
 
     int code;
