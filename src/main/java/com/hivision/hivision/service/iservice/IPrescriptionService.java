@@ -10,4 +10,5 @@ import java.util.List;
 public interface IPrescriptionService {
     Prescription createPrescription(PrescriptionRequest request);
     List<PrescriptionARV> addArvToPres(List<ArvRequest> request,String patientId);
+    List<PrescriptionARV> getAllPresArvByPatientId(String patientId);
 }

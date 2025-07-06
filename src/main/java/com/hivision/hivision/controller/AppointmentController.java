@@ -4,6 +4,7 @@ import com.hivision.hivision.dto.AppointmentDTO;
 import com.hivision.hivision.dto.ConsultationNoteDTO;
 import com.hivision.hivision.payload.request.AppointmentRequest;
 import com.hivision.hivision.payload.request.ConsultationRequest;
+import com.hivision.hivision.payload.request.UpdateAppointmentRequest;
 import com.hivision.hivision.pojo.Account;
 import com.hivision.hivision.pojo.Appointment;
 import com.hivision.hivision.pojo.ConsultationNote;
@@ -49,8 +50,8 @@ public class AppointmentController {
     }
 
     @PutMapping("/update-appointment/{appointmentId}")
-    public ResponseEntity<AppointmentDTO> updateAppointment(@PathVariable String appointmentId, @RequestBody AppointmentDTO appointmentDTO) {
-        return ResponseEntity.ok(appointmentService.updateAppointment(appointmentId, appointmentDTO));
+    public ResponseEntity<AppointmentDTO> updateAppointment(@PathVariable String appointmentId, @RequestBody UpdateAppointmentRequest request) {
+        return ResponseEntity.ok(appointmentService.updateAppointment(appointmentId, request));
     }
     // đặt lịch hẹn với tài khoản đã đăng nhập
     @PostMapping("/book-consultation-with-account/{patientId}")
