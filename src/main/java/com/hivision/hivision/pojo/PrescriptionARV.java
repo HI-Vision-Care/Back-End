@@ -1,6 +1,7 @@
 package com.hivision.hivision.pojo;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -17,6 +18,14 @@ public class PrescriptionARV {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "PreArvID", nullable = false)
     Integer id;
+
+    @Size(max = 25)
+    @Column(name = "Dosage")
+    String dosage;
+
+    @Size(max = 25)
+    @Column(name = "Duration")
+    String duration;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "PrescriptionID")
