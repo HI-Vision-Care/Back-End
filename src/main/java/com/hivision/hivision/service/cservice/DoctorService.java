@@ -187,6 +187,11 @@ public class DoctorService implements IDoctorService {
     public void confirm(String appointmentId) {
         Appointment appointment = appointmentRepo.findById(appointmentId)
                 .orElseThrow(() -> new AppException(ErrorCode.APPOINTMENT_NOT_FOUND));
+        if (appointment.getStatus() == AppointmentStatus.ONGOING) {
+            throw new AppException(ErrorCode.APPOINTMENT_IS_ONGOING);
+        }else if(appointment.getStatus() == AppointmentStatus.COMPLETED) {
+            throw new AppException(ErrorCode.APPOINTMENT_IS_COMPLETED);
+        }
         appointment.setStatus(AppointmentStatus.ONGOING);
         appointmentRepo.save(appointment);
     }
@@ -195,6 +200,12 @@ public class DoctorService implements IDoctorService {
     public void complete(String appointmentId) {
         Appointment appointment = appointmentRepo.findById(appointmentId)
                 .orElseThrow(() -> new AppException(ErrorCode.APPOINTMENT_NOT_FOUND));
+        if (appointment.getStatus() == AppointmentStatus.COMPLETED) {
+            throw new AppException(ErrorCode.APPOINTMENT_IS_COMPLETED);
+        }
+        else if(appointment.getStatus() != AppointmentStatus.ONGOING) {
+            throw new AppException(ErrorCode.APPOINTMENT_NOT_ONGOING);
+        }
         appointment.setStatus(AppointmentStatus.COMPLETED);
         appointmentRepo.save(appointment);
     }

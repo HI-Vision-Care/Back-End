@@ -1,7 +1,9 @@
 package com.hivision.hivision.controller;
 
 import com.hivision.hivision.payload.request.ArvRequest;
+import com.hivision.hivision.payload.request.PresDataWrapper;
 import com.hivision.hivision.payload.request.PrescriptionRequest;
+import com.hivision.hivision.payload.response.PrescriptionResponse;
 import com.hivision.hivision.pojo.Prescription;
 import com.hivision.hivision.pojo.PrescriptionARV;
 import com.hivision.hivision.service.iservice.IPrescriptionService;
@@ -24,18 +26,20 @@ import java.util.List;
 public class PrescriptionController {
     IPrescriptionService prescriptionService;
 
+//    @PostMapping("/create")
+//    public ResponseEntity<Prescription> createPrescriptions(@RequestBody PrescriptionRequest request) {
+//            Prescription createdPrescriptions = prescriptionService.createPrescription(request);
+//            return new ResponseEntity<>(createdPrescriptions, HttpStatus.CREATED);
+//
+//    }
+
     @PostMapping("/create")
-    public ResponseEntity<Prescription> createPrescriptions(@RequestBody PrescriptionRequest request) {
-            Prescription createdPrescriptions = prescriptionService.createPrescription(request);
-            return new ResponseEntity<>(createdPrescriptions, HttpStatus.CREATED);
-
-    }
-
-    @PostMapping("/add-arv-to-pres/{patientId}")
-    public ResponseEntity<List<PrescriptionARV>> addARVtoPre(@RequestBody List<ArvRequest> requests, @PathVariable("patientId") String patientId) {
+    public ResponseEntity<PrescriptionResponse> createPrescription(@RequestBody PresDataWrapper dataWrapper, @RequestParam("patientId") String patientId) {
 ////        try {
 //            List<PrescriptionARV> addPreArv = preArvService.addPreArv(request);
-            return new ResponseEntity<>(prescriptionService.addArvToPres(requests,patientId), HttpStatus.CREATED);
+        PrescriptionRequest prescriptionRequest = dataWrapper.getPrescriptionRequest();
+        List<ArvRequest> arvRequests = dataWrapper.getArvRequests();
+            return new ResponseEntity<>(prescriptionService.createPrescription(prescriptionRequest,arvRequests,patientId), HttpStatus.CREATED);
 //        } catch (Exception e) {
 //            // Có thể tạo một lớp xử lý lỗi toàn cục (GlobalExceptionHandler) để code sạch hơn
 //            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
