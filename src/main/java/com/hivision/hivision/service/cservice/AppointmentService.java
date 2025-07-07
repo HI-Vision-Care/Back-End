@@ -9,6 +9,7 @@ import com.hivision.hivision.exception.AppException;
 import com.hivision.hivision.mapper.IAppointmentMapper;
 import com.hivision.hivision.payload.request.AppointmentRequest;
 import com.hivision.hivision.payload.request.ConsultationRequest;
+import com.hivision.hivision.payload.request.UpdateAppointmentRequest;
 import com.hivision.hivision.pojo.*;
 import com.hivision.hivision.repository.*;
 import com.hivision.hivision.service.iservice.IAppointmentService;
@@ -84,11 +85,12 @@ public class AppointmentService implements IAppointmentService {
     }
 
     @Override
-    public AppointmentDTO updateAppointment(String appointmentID, AppointmentDTO appointmentDTO) {
+    public AppointmentDTO updateAppointment(String appointmentID, UpdateAppointmentRequest request) {
         Appointment appointment = appointmentRepo.findById(appointmentID)
                 .orElseThrow(() -> new AppException(ErrorCode.APPOINTMENT_NOT_FOUND));
 
-        appointment.setNote(appointmentDTO.getNote());
+        appointment.setNote(request.getNote());
+        appointment.setUrlLink(request.getUrlLink());
         return mapper.toAppointmentDTO(appointmentRepo.save(appointment));
     }
 

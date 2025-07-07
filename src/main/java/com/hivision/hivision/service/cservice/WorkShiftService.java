@@ -76,4 +76,16 @@ public class WorkShiftService implements IWSService {
             return wsMapper.toListWorkShiftDTO(wsRepo.findShiftsBetweenDates(startDateTime, endDateTime));
         }
     }
+
+    @Override
+    public List<WorkShiftDTO> getShiftsByDoctorId(String doctorId) {
+        if (!docRepo.existsByDoctorID(doctorId)) {
+            throw new AppException(ErrorCode.DOCTOR_NOT_FOUND);
+        }
+        List<WorkShift> workShifts = wsRepo.findShiftsByDoctorId(doctorId);
+        if (workShifts.isEmpty()) {
+            throw new AppException(ErrorCode.WORK_SHIFT_NOT_FOUND);
+        }
+        return wsMapper.toListWorkShiftDTO(workShifts);
+    }
 }

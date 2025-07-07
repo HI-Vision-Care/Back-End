@@ -9,6 +9,8 @@ import com.hivision.hivision.pojo.PrescriptionARV;
 import java.util.List;
 
 public interface IPrescriptionService {
-//    Prescription createPrescription(PrescriptionRequest request);
+
     PrescriptionResponse createPrescription(PrescriptionRequest request, List<ArvRequest> ArvRequest, String patientId);
+    List<PrescriptionARV> getAllPresArvByPatientId(String patientId);
+
 }

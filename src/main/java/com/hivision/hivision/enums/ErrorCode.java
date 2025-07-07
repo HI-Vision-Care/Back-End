@@ -40,6 +40,9 @@ public enum ErrorCode {
     APPOINTMENT_IS_COMPLETED(400, "Appointment is already completed!"),
     APPOINTMENT_IS_ONGOING(400, "Appointment is already ongoing!"),
     MEDICAL_RECORD_NOT_FOUND(404, "Medical record not found!")
+    MEDICAL_RECORD_ALREADY_EXISTS(409, "Medical record already exists for this appointment!"),
+    WORK_SHIFT_NOT_FOUND(404, "Work shift not found!"),
+
     ;
 
     int code;

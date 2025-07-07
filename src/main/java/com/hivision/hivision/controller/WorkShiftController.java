@@ -44,4 +44,10 @@ public class WorkShiftController {
         List<WorkShiftDTO> shifts = wsService.getShiftsForWeek(date, doctorId);
         return ResponseEntity.ok(shifts);
     }
+
+    @GetMapping("/doctor/{doctorId}")
+    public ResponseEntity<List<WorkShiftDTO>> getWorkShiftsByDoctor(@PathVariable String doctorId) {
+        List<WorkShiftDTO> shifts = wsService.getShiftsByDoctorId(doctorId);
+        return ResponseEntity.ok(shifts);
+    }
 }

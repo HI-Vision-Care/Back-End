@@ -135,9 +135,15 @@ public class DoctorService implements IDoctorService {
     public MedicalRecordDTO createMedicalRecord(String appointmentId, MedicalRecordRequest request) {
         Appointment appointment = appointmentRepo.findById(appointmentId)
                 .orElseThrow(() -> new AppException(ErrorCode.APPOINTMENT_NOT_FOUND));
+
         if( appointment.getStatus() != AppointmentStatus.ONGOING) {
             throw new AppException(ErrorCode.APPOINTMENT_NOT_ONGOING);
         }
+        // check nếu appointmentId đã có MedicalRecord thì không cho tạo mới
+        if (medicalRecordRepo.existsByAppointment(appointment)) {
+            throw new AppException(ErrorCode.MEDICAL_RECORD_ALREADY_EXISTS);
+        }
+
         MedicalRecord medicalRecord = MedicalRecord.builder()
                 .appointment(appointment)
                 .diagnosis(request.getDiagnosis())

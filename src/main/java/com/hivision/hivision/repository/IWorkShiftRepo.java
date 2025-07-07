@@ -25,5 +25,7 @@ public interface IWorkShiftRepo extends JpaRepository<WorkShift, Integer> {
             @Param("endDate") LocalDateTime endDate
     );
 
+    @Query("SELECT ws FROM WorkShift ws WHERE ws.doctor.doctorID = :doctorID ORDER BY ws.date ASC, ws.startTime ASC")
+    List<WorkShift> findShiftsByDoctorId(@Param("doctorID") String doctorID);
 
 }
