@@ -38,23 +38,15 @@ public class PrescriptionService implements IPrescriptionService {
     PreARVRepo preARVRepo;
 
 
-//    @Override
-//    public Prescription createPrescription(PrescriptionRequest request) {
-//        Patient patient = patientRepo.findById(request.getPatientId())
-//                .orElseThrow(() -> new AppException(ErrorCode.PATIENT_NOT_FOUND));
-//        Prescription prescription = Prescription.builder()
-//                .patient(patient)
-//                .date(Instant.now())
-//                .prescribeBy(request.getPrescribeBy())
-//                .status(PresStatus.CREATED)
-//                .build();
-//        return prescriptionRepo.save(prescription);
-//    }
+
 
     @Override
     public PrescriptionResponse createPrescription(PrescriptionRequest request, List<ArvRequest> arvRequests, String patientId) {
         Patient patient = patientRepo.findById(patientId)
                 .orElseThrow(() -> new AppException(ErrorCode.PATIENT_NOT_FOUND));
+        if(prescriptionRepo.existsByPatientAndStatus(patient,PresStatus.CREATED)){
+            throw new AppException(ErrorCode.PRES_ALREADY_EXISTS);
+        }
         Prescription prescription = Prescription.builder()
                 .patient(patient)
                 .date(Instant.now())

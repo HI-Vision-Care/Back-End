@@ -11,4 +11,5 @@ import java.util.List;
 @Repository
 public interface PrescriptionRepo extends JpaRepository<Prescription, String> {
     Prescription findByPatientAndStatus(Patient patient,PresStatus status);
+    boolean existsByPatientAndStatus(Patient patient,PresStatus status);
 }
