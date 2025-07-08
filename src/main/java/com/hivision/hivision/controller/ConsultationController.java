@@ -1,6 +1,7 @@
 package com.hivision.hivision.controller;
 
 import com.hivision.hivision.dto.MessageDTO;
+import com.hivision.hivision.service.cservice.MessageService;
 import com.hivision.hivision.service.iservice.IChatBoxService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.AccessLevel;
@@ -23,10 +24,11 @@ import org.springframework.web.bind.annotation.*;
 public class ConsultationController {
     SimpMessagingTemplate messagingTemplate;
     IChatBoxService chatBoxService;
+    MessageService messageService;
 
     @MessageMapping("/message/{chatID}") // Đường dẫn tương ứng /app/message/{roomId}
-    public MessageDTO sendMessage(@DestinationVariable Long chatID, @Payload MessageDTO chatMessage) {
-//        service.save(chatMessage,roomId);
+    public MessageDTO sendMessage(@DestinationVariable int chatID, @Payload MessageDTO chatMessage) {
+        messageService.save(chatMessage,chatID);
         messagingTemplate.convertAndSend("/box/" + chatID, chatMessage);
         return chatMessage;
     }
