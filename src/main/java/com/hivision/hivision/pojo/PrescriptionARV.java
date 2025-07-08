@@ -27,11 +27,11 @@ public class PrescriptionARV {
     @Column(name = "Duration")
     String duration;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "PrescriptionID")
     Prescription prescription;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "ARV_ID")
     ARV arv;
 

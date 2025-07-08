@@ -27,7 +27,7 @@ public class Content {
     @Column(name = "Body")
     String body;
 
-    @Size(max = 255)
+    @Lob
     @Column(name = "Photo")
     String photo;
 
