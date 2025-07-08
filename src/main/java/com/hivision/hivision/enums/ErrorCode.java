@@ -11,6 +11,7 @@ public enum ErrorCode {
     USER_NOT_FOUND(404,"User not found"),
     DOCTOR_NOT_FOUND(404,"Doctor not found"),
     PATIENT_NOT_FOUND(404,"Patient not found"),
+    STAFF_NOT_FOUND(404,"Staff not found"),
     SERVICE_NOT_FOUND(404,"Service not found"),
     APPOINTMENT_NOT_FOUND(404,"Appointment not found"),
     ARV_NOT_FOUND(404,"ARV not found"),

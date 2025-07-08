@@ -41,7 +41,7 @@ public class Filter extends OncePerRequestFilter {
             "/HiVision/account/**",
             "/HiVision/account/register",
             "/HiVision/auth/**",
-//            "/BidKoi/ws/**",
+            "/HiVision/ws/**",
 //            "/BidKoi/account/creation",
 //            "/BidKoi/account",
 
