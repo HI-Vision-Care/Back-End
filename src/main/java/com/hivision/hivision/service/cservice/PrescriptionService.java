@@ -62,6 +62,11 @@ public class PrescriptionService implements IPrescriptionService {
 
             prescription = prescriptionRepo.findByPatientAndStatus(patient, PresStatus.CREATED);
 
+            // kiểm tra xem ARV có tồn tại không
+//            ARV arv = arvRepo.findByArvId(arvRequest.getArvID());
+//            if (arv == null) {
+//                throw new AppException(ErrorCode.ARV_NOT_FOUND);
+//            }
 
             PrescriptionARV preArv = PrescriptionARV.builder()
                     .arv(arvRepo.findByArvId(arvRequest.getArvID()))
