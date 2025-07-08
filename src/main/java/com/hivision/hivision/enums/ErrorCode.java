@@ -41,6 +41,7 @@ public enum ErrorCode {
     APPOINTMENT_IS_ONGOING(400, "Appointment is already ongoing!"),
     MEDICAL_RECORD_NOT_FOUND(404, "Medical record not found!"),
     MEDICAL_RECORD_ALREADY_EXISTS(409, "Medical record already exists for this appointment!"),
+    LAB_RESULT_NOT_FOUND(404, "Lab result not found!"),
     PRES_ALREADY_EXISTS(409, "Prescription already exists!"),
     WORK_SHIFT_NOT_FOUND(404, "Work shift not found!"),
     BLOG_NOT_FOUND(404,"Blog Post not found"),

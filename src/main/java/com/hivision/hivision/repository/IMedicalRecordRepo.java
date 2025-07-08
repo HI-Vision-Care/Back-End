@@ -11,5 +11,5 @@ import java.util.List;
 public interface IMedicalRecordRepo extends JpaRepository<MedicalRecord, String> {
     boolean existsByAppointment(Appointment appointment);
     List<MedicalRecord> findByAppointment_AppointmentIDIn(List<String> appointmentIds);
-
+    MedicalRecord findByAppointment(Appointment appointment);
 }
