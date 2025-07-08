@@ -25,15 +25,15 @@ public class BlogPost {
     @JoinColumn(name = "AccountID")
     Account account;
 
-    @Size(max = 100)
+    @Size(max = 255)
     @Column(name = "Title")
     String title;
 
-    @Size(max = 100)
+    @Size(max = 255)
     @Column(name = "Topic")
     String topic;
 
-    @Size(max = 255)
+    @Lob
     @Column(name = "Banner")
     String banner;
 
