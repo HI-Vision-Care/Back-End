@@ -34,6 +34,6 @@ public class Chat {
 
     @ManyToOne
     @JoinColumn(name = "ChatID")
-    ChatBox chatID;
+    ChatBox chat;
 
 }

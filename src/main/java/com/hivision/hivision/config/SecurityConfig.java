@@ -34,6 +34,7 @@ public class SecurityConfig implements WebMvcConfigurer {
                                 "/swagger-ui/**",
                                 "/v3/api-docs/**",
                                 "auth/google/login",
+                                "/ws/**",
                                 "/account/**",
                                 "/account/register",
                                 "/appointment/book-consultation-guest"
