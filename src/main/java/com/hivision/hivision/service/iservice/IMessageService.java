@@ -5,6 +5,6 @@ import com.hivision.hivision.dto.MessageDTO;
 import java.util.List;
 
 public interface IMessageService {
-    MessageDTO save(MessageDTO message, int chatID);
+    MessageDTO save(MessageDTO message, String patientID);
     //List<MessageDTO> getMessage(Long roomId);
 }

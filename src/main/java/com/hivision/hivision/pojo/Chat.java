@@ -21,9 +21,9 @@ public class Chat {
     @Column(name = "\"No\"", nullable = false)
     Integer id;
 
-    @Size(max = 50)
-    @Column(name = "Name", length = 50)
-    String name;
+    @ManyToOne
+    @JoinColumn(name = "AccountID")
+    Account account;
 
     @Lob
     @Column(name = "Message")
@@ -32,8 +32,7 @@ public class Chat {
     @Column(name = "\"Date\"")
     Instant date;
 
-    @ManyToOne
-    @JoinColumn(name = "ChatID")
-    ChatBox chat;
+
+
 
 }
