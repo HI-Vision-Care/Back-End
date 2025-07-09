@@ -17,6 +17,8 @@ import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @CrossOrigin("*")
@@ -36,7 +38,7 @@ public class ConsultationController {
     }
 
     @MessageMapping("/requirement/{patientID}")
-    @SendTo("/consultation")
+    @SendTo("/consultation/require")
     public ConsultationPayload requireConsultation(@DestinationVariable String patientID, @Payload ConsultationPayload consultationPayload ) {
 //        chatBoxService.requireConsultation(patientID,consultationPayload);
 //        messagingTemplate.convertAndSend("/consultation", consultationPayload);
@@ -44,17 +46,18 @@ public class ConsultationController {
     }
 
     @MessageMapping("/require-again/{patientID}")
-    @SendTo("/consultation")
+    @SendTo("/consultation/require")
     public ConsultationPayload requireAgainConsultation(@DestinationVariable String patientID, @Payload ConsultationPayload consultationPayload ) {
 //        chatBoxService.requireConsultation(patientID,consultationPayload);
 //        messagingTemplate.convertAndSend("/consultation", consultationPayload);
         return chatBoxService.requireAgainConsultation(patientID,consultationPayload);
     }
 
-    @PatchMapping("/confirm/{staffID}")
-    public ResponseEntity<Void> confirmConsultation(@PathVariable String staffID, @RequestParam(name = "patientID") String patientID) {
-        chatBoxService.confirmConsultation(staffID,patientID);
-        return ResponseEntity.ok().build();
+    @MessageMapping("/confirmation/{staffID}")
+    @SendTo("/consultation/on-going")
+    public List<ConsultationPayload> confirmConsultation(@DestinationVariable String staffID, @Payload ConsultationPayload consultationPayload) {
+
+        return chatBoxService.confirmConsultation(staffID,consultationPayload);
     }
 
     @PatchMapping("/complete/{staffID}")
@@ -63,6 +66,9 @@ public class ConsultationController {
         return ResponseEntity.ok().build();
     }
 
-
+    @GetMapping("/require")
+    public ResponseEntity<List<ConsultationPayload>> getRequireConsultation() {
+        return ResponseEntity.ok(chatBoxService.getRequireConsultation());
+    }
 
 }

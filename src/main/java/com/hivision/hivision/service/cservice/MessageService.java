@@ -34,17 +34,15 @@ public class MessageService implements IMessageService {
     public MessageDTO save(MessageDTO request, String patientID) {
         Patient patient = patientRepo.findById(patientID)
                 .orElseThrow(() -> new AppException(ErrorCode.PATIENT_NOT_FOUND));
-        ChatBox chatBox = chatBoxRepo.findByPatient(patient);
 
-        Chat chat = Chat.builder()
+
+
+
+        chatRepo.save(Chat.builder()
                 .account(patient.getAccount())
                 .message(request.getMessage())
                 .date(Instant.now())
-                .build();
-
-
-
-        chatRepo.save(chat);
+                .build());
 
         return MessageDTO.builder()
                 .senderName(request.getSenderName())
