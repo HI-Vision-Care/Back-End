@@ -30,9 +30,10 @@ public class MedicalRecordService implements IMedicalRecordService {
                 .orElseThrow(() -> new AppException(ErrorCode.APPOINTMENT_NOT_FOUND));
 
         MedicalRecord medicalRecord = medicalRecordRepo.findByAppointment(appointment);
-        if (medicalRecord == null) {
-            throw new AppException(ErrorCode.MEDICAL_RECORD_NOT_FOUND);
-        }
+//        if (medicalRecord == null) {
+//            throw new AppException(ErrorCode.MEDICAL_RECORD_NOT_FOUND);
+//        }
+
         return medicalRecordMapper.toMedicalRecordDTO(medicalRecord);
 
     }
