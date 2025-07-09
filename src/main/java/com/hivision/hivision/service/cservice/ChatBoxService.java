@@ -3,6 +3,7 @@ package com.hivision.hivision.service.cservice;
 import com.hivision.hivision.enums.ConsultationStatus;
 import com.hivision.hivision.enums.ErrorCode;
 import com.hivision.hivision.exception.AppException;
+import com.hivision.hivision.mapper.IMapperChatBox;
 import com.hivision.hivision.payload.request.ConsultationPayload;
 import com.hivision.hivision.pojo.ChatBox;
 import com.hivision.hivision.pojo.Patient;
@@ -16,6 +17,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Service
@@ -23,6 +27,7 @@ public class ChatBoxService implements IChatBoxService {
     IChatBoxRepo chatBoxRepo;
     IPatientRepo patientRepo;
     IStaffRepo staffRepo;
+    IMapperChatBox mapper;
 
     @Override
     public ConsultationPayload requireConsultation(String patientID, ConsultationPayload payload) {
@@ -43,13 +48,19 @@ public class ChatBoxService implements IChatBoxService {
     }
 
     @Override
-    public void confirmConsultation(String staffID,String patientID) {
+    public List<ConsultationPayload> confirmConsultation(String staffID, ConsultationPayload payload) {
         Staff staff = staffRepo.findById(staffID)
                 .orElseThrow(() -> new AppException(ErrorCode.STAFF_NOT_FOUND));
-        ChatBox chatBox = chatBoxRepo.findByPatient(patientRepo.findPatientByPatientID(patientID));
+        ChatBox chatBox = chatBoxRepo.findByPatient(patientRepo.findPatientByName(payload.getName()));
         chatBox.setStaff(staff);
         chatBox.setStatus(ConsultationStatus.ONGOING);
         chatBoxRepo.save(chatBox);
+
+
+//        List<ConsultationPayload> consultations = new ArrayList<>();
+        List<ChatBox> chatBoxes = chatBoxRepo.findChatBoxByStatus(ConsultationStatus.REQUIRE);
+
+        return mapper.toConsultationPayloads(chatBoxes);
     }
 
     @Override
@@ -72,6 +83,12 @@ public class ChatBoxService implements IChatBoxService {
                 .name(patient.getName())
                 .note(payload.getNote())
                 .build();
+    }
+
+    @Override
+    public List<ConsultationPayload> getRequireConsultation() {
+        List<ChatBox> chatBoxes = chatBoxRepo.findChatBoxByStatus(ConsultationStatus.REQUIRE);
+        return mapper.toConsultationPayloads(chatBoxes);
     }
 
 

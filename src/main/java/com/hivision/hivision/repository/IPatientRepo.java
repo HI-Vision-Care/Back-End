@@ -11,5 +11,6 @@ import org.springframework.stereotype.Repository;
 public interface IPatientRepo extends JpaRepository<Patient, String> {
      Patient findPatientByAccount(Account account);
      Patient findPatientByPatientID(String id);
+     Patient findPatientByName(String name);
 
 }
