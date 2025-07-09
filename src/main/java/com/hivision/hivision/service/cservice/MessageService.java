@@ -6,8 +6,10 @@ import com.hivision.hivision.enums.ErrorCode;
 import com.hivision.hivision.exception.AppException;
 import com.hivision.hivision.pojo.Chat;
 import com.hivision.hivision.pojo.ChatBox;
+import com.hivision.hivision.pojo.Patient;
 import com.hivision.hivision.repository.IChatBoxRepo;
 import com.hivision.hivision.repository.IChatRepo;
+import com.hivision.hivision.repository.IPatientRepo;
 import com.hivision.hivision.service.iservice.IMessageService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -25,18 +27,19 @@ public class MessageService implements IMessageService {
 
     IChatBoxRepo chatBoxRepo;
     IChatRepo chatRepo;
+    IPatientRepo patientRepo;
 //    IMessageMapper mapper;
 
     @Override
-    public MessageDTO save(MessageDTO request, int chatID) {
-        ChatBox chatBox = chatBoxRepo.findById(chatID)
-                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+    public MessageDTO save(MessageDTO request, String patientID) {
+        Patient patient = patientRepo.findById(patientID)
+                .orElseThrow(() -> new AppException(ErrorCode.PATIENT_NOT_FOUND));
+        ChatBox chatBox = chatBoxRepo.findByPatient(patient);
 
         Chat chat = Chat.builder()
-                .name(request.getSenderName())
+                .account(patient.getAccount())
                 .message(request.getMessage())
                 .date(Instant.now())
-                .chat(chatBox)
                 .build();
 
 

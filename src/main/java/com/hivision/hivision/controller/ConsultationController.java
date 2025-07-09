@@ -1,6 +1,7 @@
 package com.hivision.hivision.controller;
 
 import com.hivision.hivision.dto.MessageDTO;
+import com.hivision.hivision.payload.request.ConsultationPayload;
 import com.hivision.hivision.service.cservice.MessageService;
 import com.hivision.hivision.service.iservice.IChatBoxService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -12,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,17 +28,27 @@ public class ConsultationController {
     IChatBoxService chatBoxService;
     MessageService messageService;
 
-    @MessageMapping("/message/{chatID}") // Đường dẫn tương ứng /app/message/{roomId}
-    public MessageDTO sendMessage(@DestinationVariable int chatID, @Payload MessageDTO chatMessage) {
-        messageService.save(chatMessage,chatID);
-        messagingTemplate.convertAndSend("/box/" + chatID, chatMessage);
+    @MessageMapping("/message/{patientID}") // Đường dẫn tương ứng /app/message/{roomId}
+    public MessageDTO sendMessage(@DestinationVariable String patientID, @Payload MessageDTO chatMessage) {
+        messageService.save(chatMessage,patientID);
+        messagingTemplate.convertAndSend("/box/" + patientID, chatMessage);
         return chatMessage;
     }
 
-    @PostMapping("/require/{patientID}")
-    public ResponseEntity<Void> requireConsultation(@PathVariable String patientID) {
-        chatBoxService.requireConsultation(patientID);
-        return ResponseEntity.ok().build();
+    @MessageMapping("/requirement/{patientID}")
+    @SendTo("/consultation")
+    public ConsultationPayload requireConsultation(@DestinationVariable String patientID, @Payload ConsultationPayload consultationPayload ) {
+//        chatBoxService.requireConsultation(patientID,consultationPayload);
+//        messagingTemplate.convertAndSend("/consultation", consultationPayload);
+        return chatBoxService.requireConsultation(patientID,consultationPayload);
+    }
+
+    @MessageMapping("/require-again/{patientID}")
+    @SendTo("/consultation")
+    public ConsultationPayload requireAgainConsultation(@DestinationVariable String patientID, @Payload ConsultationPayload consultationPayload ) {
+//        chatBoxService.requireConsultation(patientID,consultationPayload);
+//        messagingTemplate.convertAndSend("/consultation", consultationPayload);
+        return chatBoxService.requireAgainConsultation(patientID,consultationPayload);
     }
 
     @PatchMapping("/confirm/{staffID}")
@@ -44,4 +56,13 @@ public class ConsultationController {
         chatBoxService.confirmConsultation(staffID,patientID);
         return ResponseEntity.ok().build();
     }
+
+    @PatchMapping("/complete/{staffID}")
+    public ResponseEntity<Void> confirmConsultation(@PathVariable String staffID) {
+        chatBoxService.completeConsultation(staffID);
+        return ResponseEntity.ok().build();
+    }
+
+
+
 }

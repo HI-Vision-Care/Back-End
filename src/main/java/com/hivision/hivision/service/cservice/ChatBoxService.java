@@ -1,7 +1,9 @@
 package com.hivision.hivision.service.cservice;
 
+import com.hivision.hivision.enums.ConsultationStatus;
 import com.hivision.hivision.enums.ErrorCode;
 import com.hivision.hivision.exception.AppException;
+import com.hivision.hivision.payload.request.ConsultationPayload;
 import com.hivision.hivision.pojo.ChatBox;
 import com.hivision.hivision.pojo.Patient;
 import com.hivision.hivision.pojo.Staff;
@@ -23,13 +25,21 @@ public class ChatBoxService implements IChatBoxService {
     IStaffRepo staffRepo;
 
     @Override
-    public void requireConsultation(String patientID) {
+    public ConsultationPayload requireConsultation(String patientID, ConsultationPayload payload) {
         Patient patient = patientRepo.findById(patientID)
                 .orElseThrow(() -> new AppException(ErrorCode.PATIENT_NOT_FOUND));
 
         chatBoxRepo.save(ChatBox.builder()
                         .patient(patient)
+                        .status(ConsultationStatus.REQUIRE)
+                        .note(payload.getNote())
+                        .createdAt(payload.getCreatedAt())
                         .build());
+
+        return ConsultationPayload.builder()
+                .name(patient.getName())
+                .note(payload.getNote())
+                .build();
     }
 
     @Override
@@ -38,6 +48,31 @@ public class ChatBoxService implements IChatBoxService {
                 .orElseThrow(() -> new AppException(ErrorCode.STAFF_NOT_FOUND));
         ChatBox chatBox = chatBoxRepo.findByPatient(patientRepo.findPatientByPatientID(patientID));
         chatBox.setStaff(staff);
+        chatBox.setStatus(ConsultationStatus.ONGOING);
         chatBoxRepo.save(chatBox);
     }
+
+    @Override
+    public void completeConsultation(String staffID) {
+        ChatBox chatBox = chatBoxRepo.findByStaff(staffRepo.findStaffByStaffId(staffID));
+        chatBox.setStaff(null);
+        chatBox.setStatus(ConsultationStatus.COMPLETE);
+        chatBoxRepo.save(chatBox);
+    }
+
+    @Override
+    public ConsultationPayload requireAgainConsultation(String patientID, ConsultationPayload payload) {
+        Patient patient = patientRepo.findById(patientID)
+                .orElseThrow(() -> new AppException(ErrorCode.PATIENT_NOT_FOUND));
+        ChatBox chatBox = chatBoxRepo.findByPatient(patient);
+        chatBox.setStatus(ConsultationStatus.REQUIRE);
+        chatBoxRepo.save(chatBox);
+
+        return ConsultationPayload.builder()
+                .name(patient.getName())
+                .note(payload.getNote())
+                .build();
+    }
+
+
 }

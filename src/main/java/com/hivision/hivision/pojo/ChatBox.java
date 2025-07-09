@@ -1,8 +1,11 @@
 package com.hivision.hivision.pojo;
 
+import com.hivision.hivision.enums.ConsultationStatus;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+
+import java.time.Instant;
 
 @Getter
 @Setter
@@ -18,12 +21,21 @@ public class ChatBox {
     @Column(name = "ChatID", nullable = false)
     Integer id;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @Enumerated(EnumType.STRING)
+    @Column(name = "Status")
+    ConsultationStatus status;
+
+    @OneToOne
     @JoinColumn(name = "PatientID")
     Patient patient;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne
     @JoinColumn(name = "StaffID")
     Staff staff;
 
+    @Column(name = "Note")
+    String note;
+
+    @Column(name = "CreatedAt")
+    Instant createdAt;
 }
