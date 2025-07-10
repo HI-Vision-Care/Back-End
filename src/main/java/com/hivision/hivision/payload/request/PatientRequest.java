@@ -1,9 +1,9 @@
 package com.hivision.hivision.payload.request;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.time.Instant;
 
 @Data
 @Builder
@@ -12,9 +12,11 @@ import java.time.Instant;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class PatientRequest {
     String name;
-    Instant dob;
+    String dob;
+//    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
+//    LocalDate dob;
     String gender;
     String medNo;
-    Instant medDate;
+    String medDate;
     String medFac;
 }

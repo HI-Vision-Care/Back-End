@@ -6,6 +6,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.Instant;
+import java.time.LocalDate;
 
 
 @Entity
@@ -29,7 +30,8 @@ public class Patient {
     String name;
 
     @Column(name = "DOB")
-    Instant dob;
+    String dob;
+//    LocalDate dob;
 
     @Size(max = 10)
     @Column(name = "Gender", length = 10)
@@ -40,7 +42,8 @@ public class Patient {
     String medNo;
 
     @Column(name = "Med_Date")
-    Instant medDate;
+    String medDate;
+//    LocalDate medDate;
 
     @Size(max = 255)
     @Column(name = "Med_Facility")
