@@ -11,9 +11,11 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class RegisterRequest {
-    String password;
     @Email(message = "INVALID_EMAIL")
     String email;
+
+    String password;
+
     @Size(min = 10,max = 10,message = "PHONE_INVALID")
     String phone;
 }

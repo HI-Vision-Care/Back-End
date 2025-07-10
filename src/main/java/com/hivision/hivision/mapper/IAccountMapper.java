@@ -11,4 +11,5 @@ public interface IAccountMapper {
     Account toAccount(RegisterRequest accountCreationRequest);
     Account toAccountCreation(AccountCreationRequest accountCreationRequest);
     AccountDTO toAccountDTO(Account account);
+    AccountDTO toAccountDTOWithToken(Account account, String token);
 }

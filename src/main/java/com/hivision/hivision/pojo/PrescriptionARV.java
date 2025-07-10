@@ -19,7 +19,7 @@ public class PrescriptionARV {
     @Column(name = "PreArvID", nullable = false)
     Integer id;
 
-    @Size(max = 25)
+    @Size(max = 255)
     @Column(name = "Dosage")
     String dosage;
 
