@@ -40,9 +40,10 @@ public class ConsultationController {
     @MessageMapping("/requirement/{patientID}")
     @SendTo("/consultation/require")
     public ConsultationPayload requireConsultation(@DestinationVariable String patientID, @Payload ConsultationPayload consultationPayload ) {
-//        chatBoxService.requireConsultation(patientID,consultationPayload);
-//        messagingTemplate.convertAndSend("/consultation", consultationPayload);
-        return chatBoxService.requireConsultation(patientID,consultationPayload);
+        chatBoxService.requireConsultation(patientID,consultationPayload);
+//        messagingTemplate.convertAndSend("/consultation/require", consultationPayload);
+//        return chatBoxService.requireConsultation(patientID,consultationPayload);
+        return consultationPayload;
     }
 
     @MessageMapping("/require-again/{patientID}")
@@ -70,5 +71,11 @@ public class ConsultationController {
     public ResponseEntity<List<ConsultationPayload>> getRequireConsultation() {
         return ResponseEntity.ok(chatBoxService.getRequireConsultation());
     }
+
+    @GetMapping("/require/{patientID}")
+    public ResponseEntity<ConsultationPayload> getRequireConsultation(@PathVariable String patientID) {
+        return ResponseEntity.ok(chatBoxService.getRequireConsultation(patientID));
+    }
+
 
 }

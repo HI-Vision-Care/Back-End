@@ -15,6 +15,7 @@ import java.time.Instant;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ConsultationPayload {
 
+    String patientID;
     String name;
     @Builder.Default
     ConsultationStatus status = ConsultationStatus.REQUIRE;

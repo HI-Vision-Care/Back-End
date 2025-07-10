@@ -10,4 +10,5 @@ public interface IChatBoxService {
     void completeConsultation(String staffID);
     ConsultationPayload requireAgainConsultation(String patientID, ConsultationPayload payload);
     List<ConsultationPayload> getRequireConsultation();
+    ConsultationPayload getRequireConsultation(String patientID);
 }
