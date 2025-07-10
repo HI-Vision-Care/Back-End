@@ -34,17 +34,20 @@ public class ChatBoxService implements IChatBoxService {
         Patient patient = patientRepo.findById(patientID)
                 .orElseThrow(() -> new AppException(ErrorCode.PATIENT_NOT_FOUND));
 
-        chatBoxRepo.save(ChatBox.builder()
+        ChatBox chatBox = ChatBox.builder()
                         .patient(patient)
                         .status(ConsultationStatus.REQUIRE)
                         .note(payload.getNote())
                         .createdAt(payload.getCreatedAt())
-                        .build());
+                        .build();
+        chatBoxRepo.save(chatBox);
 
-        return ConsultationPayload.builder()
-                .name(patient.getName())
-                .note(payload.getNote())
-                .build();
+//        return ConsultationPayload.builder()
+//                .patientID(patientID)
+//                .name(patient.getName())
+//                .note(payload.getNote())
+//                .build();
+        return mapper.toConsultationPayload(chatBox);
     }
 
     @Override
@@ -79,16 +82,25 @@ public class ChatBoxService implements IChatBoxService {
         chatBox.setStatus(ConsultationStatus.REQUIRE);
         chatBoxRepo.save(chatBox);
 
-        return ConsultationPayload.builder()
-                .name(patient.getName())
-                .note(payload.getNote())
-                .build();
+//        return ConsultationPayload.builder()
+//                .patientID(patientID)
+//                .name(patient.getName())
+//                .note(payload.getNote())
+//                .build();
+        return mapper.toConsultationPayload(chatBox);
+
     }
 
     @Override
     public List<ConsultationPayload> getRequireConsultation() {
         List<ChatBox> chatBoxes = chatBoxRepo.findChatBoxByStatus(ConsultationStatus.REQUIRE);
         return mapper.toConsultationPayloads(chatBoxes);
+    }
+
+    @Override
+    public ConsultationPayload getRequireConsultation(String patientID) {
+        ChatBox chatBox = chatBoxRepo.findByPatient(patientRepo.findPatientByName(patientID));
+        return mapper.toConsultationPayload(chatBox);
     }
 
 
