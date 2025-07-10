@@ -101,8 +101,12 @@ public class AccountService implements IAccountService {
         wallet.setBalance(0.0); // Khởi tạo số dư ví là 0
         walletRepo.save(wallet);
 
+        // Tạo token cho người dùng mới
+        var token = tokenService.generateToken(account);
+        // Trả về AccountDTO với token
+        return iAccountMapper.toAccountDTOWithToken(iAccountRepository.save(account), token);
 
-        return iAccountMapper.toAccountDTO(iAccountRepository.save(account));
+//        return iAccountMapper.toAccountDTO(iAccountRepository.save(account));
     }
 
     @Override
