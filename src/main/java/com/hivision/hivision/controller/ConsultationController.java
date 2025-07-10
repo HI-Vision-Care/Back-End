@@ -49,9 +49,9 @@ public class ConsultationController {
     @MessageMapping("/require-again/{patientID}")
     @SendTo("/consultation/require")
     public ConsultationPayload requireAgainConsultation(@DestinationVariable String patientID, @Payload ConsultationPayload consultationPayload ) {
-//        chatBoxService.requireConsultation(patientID,consultationPayload);
+        chatBoxService.requireAgainConsultation(patientID,consultationPayload);
 //        messagingTemplate.convertAndSend("/consultation", consultationPayload);
-        return chatBoxService.requireAgainConsultation(patientID,consultationPayload);
+        return consultationPayload;
     }
 
     @MessageMapping("/confirmation/{staffID}")
@@ -62,8 +62,8 @@ public class ConsultationController {
     }
 
     @PatchMapping("/complete/{staffID}")
-    public ResponseEntity<Void> confirmConsultation(@PathVariable String staffID) {
-        chatBoxService.completeConsultation(staffID);
+    public ResponseEntity<Void> confirmConsultation(@PathVariable String staffID, @RequestParam String patientID) {
+        chatBoxService.completeConsultation(staffID,patientID);
         return ResponseEntity.ok().build();
     }
 
@@ -74,7 +74,8 @@ public class ConsultationController {
 
     @GetMapping("/require/{patientID}")
     public ResponseEntity<ConsultationPayload> getRequireConsultation(@PathVariable String patientID) {
-        return ResponseEntity.ok(chatBoxService.getRequireConsultation(patientID));
+        ConsultationPayload consultationPayload = chatBoxService.getRequireConsultation(patientID);
+        return ResponseEntity.ok(consultationPayload);
     }
 
 

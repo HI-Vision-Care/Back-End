@@ -12,6 +12,6 @@ import java.util.List;
 @Repository
 public interface IChatBoxRepo extends JpaRepository<ChatBox, Integer> {
     ChatBox findByPatient(Patient patient);
-    ChatBox findByStaff(Staff staff);
+    ChatBox findByStaffAndPatient(Staff staff,Patient patient);
     List<ChatBox> findChatBoxByStatus(ConsultationStatus status);
 }

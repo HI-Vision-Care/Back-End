@@ -7,7 +7,7 @@ import java.util.List;
 public interface IChatBoxService {
     ConsultationPayload requireConsultation(String patientID, ConsultationPayload payload);
     List<ConsultationPayload> confirmConsultation(String staffID, ConsultationPayload payload);
-    void completeConsultation(String staffID);
+    void completeConsultation(String staffID,String patientID);
     ConsultationPayload requireAgainConsultation(String patientID, ConsultationPayload payload);
     List<ConsultationPayload> getRequireConsultation();
     ConsultationPayload getRequireConsultation(String patientID);
