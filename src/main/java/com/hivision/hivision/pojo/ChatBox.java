@@ -25,13 +25,19 @@ public class ChatBox {
     @Column(name = "Status")
     ConsultationStatus status;
 
-    @OneToOne
-    @JoinColumn(name = "PatientID")
-    Patient patient;
+//    @OneToOne
+//    @JoinColumn(name = "PatientID")
+//    Patient patient;
+//
+//    @OneToOne
+//    @JoinColumn(name = "StaffID")
+//    Staff staff;
 
-    @OneToOne
-    @JoinColumn(name = "StaffID")
-    Staff staff;
+    @Column(name = "AccPatientID")
+    String accPatientID;
+
+    @Column(name = "AccStaffID")
+    String accStaffID;
 
     @Column(name = "Note")
     String note;

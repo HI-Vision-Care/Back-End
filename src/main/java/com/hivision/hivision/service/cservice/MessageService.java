@@ -4,9 +4,11 @@ package com.hivision.hivision.service.cservice;
 import com.hivision.hivision.dto.MessageDTO;
 import com.hivision.hivision.enums.ErrorCode;
 import com.hivision.hivision.exception.AppException;
+import com.hivision.hivision.pojo.Account;
 import com.hivision.hivision.pojo.Chat;
 import com.hivision.hivision.pojo.ChatBox;
 import com.hivision.hivision.pojo.Patient;
+import com.hivision.hivision.repository.IAccountRepo;
 import com.hivision.hivision.repository.IChatBoxRepo;
 import com.hivision.hivision.repository.IChatRepo;
 import com.hivision.hivision.repository.IPatientRepo;
@@ -29,17 +31,19 @@ public class MessageService implements IMessageService {
     IChatRepo chatRepo;
     IPatientRepo patientRepo;
 //    IMessageMapper mapper;
+    IAccountRepo accountRepo;
 
     @Override
-    public MessageDTO save(MessageDTO request, String patientID) {
-        Patient patient = patientRepo.findById(patientID)
-                .orElseThrow(() -> new AppException(ErrorCode.PATIENT_NOT_FOUND));
+    public MessageDTO save(MessageDTO request, String accountID) {
+//        Patient patient = patientRepo.findById(patientID)
+//                .orElseThrow(() -> new AppException(ErrorCode.PATIENT_NOT_FOUND));
 
 
-
+        Account account = accountRepo.findById(accountID)
+                        .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
 
         chatRepo.save(Chat.builder()
-                .account(patient.getAccount())
+                .account(account)
                 .message(request.getMessage())
                 .date(Instant.now())
                 .build());
