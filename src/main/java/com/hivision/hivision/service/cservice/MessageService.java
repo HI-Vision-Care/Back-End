@@ -41,6 +41,7 @@ public class MessageService implements IMessageService {
 
         chatRepo.save(Chat.builder()
                 .account(account)
+                .sender(request.getSenderName())
                 .message(request.getMessage())
                 .date(Instant.now())
                 .build());

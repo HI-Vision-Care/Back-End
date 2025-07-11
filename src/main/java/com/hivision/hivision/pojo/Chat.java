@@ -25,6 +25,9 @@ public class Chat {
     @JoinColumn(name = "AccountID")
     Account account;
 
+    @Column(name = "Sender")
+    String sender;
+
     @Lob
     @Column(name = "Message")
     String message;
