@@ -2,6 +2,7 @@ package com.hivision.hivision.controller;
 
 import com.hivision.hivision.dto.MessageDTO;
 import com.hivision.hivision.payload.request.ConsultationPayload;
+import com.hivision.hivision.payload.response.MessageResponse;
 import com.hivision.hivision.pojo.Chat;
 import com.hivision.hivision.pojo.ChatBox;
 import com.hivision.hivision.service.cservice.ChatBoxService;
@@ -40,9 +41,13 @@ public class ConsultationController {
         return chatMessage;
     }
 
+    @GetMapping("/message/{staffID}")
+    public ResponseEntity<List<MessageResponse>> getMessagesByStaff(@PathVariable String staffID) {
+        return ResponseEntity.ok(messageService.getMessageByStaff(staffID));
+    }
     @GetMapping("/message/{patientID}")
-    public ResponseEntity<List<MessageDTO>> getMessages(@PathVariable String patientID) {
-        return ResponseEntity.ok(messageService.getMessage(patientID));
+    public ResponseEntity<List<MessageDTO>> getMessagesByPatient(@PathVariable String patientID) {
+        return ResponseEntity.ok(messageService.getMessageByPatient(patientID));
     }
 
     @MessageMapping("/requirement/{patientID}")

@@ -13,6 +13,7 @@ public interface IChatBoxRepo extends JpaRepository<ChatBox, Integer> {
 //    ChatBox findByPatient(Patient patient);
 //    ChatBox findByStaffAndPatient(Staff staff,Patient patient);
     ChatBox findByAccPatient(Account accPatient);
+    List<ChatBox> findByAccStaff(Account accStaff);
     ChatBox findByAccStaffAndAccPatient(Account staffID,Account patientID);
     List<ChatBox> findChatBoxByStatus(ConsultationStatus status);
     List<ChatBox> findChatBoxByStatusAndAccStaff(ConsultationStatus status,Account staff);
