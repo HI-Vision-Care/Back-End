@@ -4,6 +4,7 @@ import com.hivision.hivision.dto.LabResultDTO;
 import com.hivision.hivision.dto.PatientDTO;
 import com.hivision.hivision.payload.request.PatientRequest;
 import com.hivision.hivision.pojo.Patient;
+import com.hivision.hivision.service.iservice.IAppointmentService;
 import com.hivision.hivision.service.iservice.IPatientService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
@@ -23,6 +24,7 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class PatientController {
     IPatientService patientService;
+    IAppointmentService appointmentService;
 
     @GetMapping
     public ResponseEntity<List<PatientDTO>> getAllPatients() { return ResponseEntity.ok(patientService.getAllPatients()); }
@@ -53,6 +55,13 @@ public class PatientController {
     @DeleteMapping("/delete/{patientId}")
     public ResponseEntity<Void> deletePatient(@PathVariable String patientId) {
         patientService.deletePatient(patientId);
+        return ResponseEntity.noContent().build();
+    }
+
+    // Cancel appointment by patient
+    @PutMapping("/cancel-appointment/{appointmentId}")
+    public ResponseEntity<Void> cancelAppointment(@PathVariable String appointmentId, @RequestParam String patientId) {
+        appointmentService.cancelAppointment(appointmentId, patientId);
         return ResponseEntity.noContent().build();
     }
 }
