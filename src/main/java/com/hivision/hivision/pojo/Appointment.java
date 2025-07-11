@@ -45,6 +45,9 @@ public class Appointment {
     @Column(name = "IsAnonymous")
     Boolean isAnonymous;
 
+    @Column(name = "IsRecordCreated")
+    Boolean isRecordCreated;
+
     @Size(max = 255)
     @Column(name = "urlLink")
     String urlLink;
