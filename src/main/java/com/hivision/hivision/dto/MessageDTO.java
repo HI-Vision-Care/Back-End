@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 
 @Data
@@ -19,5 +20,5 @@ public class MessageDTO {
     @JsonProperty("message")
     String message;
     String status;
-    LocalDateTime date;
+    Instant date;
 }

@@ -2,6 +2,9 @@ package com.hivision.hivision.controller;
 
 import com.hivision.hivision.dto.MessageDTO;
 import com.hivision.hivision.payload.request.ConsultationPayload;
+import com.hivision.hivision.pojo.Chat;
+import com.hivision.hivision.pojo.ChatBox;
+import com.hivision.hivision.service.cservice.ChatBoxService;
 import com.hivision.hivision.service.cservice.MessageService;
 import com.hivision.hivision.service.iservice.IChatBoxService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -37,6 +40,11 @@ public class ConsultationController {
         return chatMessage;
     }
 
+    @GetMapping("/message/{patientID}")
+    public ResponseEntity<List<MessageDTO>> getMessages(@PathVariable String patientID) {
+        return ResponseEntity.ok(messageService.getMessage(patientID));
+    }
+
     @MessageMapping("/requirement/{patientID}")
     @SendTo("/consultation/require")
     public ConsultationPayload requireConsultation(@DestinationVariable String patientID, @Payload ConsultationPayload consultationPayload ) {
@@ -55,8 +63,9 @@ public class ConsultationController {
     }
 
     @MessageMapping("/confirmation/{staffID}")
-    @SendTo("/consultation/on-going")
-    public List<ConsultationPayload> confirmConsultation(@DestinationVariable String staffID, @Payload ConsultationPayload consultationPayload) {
+//    @SendTo("/consultation/on-going")
+    @SendTo("/consultation/require")
+    public ConsultationPayload confirmConsultation(@DestinationVariable String staffID, @Payload ConsultationPayload consultationPayload) {
 
         return chatBoxService.confirmConsultation(staffID,consultationPayload);
     }
@@ -78,5 +87,9 @@ public class ConsultationController {
         return ResponseEntity.ok(consultationPayload);
     }
 
+    @GetMapping("/on-going/{staffID}")
+    public ResponseEntity<List<ChatBox>> getOngoingConsultation(@PathVariable String staffID) {
+        return ResponseEntity.ok(chatBoxService.getChatBox(staffID));
+    }
 
 }

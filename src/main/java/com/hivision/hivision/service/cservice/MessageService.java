@@ -4,8 +4,10 @@ package com.hivision.hivision.service.cservice;
 import com.hivision.hivision.dto.MessageDTO;
 import com.hivision.hivision.enums.ErrorCode;
 import com.hivision.hivision.exception.AppException;
+import com.hivision.hivision.mapper.IMessageMapper;
 import com.hivision.hivision.pojo.Account;
 import com.hivision.hivision.pojo.Chat;
+import com.hivision.hivision.pojo.ChatBox;
 import com.hivision.hivision.repository.IAccountRepo;
 import com.hivision.hivision.repository.IChatBoxRepo;
 import com.hivision.hivision.repository.IChatRepo;
@@ -18,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -27,7 +30,7 @@ public class MessageService implements IMessageService {
     IChatBoxRepo chatBoxRepo;
     IChatRepo chatRepo;
     IPatientRepo patientRepo;
-//    IMessageMapper mapper;
+    IMessageMapper mapper;
     IAccountRepo accountRepo;
 
     @Override
@@ -38,9 +41,12 @@ public class MessageService implements IMessageService {
 
         Account account = accountRepo.findById(accountID)
                         .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+        ChatBox chatBox = chatBoxRepo.findByAccPatient(account);
+
 
         chatRepo.save(Chat.builder()
                 .account(account)
+                .chatBox(chatBox)
                 .sender(request.getSenderName())
                 .message(request.getMessage())
                 .date(Instant.now())
@@ -49,9 +55,20 @@ public class MessageService implements IMessageService {
         return MessageDTO.builder()
                 .senderName(request.getSenderName())
                 .message(request.getMessage())
-                .date(LocalDateTime.now())
+                .date(Instant.now())
                 .build();
     }
+
+    @Override
+    public List<MessageDTO> getMessage(String accountID) {
+        Account account = accountRepo.findById(accountID)
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+        ChatBox chatBox = chatBoxRepo.findByAccPatient(account);
+        List<Chat> chats = chatRepo.findChatsByChatBox(chatBox);
+        return mapper.toDTO(chats);
+    }
+
+
 
 //    @Override
 //    public List<MessageDTO> getMessage(Long roomId) {
