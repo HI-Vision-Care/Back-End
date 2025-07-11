@@ -1,9 +1,9 @@
 package com.hivision.hivision.service.iservice;
 
-import com.hivision.hivision.pojo.RegimenARV;
+import com.hivision.hivision.payload.response.RegimenArvResponse;
 
 import java.util.List;
 
 public interface IRegimenARVService {
-    List<RegimenARV> getAllRegimenARVs();
+    List<RegimenArvResponse> getAllRegimenARVs();
 }
