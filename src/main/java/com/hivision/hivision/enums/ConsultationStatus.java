@@ -7,6 +7,7 @@ import lombok.experimental.FieldDefaults;
 @Getter
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public enum ConsultationStatus {
+    DEFAULT,
     REQUIRE,
     ONGOING,
     COMPLETE,

@@ -1,6 +1,7 @@
 package com.hivision.hivision.service.cservice;
 
 import com.hivision.hivision.dto.AccountDTO;
+import com.hivision.hivision.enums.ConsultationStatus;
 import com.hivision.hivision.enums.ErrorCode;
 import com.hivision.hivision.enums.Role;
 import com.hivision.hivision.exception.AppException;
@@ -34,6 +35,7 @@ public class AccountService implements IAccountService {
     IPatientRepo patientRepo;
     IStaffRepo staffRepo;
     IWalletRepo walletRepo;
+    IChatBoxRepo chatBoxRepo;
 
     private final TokenService tokenService;
     private final PasswordEncoder passwordEncoder;
@@ -100,6 +102,11 @@ public class AccountService implements IAccountService {
         wallet.setAccount(account);
         wallet.setBalance(0.0); // Khởi tạo số dư ví là 0
         walletRepo.save(wallet);
+
+        ChatBox chatBox = new ChatBox();
+        chatBox.setAccPatient(account);
+        chatBox.setStatus(ConsultationStatus.DEFAULT);
+        chatBoxRepo.save(chatBox);
 
         // Tạo token cho người dùng mới
         var token = tokenService.generateToken(account);
