@@ -10,8 +10,10 @@ import java.util.List;
 @Mapper
 public interface IMapperChatBox {
 
-    @Mapping(source = "patient.name", target = "name")
-    @Mapping(source = "patient.patientID", target = "patientID")
-    ConsultationPayload         toConsultationPayload(ChatBox chatBox);
+//    @Mapping(source = "patient.name", target = "name")
+//    @Mapping(source = "patient.patientID", target = "patientID")
+    @Mapping(source = "accPatient.id", target = "accountID")
+    @Mapping(source = "accPatient.username", target = "name")
+    ConsultationPayload toConsultationPayload(ChatBox chatBox);
     List<ConsultationPayload> toConsultationPayloads(List<ChatBox> chatBoxes);
 }

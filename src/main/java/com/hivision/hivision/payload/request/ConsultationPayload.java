@@ -2,7 +2,6 @@ package com.hivision.hivision.payload.request;
 
 
 import com.hivision.hivision.enums.ConsultationStatus;
-import com.hivision.hivision.pojo.ChatBox;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -15,7 +14,7 @@ import java.time.Instant;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ConsultationPayload {
 
-    String patientID;
+    String accountID;
     String name;
     @Builder.Default
     ConsultationStatus status = ConsultationStatus.REQUIRE;
