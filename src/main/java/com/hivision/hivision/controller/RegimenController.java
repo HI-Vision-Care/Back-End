@@ -1,5 +1,6 @@
 package com.hivision.hivision.controller;
 
+import com.hivision.hivision.service.iservice.IRegimenARVService;
 import com.hivision.hivision.service.iservice.IRegimenService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.AccessLevel;
@@ -19,10 +20,17 @@ import org.springframework.web.bind.annotation.RestController;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class RegimenController {
     IRegimenService regimenService;
+    IRegimenARVService regimenARVService;
+
 
     // Lấy tất cả phác đồ điều trị
     @GetMapping("/get-all-regimens")
     public ResponseEntity<?> getAllRegimens() {
         return ResponseEntity.ok(regimenService.getAllRegimens());
+    }
+
+    @GetMapping("/get-all-regimens-arv")
+    public ResponseEntity<?> getAllRegimensARV() {
+        return ResponseEntity.ok(regimenARVService.getAllRegimenARVs());
     }
 }

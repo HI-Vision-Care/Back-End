@@ -17,6 +17,7 @@ public class AppointmentDTO {
     String doctorID;
     Instant appointmentDate;
     Boolean isAnonymous;
+    Boolean isRecordCreated;
     String note;
     String urlLink;
     String status;
