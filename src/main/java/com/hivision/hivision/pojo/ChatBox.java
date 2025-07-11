@@ -2,6 +2,7 @@ package com.hivision.hivision.pojo;
 
 import com.hivision.hivision.enums.ConsultationStatus;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -21,27 +22,23 @@ public class ChatBox {
     @Column(name = "ChatID", nullable = false)
     Integer id;
 
+    @OneToOne
+    @JoinColumn(name = "AccPatientID")
+    Account accPatient;
+
+    @ManyToOne
+    @JoinColumn(name = "AccStaffID")
+    Account accStaff;
+
+
     @Enumerated(EnumType.STRING)
-    @Column(name = "Status")
     ConsultationStatus status;
 
-//    @OneToOne
-//    @JoinColumn(name = "PatientID")
-//    Patient patient;
-//
-//    @OneToOne
-//    @JoinColumn(name = "StaffID")
-//    Staff staff;
-
-    @Column(name = "AccPatientID")
-    String accPatientID;
-
-    @Column(name = "AccStaffID")
-    String accStaffID;
-
+    @Size(max = 255)
     @Column(name = "Note")
     String note;
 
     @Column(name = "CreatedAt")
     Instant createdAt;
+
 }

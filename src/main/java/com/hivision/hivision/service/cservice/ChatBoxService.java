@@ -19,7 +19,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -37,14 +36,15 @@ public class ChatBoxService implements IChatBoxService {
 //        Patient patient = patientRepo.findById(patientID)
 //                .orElseThrow(() -> new AppException(ErrorCode.PATIENT_NOT_FOUND));
 
-//        Account account = accountRepo.findAccountById(patientID);
+        Account account = accountRepo.findAccountById(patientID);
+        Patient patient = patientRepo.findPatientByAccount(account);
         ChatBox chatBox = ChatBox.builder()
 //                        .patient(patient)
-                        .accPatientID(patientID)
-                        .status(ConsultationStatus.REQUIRE)
-                        .note(payload.getNote())
-                        .createdAt(payload.getCreatedAt())
-                        .build();
+                .accPatient(account)
+                .status(ConsultationStatus.REQUIRE)
+                .note(payload.getNote())
+                .createdAt(payload.getCreatedAt())
+                .build();
         chatBoxRepo.save(chatBox);
 
 //        return ConsultationPayload.builder()
@@ -59,9 +59,12 @@ public class ChatBoxService implements IChatBoxService {
     public List<ConsultationPayload> confirmConsultation(String staffID, ConsultationPayload payload) {
         Staff staff = staffRepo.findById(staffID)
                 .orElseThrow(() -> new AppException(ErrorCode.STAFF_NOT_FOUND));
-        ChatBox chatBox = chatBoxRepo.findByPatient(patientRepo.findPatientByName(payload.getName()));
+        Account accountStaff = accountRepo.findAccountById(staffID);
+        Account accountPatient = accountRepo.findAccountById(payload.getAccountID());
+//        ChatBox chatBox = chatBoxRepo.findByPatient(patientRepo.findPatientByName(payload.getName()));
+        ChatBox chatBox = chatBoxRepo.findByAccPatient(accountPatient);
 //        chatBox.setStaff(staff);
-        chatBox.setAccStaffID(staffID);
+        chatBox.setAccStaff(accountStaff);
         chatBox.setStatus(ConsultationStatus.ONGOING);
         chatBoxRepo.save(chatBox);
 
@@ -74,19 +77,22 @@ public class ChatBoxService implements IChatBoxService {
 
     @Override
     public void completeConsultation(String staffID,String patientID) {
-        Staff staff = staffRepo.findStaffByStaffId(staffID);
-        Patient patient = patientRepo.findPatientByPatientID(patientID);
-        ChatBox chatBox = chatBoxRepo.findByStaffAndPatient(staff, patient);
-//        chatBox.setStaff(null);
+//        Staff staff = staffRepo.findStaffByStaffId(staffID);
+//        Patient patient = patientRepo.findPatientByPatientID(patientID);
+        Account accountStaff = accountRepo.findAccountById(staffID);
+        Account accountPatient = accountRepo.findAccountById(patientID);
+        ChatBox chatBox = chatBoxRepo.findByAccStaffAndAccPatient(accountStaff, accountPatient  );
+        chatBox.setAccStaff(null);
         chatBox.setStatus(ConsultationStatus.COMPLETE);
         chatBoxRepo.save(chatBox);
     }
 
     @Override
     public ConsultationPayload requireAgainConsultation(String patientID, ConsultationPayload payload) {
-        Patient patient = patientRepo.findById(patientID)
-                .orElseThrow(() -> new AppException(ErrorCode.PATIENT_NOT_FOUND));
-        ChatBox chatBox = chatBoxRepo.findByPatient(patient);
+//        Patient patient = patientRepo.findById(patientID)
+//                .orElseThrow(() -> new AppException(ErrorCode.PATIENT_NOT_FOUND));
+        Account accountPatient = accountRepo.findAccountById(patientID);
+        ChatBox chatBox = chatBoxRepo.findByAccPatient(accountPatient);
         chatBox.setStatus(ConsultationStatus.REQUIRE);
         chatBoxRepo.save(chatBox);
 
@@ -107,7 +113,10 @@ public class ChatBoxService implements IChatBoxService {
 
     @Override
     public ConsultationPayload getRequireConsultation(String patientID) {
-        ChatBox chatBox = chatBoxRepo.findByPatient(patientRepo.findPatientByPatientID(patientID));
+        Account account = accountRepo.findById(patientID)
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+        Patient patient = patientRepo.findPatientByAccount(account);
+        ChatBox chatBox = chatBoxRepo.findByAccPatient(account);
         return mapper.toConsultationPayload(chatBox);
     }
 

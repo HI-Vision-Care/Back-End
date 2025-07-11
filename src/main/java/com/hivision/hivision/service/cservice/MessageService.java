@@ -6,8 +6,6 @@ import com.hivision.hivision.enums.ErrorCode;
 import com.hivision.hivision.exception.AppException;
 import com.hivision.hivision.pojo.Account;
 import com.hivision.hivision.pojo.Chat;
-import com.hivision.hivision.pojo.ChatBox;
-import com.hivision.hivision.pojo.Patient;
 import com.hivision.hivision.repository.IAccountRepo;
 import com.hivision.hivision.repository.IChatBoxRepo;
 import com.hivision.hivision.repository.IChatRepo;
@@ -20,7 +18,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
