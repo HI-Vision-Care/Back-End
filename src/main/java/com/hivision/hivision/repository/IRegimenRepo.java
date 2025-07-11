@@ -5,6 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface RegimenRepo extends JpaRepository<Regimen, Integer> {
+public interface IRegimenRepo extends JpaRepository<Regimen, Integer> {
 
 }

@@ -19,9 +19,9 @@ import java.time.Instant;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Regimen {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "RegimenID", nullable = false)
-    private Integer id;
+    private String id;
 
     @Size(max = 255)
     @NotNull

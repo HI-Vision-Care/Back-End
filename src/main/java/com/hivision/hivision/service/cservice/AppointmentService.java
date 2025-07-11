@@ -177,6 +177,9 @@ public class AppointmentService implements IAppointmentService {
     public void cancelAppointment(String appointmentID,String patientID) {
         Appointment appointment = appointmentRepo.findById(appointmentID)
                 .orElseThrow(() -> new AppException(ErrorCode.APPOINTMENT_NOT_FOUND));
+        if (!appointment.getPatient().getPatientID().equals(patientID)) {
+            throw new AppException(ErrorCode.APPOINTMENT_NOT_BELONG_TO_PATIENT);
+        }
         appointment.setStatus(AppointmentStatus.CANCELLED);
 
         appointmentRepo.save(appointment);
