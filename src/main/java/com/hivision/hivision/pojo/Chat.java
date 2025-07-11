@@ -6,6 +6,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.Instant;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -24,6 +25,10 @@ public class Chat {
     @ManyToOne
     @JoinColumn(name = "AccountID")
     Account account;
+
+    @ManyToOne
+    @JoinColumn(name = "ChatID")
+    ChatBox chatBox;
 
     @Column(name = "Sender")
     String sender;

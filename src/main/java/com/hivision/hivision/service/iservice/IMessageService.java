@@ -6,5 +6,6 @@ import java.util.List;
 
 public interface IMessageService {
     MessageDTO save(MessageDTO message, String patientID);
-    //List<MessageDTO> getMessage(Long roomId);
+    List<MessageDTO> getMessage(String accID);
+
 }

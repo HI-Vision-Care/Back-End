@@ -19,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -37,15 +38,12 @@ public class ChatBoxService implements IChatBoxService {
 //                .orElseThrow(() -> new AppException(ErrorCode.PATIENT_NOT_FOUND));
 
         Account account = accountRepo.findAccountById(patientID);
-        Patient patient = patientRepo.findPatientByAccount(account);
-        ChatBox chatBox = ChatBox.builder()
-//                        .patient(patient)
-                .accPatient(account)
-                .status(ConsultationStatus.REQUIRE)
-                .note(payload.getNote())
-                .createdAt(payload.getCreatedAt())
-                .build();
+        ChatBox chatBox = chatBoxRepo.findByAccPatient(account);
+        chatBox.setStatus(ConsultationStatus.REQUIRE);
+        chatBox.setNote(payload.getNote());
+        chatBox.setCreatedAt(payload.getCreatedAt());
         chatBoxRepo.save(chatBox);
+
 
 //        return ConsultationPayload.builder()
 //                .patientID(patientID)
@@ -56,9 +54,8 @@ public class ChatBoxService implements IChatBoxService {
     }
 
     @Override
-    public List<ConsultationPayload> confirmConsultation(String staffID, ConsultationPayload payload) {
-        Staff staff = staffRepo.findById(staffID)
-                .orElseThrow(() -> new AppException(ErrorCode.STAFF_NOT_FOUND));
+    public ConsultationPayload confirmConsultation(String staffID, ConsultationPayload payload) {
+
         Account accountStaff = accountRepo.findAccountById(staffID);
         Account accountPatient = accountRepo.findAccountById(payload.getAccountID());
 //        ChatBox chatBox = chatBoxRepo.findByPatient(patientRepo.findPatientByName(payload.getName()));
@@ -70,9 +67,8 @@ public class ChatBoxService implements IChatBoxService {
 
 
 //        List<ConsultationPayload> consultations = new ArrayList<>();
-        List<ChatBox> chatBoxes = chatBoxRepo.findChatBoxByStatus(ConsultationStatus.REQUIRE);
 
-        return mapper.toConsultationPayloads(chatBoxes);
+        return mapper.toConsultationPayload(chatBox);
     }
 
     @Override
@@ -115,9 +111,15 @@ public class ChatBoxService implements IChatBoxService {
     public ConsultationPayload getRequireConsultation(String patientID) {
         Account account = accountRepo.findById(patientID)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
-        Patient patient = patientRepo.findPatientByAccount(account);
         ChatBox chatBox = chatBoxRepo.findByAccPatient(account);
         return mapper.toConsultationPayload(chatBox);
+    }
+
+    @Override
+    public List<ChatBox> getChatBox(String accStaffID) {
+        Account account = accountRepo.findById(accStaffID)
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+        return chatBoxRepo.findChatBoxByStatusAndAccStaff(ConsultationStatus.ONGOING,account);
     }
 
 
