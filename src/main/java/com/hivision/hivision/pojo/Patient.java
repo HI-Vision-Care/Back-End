@@ -7,6 +7,7 @@ import lombok.experimental.FieldDefaults;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.util.List;
 
 
 @Entity
@@ -48,4 +49,8 @@ public class Patient {
     @Size(max = 255)
     @Column(name = "Med_Facility")
     String medFac;
+
+    @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL, orphanRemoval = true)
+    List<PatientDisease> patientDiseases;
+
 }
