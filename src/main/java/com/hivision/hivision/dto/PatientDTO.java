@@ -3,6 +3,8 @@ package com.hivision.hivision.dto;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.util.List;
+
 
 @Data
 @AllArgsConstructor
@@ -17,5 +19,5 @@ public class PatientDTO {
     String medNo;
     String medDate;
     String medFac;
-    String underlyingDiseases;
+    List<String> underlyingDiseases;
 }

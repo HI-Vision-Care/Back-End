@@ -53,6 +53,8 @@ public class AppointmentService implements IAppointmentService {
                 .medicalService(medicalService)
                 .appointmentDate(request.getAppointmentDate())
                 .isAnonymous(request.getIsAnonymous())
+                .isRecordCreated(false)
+                .isPrescriptionCreated(false)
                 .note(request.getNote())
                 .status(AppointmentStatus.SCHEDULED)
                 .paymentStatus(PaymentStatus.UNPAID)

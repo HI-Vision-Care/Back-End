@@ -48,6 +48,9 @@ public class Appointment {
     @Column(name = "IsRecordCreated")
     Boolean isRecordCreated;
 
+    @Column(name = "IsPrescriptionCreated")
+    Boolean isPrescriptionCreated;
+
     @Size(max = 255)
     @Column(name = "urlLink")
     String urlLink;
