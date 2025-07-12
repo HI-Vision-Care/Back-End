@@ -1,5 +1,6 @@
 package com.hivision.hivision.pojo;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -19,6 +20,7 @@ public class PatientDisease {
 
     @ManyToOne
     @JoinColumn(name = "PatientID", referencedColumnName = "PatientID")
+    @JsonBackReference
     Patient patient;
 
     @ManyToOne
