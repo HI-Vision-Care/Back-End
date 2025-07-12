@@ -2,6 +2,7 @@ package com.hivision.hivision.service.cservice;
 
 
 import com.hivision.hivision.dto.MessageDTO;
+import com.hivision.hivision.enums.ConsultationStatus;
 import com.hivision.hivision.enums.ErrorCode;
 import com.hivision.hivision.exception.AppException;
 import com.hivision.hivision.mapper.IMessageMapper;
@@ -68,7 +69,7 @@ public class MessageService implements IMessageService {
     public List<MessageResponse> getMessageByStaff(String staffID) {
         Account account = accountRepo.findById(staffID)
                 .orElseThrow(() -> new AppException(ErrorCode.STAFF_NOT_FOUND));
-        List<ChatBox> chatBoxs = chatBoxRepo.findByAccStaff(account);
+        List<ChatBox> chatBoxs = chatBoxRepo.findChatBoxByStatusAndAccStaff(ConsultationStatus.ONGOING,account);
         List<MessageResponse> responses = new ArrayList<>();
         for (ChatBox chatBox : chatBoxs) {
             List<Chat> chats = chatRepo.findChatsByChatBox(chatBox);

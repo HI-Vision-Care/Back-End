@@ -41,11 +41,11 @@ public class ConsultationController {
         return chatMessage;
     }
 
-    @GetMapping("/message/{staffID}")
+    @GetMapping("/message-staff/{staffID}")
     public ResponseEntity<List<MessageResponse>> getMessagesByStaff(@PathVariable String staffID) {
         return ResponseEntity.ok(messageService.getMessageByStaff(staffID));
     }
-    @GetMapping("/message/{patientID}")
+    @GetMapping("/message-patient/{patientID}")
     public ResponseEntity<List<MessageDTO>> getMessagesByPatient(@PathVariable String patientID) {
         return ResponseEntity.ok(messageService.getMessageByPatient(patientID));
     }
