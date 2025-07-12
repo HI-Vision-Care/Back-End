@@ -12,11 +12,9 @@ import com.hivision.hivision.mapper.*;
 import com.hivision.hivision.payload.request.MedicalRecordRequest;
 import com.hivision.hivision.pojo.*;
 
-import com.hivision.hivision.enums.ErrorCode;
-import com.hivision.hivision.exception.AppException;
+
 import com.hivision.hivision.mapper.IDoctorMapper;
 import com.hivision.hivision.payload.request.DoctorRequest;
-import com.hivision.hivision.payload.response.AppointmentResponse;
 import com.hivision.hivision.pojo.Appointment;
 import com.hivision.hivision.pojo.Doctor;
 import com.hivision.hivision.repository.*;
@@ -151,6 +149,10 @@ public class DoctorService implements IDoctorService {
                 .note(request.getNote())
                 .build();
         medicalRecordRepo.save(medicalRecord);
+
+        // Cập nhật trạng thái của appointment
+        appointment.setIsRecordCreated(true);
+        appointmentRepo.save(appointment);
 
     return medicalRecordMapper.toMedicalRecordDTO(medicalRecord);
 

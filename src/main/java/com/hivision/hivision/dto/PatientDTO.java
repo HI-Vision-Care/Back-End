@@ -17,4 +17,5 @@ public class PatientDTO {
     String medNo;
     String medDate;
     String medFac;
+    String underlyingDiseases;
 }

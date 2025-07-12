@@ -19,4 +19,5 @@ public class PatientRequest {
     String medNo;
     String medDate;
     String medFac;
+    String underlyingDiseases;
 }
