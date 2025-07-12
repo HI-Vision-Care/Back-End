@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.util.List;
+
 
 @Data
 @Builder
@@ -19,5 +21,5 @@ public class PatientRequest {
     String medNo;
     String medDate;
     String medFac;
-    String underlyingDiseases;
+    List<String> underlyingDiseases;
 }

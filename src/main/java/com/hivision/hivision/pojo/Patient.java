@@ -48,8 +48,4 @@ public class Patient {
     @Size(max = 255)
     @Column(name = "Med_Facility")
     String medFac;
-
-    @Column(name = "Underlying_Diseases")
-    String underlyingDiseases;
-
 }

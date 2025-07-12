@@ -12,5 +12,5 @@ import java.util.Optional;
 public interface IAppointmentRepo extends JpaRepository<Appointment, String> {
     List<Appointment> findByPatient(Patient patient);
     List<Appointment> findByDoctor(Doctor doctor);
-
+    Optional<Appointment> findByPatientAndIsPrescriptionCreated(Patient patient, boolean isPrescriptionCreated);
 }

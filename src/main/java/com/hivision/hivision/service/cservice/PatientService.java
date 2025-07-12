@@ -33,6 +33,9 @@ public class PatientService implements IPatientService{
 
     ILabResultRepo labResultRepo;
     ILabResultMapper labResultMapper;
+
+    IDiseaseRepo diseaseRepo;
+    IPatientDiseaseRepo patientDiseaseRepo;
 //    @Override
 //    public List<Patient> getAllPatients() { return patientRepo.findAll(); }
 
@@ -41,12 +44,24 @@ public class PatientService implements IPatientService{
 //        List<Patient> patients = patientRepo.findAll();
 //        return patientMapper.toPatientDTO(patients);
 
-        List<Patient> patients = patientRepo.findAll()
-                .stream()
-                .filter(d -> d.getAccount() != null && !Boolean.TRUE.equals(d.getAccount().getIsDeleted()))
-                .toList();
+//        List<Patient> patients = patientRepo.findAll()
+//                .stream()
+//                .filter(d -> d.getAccount() != null && !Boolean.TRUE.equals(d.getAccount().getIsDeleted()))
+//                .toList();
+//
+//        return patientMapper.toPatientDTO(patients);
 
-        return patientMapper.toPatientDTO(patients);
+        return patientRepo.findAll().stream()
+                .filter(p -> p.getAccount() != null && !Boolean.TRUE.equals(p.getAccount().getIsDeleted()))
+                .map(patient -> {
+                    PatientDTO dto = patientMapper.toPatientDTO(patient);
+                    List<String> diseases = patientDiseaseRepo.findByPatient(patient).stream()
+                            .map(pd -> pd.getDisease().getName())
+                            .toList();
+                    dto.setUnderlyingDiseases(diseases);
+                    return dto;
+                })
+                .toList();
     }
 
     @Override
@@ -57,6 +72,7 @@ public class PatientService implements IPatientService{
     }
 
     @Override
+    @Transactional
     public PatientDTO updatePatient(String patientId, PatientRequest request) {
 
         Patient patient = patientRepo.findById(patientId)
@@ -72,12 +88,28 @@ public class PatientService implements IPatientService{
         patient.setMedNo(request.getMedNo());
         patient.setMedDate(request.getMedDate());
         patient.setMedFac(request.getMedFac());
-        patient.setUnderlyingDiseases(request.getUnderlyingDiseases());
 
-        patientMapper.updatePatient(patient, request);
+        patientDiseaseRepo.deleteByPatient(patient); // Xóa các bản ghi cũ
+
+        if (request.getUnderlyingDiseases() != null) {
+            for (String diseaseName : request.getUnderlyingDiseases()) {
+                Disease disease = diseaseRepo.findByName(diseaseName)
+                        .orElseGet(() -> diseaseRepo.save(Disease.builder().name(diseaseName).build()));
+
+                patientDiseaseRepo.save(PatientDisease.builder()
+                        .patient(patient)
+                        .disease(disease)
+                        .build());
+            }
+        }
 
         patientRepo.save(patient);
         return patientMapper.toPatientDTO(patient);
+
+//        patientMapper.updatePatient(patient, request);
+//
+//        patientRepo.save(patient);
+//        return patientMapper.toPatientDTO(patient);
     }
 
     @Override

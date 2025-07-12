@@ -11,10 +11,7 @@ import com.hivision.hivision.pojo.ARV;
 import com.hivision.hivision.pojo.Patient;
 import com.hivision.hivision.pojo.Prescription;
 import com.hivision.hivision.pojo.PrescriptionARV;
-import com.hivision.hivision.repository.IArvRepo;
-import com.hivision.hivision.repository.IPatientRepo;
-import com.hivision.hivision.repository.PreARVRepo;
-import com.hivision.hivision.repository.PrescriptionRepo;
+import com.hivision.hivision.repository.*;
 import com.hivision.hivision.service.iservice.IPrescriptionService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -36,6 +33,8 @@ public class PrescriptionService implements IPrescriptionService {
     IPatientRepo patientRepo;
     IArvRepo arvRepo;
     PreARVRepo preARVRepo;
+
+    IAppointmentRepo appointmentRepo;
 
 
 
@@ -84,6 +83,13 @@ public class PrescriptionService implements IPrescriptionService {
             preArvResponses.add(preArvResponse);
         }
         preARVRepo.saveAll(preARVsToSave);
+
+        // Update lại isPrescriptionCreated trong Appointment
+        appointmentRepo.findByPatientAndIsPrescriptionCreated(patient, false)
+                .ifPresent(appointment -> {
+                    appointment.setIsPrescriptionCreated(true);
+                    appointmentRepo.save(appointment);
+                });
 
         return PrescriptionResponse.builder()
                 .patient(patient)
