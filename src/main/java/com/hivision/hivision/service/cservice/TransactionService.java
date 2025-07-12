@@ -87,9 +87,9 @@ public class TransactionService implements ITransactionService {
     @Override
     public List<TransactionsDTO> getAllTransactions() {
         List<Transactions> transactions = transactionsRepo.findAll();
-        if (transactions.isEmpty()) {
-            throw new AppException(ErrorCode.TRANSACTION_NOT_FOUND);
-        }
+//        if (transactions.isEmpty()) {
+//            throw new AppException(ErrorCode.TRANSACTION_NOT_FOUND);
+//        }
         return transactionsMapper.toTransactionsDTO(transactions);
     }
 

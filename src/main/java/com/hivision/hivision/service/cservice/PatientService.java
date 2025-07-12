@@ -72,6 +72,7 @@ public class PatientService implements IPatientService{
         patient.setMedNo(request.getMedNo());
         patient.setMedDate(request.getMedDate());
         patient.setMedFac(request.getMedFac());
+        patient.setUnderlyingDiseases(request.getUnderlyingDiseases());
 
         patientMapper.updatePatient(patient, request);
 
