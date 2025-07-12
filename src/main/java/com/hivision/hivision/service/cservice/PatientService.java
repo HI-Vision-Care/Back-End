@@ -65,10 +65,23 @@ public class PatientService implements IPatientService{
     }
 
     @Override
-    public Patient getPatientByAccountID(String accountId) {
+    public PatientDTO getPatientByAccountID(String accountId) {
         Account account = accountRepo.findById(accountId)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
-        return patientRepo.findPatientByAccount(account);
+        Patient patient = patientRepo.findPatientByAccount(account);
+        if (patient == null) {
+            throw new AppException(ErrorCode.PATIENT_NOT_FOUND);
+        }
+        PatientDTO dto = patientMapper.toPatientDTO(patient);
+
+        List<String> diseases = patientDiseaseRepo.findByPatient(patient).stream()
+                .map(pd -> pd.getDisease().getName())
+                .toList();
+
+        dto.setUnderlyingDiseases(diseases);
+
+        return dto;
+//        return patientRepo.findPatientByAccount(account);
     }
 
     @Override

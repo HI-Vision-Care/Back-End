@@ -30,7 +30,7 @@ public class PatientController {
     public ResponseEntity<List<PatientDTO>> getAllPatients() { return ResponseEntity.ok(patientService.getAllPatients()); }
 
     @GetMapping("/profile/{accountId}")
-    public ResponseEntity<Patient> getPatientByAccountID(@PathVariable String accountId) {
+    public ResponseEntity<PatientDTO> getPatientByAccountID(@PathVariable String accountId) {
         return ResponseEntity.ok(patientService.getPatientByAccountID(accountId));
     }
 

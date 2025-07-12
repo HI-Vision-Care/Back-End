@@ -11,7 +11,7 @@ import java.util.List;
 public interface IPatientService {
 //    List<Patient> getAllPatients();
     List<PatientDTO> getAllPatients();
-    Patient getPatientByAccountID(String accountId);
+    PatientDTO getPatientByAccountID(String accountId);
     PatientDTO updatePatient(String patientId, PatientRequest patientRequest);
 
     void deletePatient(String patientId);
