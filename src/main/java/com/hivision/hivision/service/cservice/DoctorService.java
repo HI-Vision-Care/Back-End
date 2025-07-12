@@ -1,5 +1,6 @@
 package com.hivision.hivision.service.cservice;
 
+import com.hivision.hivision.dto.AppointmentDTO;
 import com.hivision.hivision.dto.DoctorDTO;
 
 import com.hivision.hivision.dto.LabResultDTO;
@@ -84,14 +85,15 @@ public class DoctorService implements IDoctorService {
     }
 
     @Override
-    public List<Appointment> getAppointmentsByDoctor(String doctorID) {
+    public List<AppointmentDTO> getAppointmentsByDoctor(String doctorID) {
         Doctor doctor = doctorRepo.findById(doctorID)
                 .orElseThrow(() -> new AppException(ErrorCode.DOCTOR_NOT_FOUND));
         List<Appointment> appointments = appointmentRepo.findByDoctor(doctor);
 //        if (appointments.isEmpty()) {
 //            throw new AppException(ErrorCode.APPOINTMENT_NOT_FOUND);
 //        }
-        return appointments;
+//        return appointments;
+        return appointmentMapper.toAppointmentDTOs(appointments);
     }
 
     @Override

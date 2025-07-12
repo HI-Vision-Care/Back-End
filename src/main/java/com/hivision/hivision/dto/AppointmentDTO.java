@@ -12,7 +12,8 @@ import java.time.Instant;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class AppointmentDTO {
     String appointmentID;
-    String patientID;
+//    String patientID;
+    PatientDTO patient;
     Long serviceID;
     String doctorID;
     Instant appointmentDate;
