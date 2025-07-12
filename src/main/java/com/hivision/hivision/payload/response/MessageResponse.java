@@ -2,9 +2,11 @@ package com.hivision.hivision.payload.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.hivision.hivision.dto.MessageDTO;
+import com.hivision.hivision.enums.ConsultationStatus;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.time.Instant;
 import java.util.List;
 
 //@JsonInclude(JsonInclude.Include.NON_NULL)
@@ -17,5 +19,8 @@ public class MessageResponse {
     int chatNo;
     String accountID;
     String sender;
+    ConsultationStatus status;
+    String note;
+    Instant createdAt;
     List<MessageDTO> messages;
 }
