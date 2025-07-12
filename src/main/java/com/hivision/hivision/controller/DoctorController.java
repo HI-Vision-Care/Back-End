@@ -1,5 +1,6 @@
 package com.hivision.hivision.controller;
 
+import com.hivision.hivision.dto.AppointmentDTO;
 import com.hivision.hivision.dto.DoctorDTO;
 import com.hivision.hivision.dto.LabResultDTO;
 import com.hivision.hivision.dto.MedicalRecordDTO;
@@ -58,7 +59,7 @@ public class DoctorController {
     }
 
     @GetMapping("/view-appointment/{doctorID}")
-    public ResponseEntity<List<Appointment>> getAppointmentsByDoctor(@PathVariable String doctorID) {
+    public ResponseEntity<List<AppointmentDTO>> getAppointmentsByDoctor(@PathVariable String doctorID) {
         return ResponseEntity.ok(doctorService.getAppointmentsByDoctor(doctorID));
     }
 

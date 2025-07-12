@@ -22,7 +22,7 @@ public interface IDoctorService {
 
     List<DoctorDTO> findDoctorsBySpecialty(String specialty);
     Doctor getDoctorByAccountID(String accountId);
-    List<Appointment> getAppointmentsByDoctor(String doctorID);
+    List<AppointmentDTO> getAppointmentsByDoctor(String doctorID);
 
     void updateDoctor(String doctorId, DoctorRequest request);
     void deleteDoctor(String doctorId);
