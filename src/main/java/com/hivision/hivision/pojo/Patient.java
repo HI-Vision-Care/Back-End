@@ -1,9 +1,11 @@
 package com.hivision.hivision.pojo;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import net.minidev.json.annotate.JsonIgnore;
 
 import java.time.Instant;
 import java.time.LocalDate;
@@ -50,7 +52,9 @@ public class Patient {
     @Column(name = "Med_Facility")
     String medFac;
 
+
     @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     List<PatientDisease> patientDiseases;
 
 }
