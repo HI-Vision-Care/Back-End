@@ -48,8 +48,8 @@ public class PrescriptionController {
     }
 
     @GetMapping("/arv/{patientId}")
-    public ResponseEntity<List<PrescriptionArvResponse>> getAllPresArvByPatientId(@PathVariable("patientId") String patientId) {
-        List<PrescriptionArvResponse> prescriptionARVs = prescriptionService.getAllPresArvByPatientId(patientId);
+    public ResponseEntity<PrescriptionArvResponse> getAllPresArvByPatientId(@PathVariable("patientId") String patientId) {
+        PrescriptionArvResponse prescriptionARVs = prescriptionService.getAllPresArvByPatientId(patientId);
         return new ResponseEntity<>(prescriptionARVs, HttpStatus.OK);
 //        return null;
     }
