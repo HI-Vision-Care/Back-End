@@ -97,27 +97,20 @@ public class BlogPostService implements IBlogPostService {
     }
 
     @Override
-    public void hideBlogPost(String accountID) {
-        Account account = accountRepo.findById(accountID)
-                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+    public void hideBlogPost(int blogID) {
 
-        BlogPost blogPost = blogPostRepo.findBlogPostByAccount(account);
-        if (blogPost == null) {
-            throw new AppException(ErrorCode.BLOG_NOT_FOUND);
-        }
+
+        BlogPost blogPost = blogPostRepo.findById(blogID)
+                .orElseThrow(() -> new AppException(ErrorCode.BLOG_NOT_FOUND));
         blogPost.setIsHide(true);
         blogPostRepo.save(blogPost);
     }
 
     @Override
-    public void showBlogPost(String accountID) {
-        Account account = accountRepo.findById(accountID)
-                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+    public void showBlogPost(int blogID) {
+        BlogPost blogPost = blogPostRepo.findById(blogID)
+                .orElseThrow(() -> new AppException(ErrorCode.BLOG_NOT_FOUND));
 
-        BlogPost blogPost = blogPostRepo.findBlogPostByAccount(account);
-        if (blogPost == null) {
-            throw new AppException(ErrorCode.BLOG_NOT_FOUND);
-        }
         blogPost.setIsHide(false);
         blogPostRepo.save(blogPost);
     }

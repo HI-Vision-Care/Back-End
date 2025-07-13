@@ -40,15 +40,15 @@ public class BlogPostController {
         return ResponseEntity.ok().build();
     }
 
-    @PatchMapping("/show/{accountID}")
-    public ResponseEntity<Void> showBlogPost(@PathVariable String accountID) {
-        blogPostService.showBlogPost(accountID);
+    @PatchMapping("/show/{blogID}")
+    public ResponseEntity<Void> showBlogPost(@PathVariable int blogID) {
+        blogPostService.showBlogPost(blogID);
         return ResponseEntity.noContent().build();
     }
 
-    @PatchMapping("/hide/{accountID}")
-    public ResponseEntity<Void> hideBlogPost(@PathVariable String accountID) {
-        blogPostService.hideBlogPost(accountID);
+    @PatchMapping("/hide/{blogID}")
+    public ResponseEntity<Void> hideBlogPost(@PathVariable int blogID) {
+        blogPostService.hideBlogPost(blogID);
         return ResponseEntity.noContent().build();
     }
 

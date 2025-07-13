@@ -12,8 +12,8 @@ import java.util.List;
 public interface IBlogPostService {
     void createBlogPost(BlogPostRequest blogPostRequest, List<ContentRequest> contentRequests, String accountID);
     void updateBlogPost(BlogPostRequest blogPostRequest, List<ContentRequest> contentRequests, String accountID);
-    void hideBlogPost(String accountID);
-    void showBlogPost(String accountID);
+    void hideBlogPost(int blogID);
+    void showBlogPost(int blogID);
     void approveBlogPost(int blogID,String accountID);
     void rejectBlogPost(int blogID,String accountID);
     void adjustBlogPost(int blogID,String accountID);
