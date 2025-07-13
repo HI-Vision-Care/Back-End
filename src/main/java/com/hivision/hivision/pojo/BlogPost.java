@@ -43,9 +43,9 @@ public class BlogPost {
     @Column(name = "CreateAt")
     Instant createAt = Instant.now();
 
-    @Builder.Default
+//    @Builder.Default
     @Column(name = "isHide")
-    Boolean isHide = true;
+    Boolean isHide;
 
     @Builder.Default
     @Column(name = "Status")
