@@ -9,7 +9,7 @@ import org.mapstruct.MappingTarget;
 
 import java.util.List;
 
-@Mapper
+@Mapper(componentModel = "spring", uses = { IAccountMapper.class })
 public interface IDoctorMapper {
 
     @Mapping(source = "account.avatar", target = "avatar")
