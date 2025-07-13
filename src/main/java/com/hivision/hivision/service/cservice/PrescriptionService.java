@@ -3,9 +3,11 @@ package com.hivision.hivision.service.cservice;
 import com.hivision.hivision.enums.ErrorCode;
 import com.hivision.hivision.enums.PresStatus;
 import com.hivision.hivision.exception.AppException;
+import com.hivision.hivision.mapper.IPrescriptionMapper;
 import com.hivision.hivision.payload.request.ArvRequest;
 import com.hivision.hivision.payload.request.PrescriptionRequest;
 import com.hivision.hivision.payload.response.PreArvResponse;
+import com.hivision.hivision.payload.response.PrescriptionArvResponse;
 import com.hivision.hivision.payload.response.PrescriptionResponse;
 import com.hivision.hivision.pojo.ARV;
 import com.hivision.hivision.pojo.Patient;
@@ -35,6 +37,8 @@ public class PrescriptionService implements IPrescriptionService {
     PreARVRepo preARVRepo;
 
     IAppointmentRepo appointmentRepo;
+
+    IPrescriptionMapper prescriptionMapper;
 
 
 
@@ -99,13 +103,22 @@ public class PrescriptionService implements IPrescriptionService {
     }
 
     @Override
-    public List<PrescriptionARV> getAllPresArvByPatientId(String patientId) {
+    public List<PrescriptionArvResponse> getAllPresArvByPatientId(String patientId) {
         Patient patient = patientRepo.findById(patientId)
                 .orElseThrow(() -> new AppException(ErrorCode.PATIENT_NOT_FOUND));
 
         Prescription prescription = prescriptionRepo.findByPatientAndStatus(patient, PresStatus.CREATED);
+        List<PrescriptionARV> prescriptionARVS = preARVRepo.findByPrescription(prescription);
 
-        return preARVRepo.findByPrescription(prescription); // trả về danh sách PrescriptionARV liên kết với Prescription
+        List<ARV> arvList = preARVRepo.findArvsByPrescription(prescription);
+
+
+        PrescriptionArvResponse.builder()
+                .prescription(prescription)
+                .arvList(arvList)
+                .build();
+
+        return null; // trả về danh sách PrescriptionARV liên kết với Prescription
     }
 
 }

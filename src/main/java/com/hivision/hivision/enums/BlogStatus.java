@@ -14,4 +14,5 @@ public enum BlogStatus {
     DELETED,
     VERIFIED,
     VIOLATED,
+    PUBLISHED,
 }

@@ -3,6 +3,7 @@ package com.hivision.hivision.controller;
 import com.hivision.hivision.payload.request.ArvRequest;
 import com.hivision.hivision.payload.request.PresDataWrapper;
 import com.hivision.hivision.payload.request.PrescriptionRequest;
+import com.hivision.hivision.payload.response.PrescriptionArvResponse;
 import com.hivision.hivision.payload.response.PrescriptionResponse;
 import com.hivision.hivision.pojo.Prescription;
 import com.hivision.hivision.pojo.PrescriptionARV;
@@ -47,8 +48,9 @@ public class PrescriptionController {
     }
 
     @GetMapping("/arv/{patientId}")
-    public ResponseEntity<List<PrescriptionARV>> getAllPresArvByPatientId(@PathVariable("patientId") String patientId) {
-        List<PrescriptionARV> prescriptionARVs = prescriptionService.getAllPresArvByPatientId(patientId);
+    public ResponseEntity<List<PrescriptionArvResponse>> getAllPresArvByPatientId(@PathVariable("patientId") String patientId) {
+        List<PrescriptionArvResponse> prescriptionARVs = prescriptionService.getAllPresArvByPatientId(patientId);
         return new ResponseEntity<>(prescriptionARVs, HttpStatus.OK);
+//        return null;
     }
 }
