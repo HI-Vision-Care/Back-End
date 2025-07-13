@@ -103,7 +103,7 @@ public class PrescriptionService implements IPrescriptionService {
     }
 
     @Override
-    public List<PrescriptionArvResponse> getAllPresArvByPatientId(String patientId) {
+    public PrescriptionArvResponse getAllPresArvByPatientId(String patientId) {
         Patient patient = patientRepo.findById(patientId)
                 .orElseThrow(() -> new AppException(ErrorCode.PATIENT_NOT_FOUND));
 
@@ -113,12 +113,12 @@ public class PrescriptionService implements IPrescriptionService {
         List<ARV> arvList = preARVRepo.findArvsByPrescription(prescription);
 
 
-        PrescriptionArvResponse.builder()
+        PrescriptionArvResponse prescriptionArvResponse = PrescriptionArvResponse.builder()
                 .prescription(prescription)
                 .arvList(arvList)
                 .build();
 
-        return null; // trả về danh sách PrescriptionARV liên kết với Prescription
+        return prescriptionArvResponse; // trả về danh sách PrescriptionARV liên kết với Prescription
     }
 
 }
