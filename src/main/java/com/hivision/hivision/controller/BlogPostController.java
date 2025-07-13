@@ -33,10 +33,10 @@ public class BlogPostController {
         return ResponseEntity.ok().build();
     }
     @PutMapping("/update/{blogID}/{accountID}")
-    public ResponseEntity<Void> updateBlogPost(@RequestBody BlogPostDataWrapper dataWrapper, @PathVariable String accountID,@PathVariable String blogID) {
+    public ResponseEntity<Void> updateBlogPost(@RequestBody BlogPostDataWrapper dataWrapper, @PathVariable String accountID,@PathVariable int blogID) {
         BlogPostRequest blogPostRequest = dataWrapper.getBlogPostRequest();
         List<ContentRequest> contentRequests = dataWrapper.getContentRequests();
-        blogPostService.updateBlogPost(blogPostRequest,contentRequests, accountID);
+        blogPostService.updateBlogPost(blogPostRequest,contentRequests, accountID,blogID);
         return ResponseEntity.ok().build();
     }
 
