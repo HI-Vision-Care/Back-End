@@ -1,9 +1,11 @@
 package com.hivision.hivision.pojo;
 
+import com.hivision.hivision.enums.BlogStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.springframework.security.core.authority.mapping.NullAuthoritiesMapper;
 
 import java.time.Instant;
 
@@ -41,4 +43,11 @@ public class BlogPost {
     @Column(name = "CreateAt")
     Instant createAt = Instant.now();
 
+    @Builder.Default
+    @Column(name = "isHide")
+    Boolean isHide = true;
+
+    @Builder.Default
+    @Column(name = "Status")
+    BlogStatus status = BlogStatus.PENDING;
 }

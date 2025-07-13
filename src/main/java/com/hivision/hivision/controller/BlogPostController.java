@@ -32,6 +32,43 @@ public class BlogPostController {
         blogPostService.createBlogPost(blogPostRequest,contentRequests, accountID);
         return ResponseEntity.ok().build();
     }
+    @PutMapping("/update/{accountID}")
+    public ResponseEntity<Void> updateBlogPost(@RequestBody BlogPostDataWrapper dataWrapper, @PathVariable String accountID) {
+        BlogPostRequest blogPostRequest = dataWrapper.getBlogPostRequest();
+        List<ContentRequest> contentRequests = dataWrapper.getContentRequests();
+        blogPostService.updateBlogPost(blogPostRequest,contentRequests, accountID);
+        return ResponseEntity.ok().build();
+    }
+
+    @PatchMapping("/show/{accountID}")
+    public ResponseEntity<Void> showBlogPost(@PathVariable String accountID) {
+        blogPostService.showBlogPost(accountID);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("/hide/{accountID}")
+    public ResponseEntity<Void> hideBlogPost(@PathVariable String accountID) {
+        blogPostService.hideBlogPost(accountID);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("/approve/{blogID}/{accountID}")
+    public ResponseEntity<Void> approveBlogPost(@PathVariable int blogID, @PathVariable String accountID) {
+        blogPostService.approveBlogPost(blogID,accountID);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("/reject/{blogID}/{accountID}")
+    public ResponseEntity<Void> rejectBlogPost(@PathVariable int blogID,@PathVariable String accountID) {
+        blogPostService.rejectBlogPost(blogID,accountID);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("/adjusting/{blogID}/{accountID}")
+    public ResponseEntity<Void> adjustBlogPost(@PathVariable int blogID,@PathVariable String accountID) {
+        blogPostService.adjustBlogPost(blogID,accountID);
+        return ResponseEntity.noContent().build();
+    }
 
     @GetMapping("/content/{blogID}")
     public ResponseEntity<BlogPostResponse> getAllBlogPostContent(@PathVariable int blogID) {

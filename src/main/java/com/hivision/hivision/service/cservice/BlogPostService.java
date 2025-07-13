@@ -1,6 +1,7 @@
 package com.hivision.hivision.service.cservice;
 
 import com.hivision.hivision.dto.BlogPostDTO;
+import com.hivision.hivision.enums.BlogStatus;
 import com.hivision.hivision.enums.ErrorCode;
 import com.hivision.hivision.exception.AppException;
 import com.hivision.hivision.mapper.IBlogMapper;
@@ -54,6 +55,104 @@ public class BlogPostService implements IBlogPostService {
         }
 
 
+    }
+
+    @Override
+    public void updateBlogPost(BlogPostRequest request, List<ContentRequest> contentRequests, String accountID) {
+        Account account = accountRepo.findById(accountID)
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+
+        BlogPost blogPost = blogPostRepo.findBlogPostByAccount(account);
+        if (blogPost == null) {
+            throw new AppException(ErrorCode.BLOG_NOT_FOUND);
+        }
+        blogMapper.updateBlogPost(blogPost,request);
+        blogPostRepo.save(blogPost);
+
+        List<Content> existingContents = contentRepo.findByBlogPost(blogPost);
+
+
+        if (existingContents.size() != contentRequests.size()) {
+            // Xoá toàn bộ content cũ
+            contentRepo.deleteAll(existingContents);
+            // Tạo lại từ đầu
+            for (ContentRequest contentRequest : contentRequests) {
+                Content newContent = Content.builder()
+                        .blogPost(blogPost)
+                        .header(contentRequest.getHeader())
+                        .body(contentRequest.getBody())
+                        .photo(contentRequest.getPhoto())
+                        .build();
+                contentRepo.save(newContent);
+            }
+        } else {
+            // Cập nhật từng content theo vị trí
+            for (int i = 0; i < contentRequests.size(); i++) {
+                Content existingContent = existingContents.get(i);
+                ContentRequest contentRequest = contentRequests.get(i);
+                blogMapper.updateContent(existingContent, contentRequest);
+                contentRepo.save(existingContent);
+            }
+        }
+    }
+
+    @Override
+    public void hideBlogPost(String accountID) {
+        Account account = accountRepo.findById(accountID)
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+
+        BlogPost blogPost = blogPostRepo.findBlogPostByAccount(account);
+        if (blogPost == null) {
+            throw new AppException(ErrorCode.BLOG_NOT_FOUND);
+        }
+        blogPost.setIsHide(true);
+        blogPostRepo.save(blogPost);
+    }
+
+    @Override
+    public void showBlogPost(String accountID) {
+        Account account = accountRepo.findById(accountID)
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+
+        BlogPost blogPost = blogPostRepo.findBlogPostByAccount(account);
+        if (blogPost == null) {
+            throw new AppException(ErrorCode.BLOG_NOT_FOUND);
+        }
+        blogPost.setIsHide(false);
+        blogPostRepo.save(blogPost);
+    }
+
+    @Override
+    public void approveBlogPost(int blogID,String accountID) {
+        Account account = accountRepo.findById(accountID)
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+
+        BlogPost blogPost = blogPostRepo.findById(blogID)
+                .orElseThrow(() -> new AppException(ErrorCode.BLOG_NOT_FOUND));
+        blogPost.setStatus(BlogStatus.APPROVED);
+        blogPostRepo.save(blogPost);
+    }
+
+    @Override
+    public void rejectBlogPost(int blogID,String accountID) {
+        Account account = accountRepo.findById(accountID)
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+
+        BlogPost blogPost = blogPostRepo.findById(blogID)
+                .orElseThrow(() -> new AppException(ErrorCode.BLOG_NOT_FOUND));
+        blogPost.setStatus(BlogStatus.REJECTED);
+        blogPostRepo.save(blogPost);
+    }
+
+    @Override
+    public void adjustBlogPost(int blogID,String accountID) {
+        Account account = accountRepo.findById(accountID)
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+
+        BlogPost blogPost = blogPostRepo.findById(blogID)
+                .orElseThrow(() -> new AppException(ErrorCode.BLOG_NOT_FOUND));
+        blogPost.setStatus(BlogStatus.ADJUSTING);
+        blogPostRepo.save(blogPost);
     }
 
     @Override
