@@ -11,7 +11,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = { IAccountMapper.class })
 public interface IPatientMapper {
     @Mapping(target = "underlyingDiseases", expression = "java(mapDiseases(patient))")
     PatientDTO toPatientDTO(Patient patient);

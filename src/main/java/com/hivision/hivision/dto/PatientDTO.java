@@ -1,5 +1,6 @@
 package com.hivision.hivision.dto;
 
+import com.hivision.hivision.pojo.Account;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -19,5 +20,6 @@ public class PatientDTO {
     String medNo;
     String medDate;
     String medFac;
+    Account account;
     List<String> underlyingDiseases;
 }
