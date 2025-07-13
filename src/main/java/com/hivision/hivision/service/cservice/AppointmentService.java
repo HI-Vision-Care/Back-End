@@ -67,14 +67,15 @@ public class AppointmentService implements IAppointmentService {
     }
 
     @Override
-    public List<Appointment> getAppointmentsByPatient(String patientID) {
+    public List<AppointmentDTO> getAppointmentsByPatient(String patientID) {
         Patient patient = patientRepo.findById(patientID)
                 .orElseThrow(() -> new AppException(ErrorCode.PATIENT_NOT_FOUND));
 //        List<Appointment> appointments = appointmentRepo.findByPatient(patient);
 //        if (appointments.isEmpty()) {
 //            throw new AppException(ErrorCode.APPOINTMENT_NOT_FOUND);
 //        }
-        return appointmentRepo.findByPatient(patient);
+//        return appointmentRepo.findByPatient(patient);
+        return mapper.toAppointmentDTOs(appointmentRepo.findByPatient(patient));
     }
 
     @Override

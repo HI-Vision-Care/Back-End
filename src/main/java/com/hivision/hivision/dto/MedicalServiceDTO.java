@@ -14,6 +14,7 @@ public class MedicalServiceDTO implements Serializable {
     String name;
     String description;
     Double price;
+    String type;
     Boolean isActive;
     Boolean isRequireDoctor;
     Boolean isOnline;
