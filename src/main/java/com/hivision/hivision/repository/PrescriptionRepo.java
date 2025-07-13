@@ -1,6 +1,7 @@
 package com.hivision.hivision.repository;
 
 import com.hivision.hivision.enums.PresStatus;
+import com.hivision.hivision.pojo.ARV;
 import com.hivision.hivision.pojo.Patient;
 import com.hivision.hivision.pojo.Prescription;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,4 +13,5 @@ import java.util.List;
 public interface PrescriptionRepo extends JpaRepository<Prescription, String> {
     Prescription findByPatientAndStatus(Patient patient,PresStatus status);
     boolean existsByPatientAndStatus(Patient patient,PresStatus status);
+
 }

@@ -39,9 +39,5 @@ public class ArvDTO implements Serializable {
     @Size(max = 50)
     String regimenLevel;
     Instant lastUpdated;
-    List<String> contraindication;
-    List<String> indication;
-    List<String> sideEffect;
-    List<String> drugInteraction;
-    List<String> targetPopulation;
+
 }
