@@ -46,7 +46,7 @@ public class AppointmentController {
     }
 
     @GetMapping("/get-appointment/{patientId}")
-    public ResponseEntity<List<Appointment>> getAppointmentsByPatient(@PathVariable String patientId) {
+    public ResponseEntity<List<AppointmentDTO>> getAppointmentsByPatient(@PathVariable String patientId) {
         return ResponseEntity.ok(appointmentService.getAppointmentsByPatient(patientId));
     }
 

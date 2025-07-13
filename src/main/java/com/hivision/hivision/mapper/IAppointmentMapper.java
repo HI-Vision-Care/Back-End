@@ -9,13 +9,17 @@ import org.mapstruct.Mapping;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring", uses = IPatientMapper.class)
+@Mapper(componentModel = "spring", uses = {
+        IPatientMapper.class,
+        IDoctorMapper.class,
+        IMedicalServiceMapper.class
+})
 public interface IAppointmentMapper {
     Appointment toAppointment(AppointmentRequest appointmentRequest);
 
 //    @Mapping(source = "patient.patientID", target = "patientID")
-    @Mapping(source = "medicalService.serviceID", target = "serviceID")
-    @Mapping(source = "doctor.doctorID", target = "doctorID")
+//    @Mapping(source = "medicalService.serviceID", target = "serviceID")
+//    @Mapping(source = "doctor.doctorID", target = "doctorID")
     @Mapping(source = "appointmentID", target = "appointmentID")
     AppointmentDTO toAppointmentDTO(Appointment appointment);
 

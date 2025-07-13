@@ -13,12 +13,16 @@ import java.time.Instant;
 public class AppointmentDTO {
     String appointmentID;
 //    String patientID;
+//    Long serviceID;
+//    String doctorID;
     PatientDTO patient;
-    Long serviceID;
-    String doctorID;
+    MedicalServiceDTO medicalService;
+    DoctorDTO doctor;
+
     Instant appointmentDate;
     Boolean isAnonymous;
     Boolean isRecordCreated;
+    Boolean isPrescriptionCreated;
     String note;
     String urlLink;
     String status;
