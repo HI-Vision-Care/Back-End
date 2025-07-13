@@ -32,8 +32,8 @@ public class BlogPostController {
         blogPostService.createBlogPost(blogPostRequest,contentRequests, accountID);
         return ResponseEntity.ok().build();
     }
-    @PutMapping("/update/{accountID}")
-    public ResponseEntity<Void> updateBlogPost(@RequestBody BlogPostDataWrapper dataWrapper, @PathVariable String accountID) {
+    @PutMapping("/update/{blogID}/{accountID}")
+    public ResponseEntity<Void> updateBlogPost(@RequestBody BlogPostDataWrapper dataWrapper, @PathVariable String accountID,@PathVariable String blogID) {
         BlogPostRequest blogPostRequest = dataWrapper.getBlogPostRequest();
         List<ContentRequest> contentRequests = dataWrapper.getContentRequests();
         blogPostService.updateBlogPost(blogPostRequest,contentRequests, accountID);
