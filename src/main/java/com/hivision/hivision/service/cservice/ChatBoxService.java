@@ -78,6 +78,9 @@ public class ChatBoxService implements IChatBoxService {
         Account accountStaff = accountRepo.findAccountById(staffID);
         Account accountPatient = accountRepo.findAccountById(patientID);
         ChatBox chatBox = chatBoxRepo.findByAccStaffAndAccPatient(accountStaff, accountPatient  );
+        if(chatBox == null){
+            throw new AppException(ErrorCode.CHATBOX_NOT_FOUND);
+        }
         chatBox.setAccStaff(null);
         chatBox.setStatus(ConsultationStatus.COMPLETE);
         chatBoxRepo.save(chatBox);
