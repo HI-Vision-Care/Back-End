@@ -9,10 +9,7 @@ import com.hivision.hivision.payload.request.PrescriptionRequest;
 import com.hivision.hivision.payload.response.PreArvResponse;
 import com.hivision.hivision.payload.response.PrescriptionArvResponse;
 import com.hivision.hivision.payload.response.PrescriptionResponse;
-import com.hivision.hivision.pojo.ARV;
-import com.hivision.hivision.pojo.Patient;
-import com.hivision.hivision.pojo.Prescription;
-import com.hivision.hivision.pojo.PrescriptionARV;
+import com.hivision.hivision.pojo.*;
 import com.hivision.hivision.repository.*;
 import com.hivision.hivision.service.iservice.IPrescriptionService;
 import lombok.AccessLevel;
@@ -103,22 +100,37 @@ public class PrescriptionService implements IPrescriptionService {
     }
 
     @Override
-    public PrescriptionArvResponse getAllPresArvByPatientId(String patientId) {
-        Patient patient = patientRepo.findById(patientId)
-                .orElseThrow(() -> new AppException(ErrorCode.PATIENT_NOT_FOUND));
-
+    public PrescriptionArvResponse getAllPresArvByApppointment(String appointmentID) {
+        Appointment appointment = appointmentRepo.findById(appointmentID)
+                .orElseThrow(() -> new AppException(ErrorCode.APPOINTMENT_NOT_FOUND));
+        Patient patient = appointment.getPatient();
         Prescription prescription = prescriptionRepo.findByPatientAndStatus(patient, PresStatus.CREATED);
-        List<PrescriptionARV> prescriptionARVS = preARVRepo.findByPrescription(prescription);
 
         List<ARV> arvList = preARVRepo.findArvsByPrescription(prescription);
 
 
-        PrescriptionArvResponse prescriptionArvResponse = PrescriptionArvResponse.builder()
+        return PrescriptionArvResponse.builder()
                 .prescription(prescription)
                 .arvList(arvList)
-                .build();
+                .build(); // trả về danh sách PrescriptionARV liên kết với Prescription
+    }
 
-        return prescriptionArvResponse; // trả về danh sách PrescriptionARV liên kết với Prescription
+    @Override
+    public List<PrescriptionArvResponse> getAllPresArvByPatient(String patientId) {
+        Patient patient = patientRepo.findById(patientId)
+                .orElseThrow(() -> new AppException(ErrorCode.PATIENT_NOT_FOUND));
+        List<Prescription> prescriptions = prescriptionRepo.findByPatient(patient);
+        List<PrescriptionArvResponse> preArvResponses = new ArrayList<>();
+        for (Prescription pre: prescriptions) {
+            List<ARV> arvList = preARVRepo.findArvsByPrescription(pre);
+            PrescriptionArvResponse prescriptionArvResponse = PrescriptionArvResponse.builder()
+                    .prescription(pre)
+                    .arvList(arvList)
+                    .build();
+            preArvResponses.add(prescriptionArvResponse);
+        }
+
+        return preArvResponses;
     }
 
 }

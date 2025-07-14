@@ -47,9 +47,16 @@ public class PrescriptionController {
 //        }
     }
 
-    @GetMapping("/arv/{patientId}")
-    public ResponseEntity<PrescriptionArvResponse> getAllPresArvByPatientId(@PathVariable("patientId") String patientId) {
-        PrescriptionArvResponse prescriptionARVs = prescriptionService.getAllPresArvByPatientId(patientId);
+    @GetMapping("/pre-arv/{appointmentID}")
+    public ResponseEntity<PrescriptionArvResponse> getAllPresArvByAppointment(@PathVariable String appointmentID) {
+        PrescriptionArvResponse prescriptionARVs = prescriptionService.getAllPresArvByApppointment(appointmentID);
+        return new ResponseEntity<>(prescriptionARVs, HttpStatus.OK);
+//        return null;
+    }
+
+    @GetMapping("/all-pre-arv/{patientId}")
+    public ResponseEntity<List<PrescriptionArvResponse>> getAllPresArvByPatient(@PathVariable("patientId") String patientId) {
+        List<PrescriptionArvResponse> prescriptionARVs = prescriptionService.getAllPresArvByPatient(patientId);
         return new ResponseEntity<>(prescriptionARVs, HttpStatus.OK);
 //        return null;
     }
