@@ -47,6 +47,7 @@ public enum ErrorCode {
     PRES_ALREADY_EXISTS(409, "Prescription already exists!"),
     WORK_SHIFT_NOT_FOUND(404, "Work shift not found!"),
     BLOG_NOT_FOUND(404,"Blog Post not found"),
+    CHATBOX_NOT_FOUND(404,"Chat box not found"),
     ;
 
     int code;
