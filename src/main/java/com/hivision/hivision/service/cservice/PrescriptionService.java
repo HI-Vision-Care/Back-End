@@ -100,11 +100,10 @@ public class PrescriptionService implements IPrescriptionService {
     }
 
     @Override
-    public PrescriptionArvResponse getAllPresArvByApppointment(String appointmentID) {
+    public PrescriptionArvResponse getPresArvByApppointment(String appointmentID) {
         Appointment appointment = appointmentRepo.findById(appointmentID)
                 .orElseThrow(() -> new AppException(ErrorCode.APPOINTMENT_NOT_FOUND));
-        Patient patient = appointment.getPatient();
-        Prescription prescription = prescriptionRepo.findByPatientAndStatus(patient, PresStatus.CREATED);
+        Prescription prescription = prescriptionRepo.findByAppointment(appointment);
 
         List<ARV> arvList = preARVRepo.findArvsByPrescription(prescription);
 

@@ -27,6 +27,10 @@ public class Prescription {
     @JoinColumn(name = "PatientID")
     Patient patient;
 
+    @OneToOne
+    @JoinColumn(name = "AppointmentID")
+    Appointment appointment;
+
     @Column(name = "\"Date\"")
     Instant date;
 

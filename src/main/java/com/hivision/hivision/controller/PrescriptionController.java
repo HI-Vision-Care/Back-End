@@ -49,7 +49,7 @@ public class PrescriptionController {
 
     @GetMapping("/pre-arv/{appointmentID}")
     public ResponseEntity<PrescriptionArvResponse> getAllPresArvByAppointment(@PathVariable String appointmentID) {
-        PrescriptionArvResponse prescriptionARVs = prescriptionService.getAllPresArvByApppointment(appointmentID);
+        PrescriptionArvResponse prescriptionARVs = prescriptionService.getPresArvByApppointment(appointmentID);
         return new ResponseEntity<>(prescriptionARVs, HttpStatus.OK);
 //        return null;
     }
