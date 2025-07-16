@@ -40,7 +40,7 @@ public class WorkShift {
     @Column(name = "EndTime")
     LocalDateTime endTime;
 
-    @Size(max = 50)
+    @Enumerated(EnumType.STRING)
     @Column(name = "Status", length = 50)
     WorkShiftStatus status;
 

@@ -28,7 +28,8 @@ public class WorkShiftController {
 
     @GetMapping
     public ResponseEntity<List<WorkShiftDTO>> getAllWorkShifts() {
-        return ResponseEntity.ok(wsService.getAll());
+        List<WorkShiftDTO> workShiftDTOList = wsService.getAll();
+        return ResponseEntity.ok(workShiftDTOList);
     }
 
     @PostMapping("/regis/{doctorID}")

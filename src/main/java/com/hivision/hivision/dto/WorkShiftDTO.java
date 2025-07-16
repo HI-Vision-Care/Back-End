@@ -1,5 +1,6 @@
 package com.hivision.hivision.dto;
 
+import com.hivision.hivision.enums.WorkShiftStatus;
 import com.hivision.hivision.pojo.Doctor;
 import jakarta.validation.constraints.Size;
 import lombok.Value;
@@ -17,10 +18,10 @@ public class WorkShiftDTO implements Serializable {
     Doctor doctor;
     @Size(max = 50)
     String slot;
-    LocalDateTime date;
+    Instant date;
     LocalDateTime startTime;
     LocalDateTime endTime;
     @Size(max = 50)
-    String status;
+    WorkShiftStatus status;
     String note;
 }

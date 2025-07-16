@@ -16,7 +16,7 @@ public class Invoice {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "InvoiceID", nullable = false)
-    String invoiceID;
+    Integer invoiceID;
 
     @Column(name = "Date")
     LocalDateTime invoiceDate;
