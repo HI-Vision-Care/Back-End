@@ -21,4 +21,5 @@ public interface IBlogPostService {
     List<BlogPostDTO> getAllBlogPost();
     List<BlogPostDTO> getBlogPostIsHide();
     List<BlogPostDTO> getBlogPostIsShow();
+    void deleteBlogPost(int blogID);
 }

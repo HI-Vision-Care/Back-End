@@ -89,4 +89,10 @@ public class BlogPostController {
     public ResponseEntity<List<BlogPostDTO>> getAllBlogPostIsShow() {
         return ResponseEntity.ok(blogPostService.getBlogPostIsShow());
     }
+
+    @DeleteMapping("/{blogID}")
+    public ResponseEntity<Void> getAllBlogPostIsShow(@PathVariable int blogID) {
+        blogPostService.deleteBlogPost(blogID);
+        return ResponseEntity.noContent().build();
+    }
 }
