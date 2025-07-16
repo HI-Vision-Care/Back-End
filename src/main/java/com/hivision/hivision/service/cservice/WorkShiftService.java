@@ -54,17 +54,12 @@ public class WorkShiftService implements IWSService {
     }
 
     @Override
-// SỬA LẠI: Thay đổi kiểu tham số từ Instant sang LocalDate để khớp với controller
     public List<WorkShiftDTO> getShiftsForWeek(LocalDate dateInWeek, String doctorId) {
-        // 1. Tính toán ngày bắt đầu và kết thúc của tuần một cách đơn giản hơn.
-        // Giả sử tuần bắt đầu từ Thứ Hai (MONDAY)
-        // SỬA LẠI: Logic tính toán đơn giản hơn vì đầu vào đã là LocalDate
         LocalDate startOfWeek = dateInWeek.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
 
-        // Lấy thời điểm 00:00:00 của ngày đầu tuần (Thứ Hai)
-        LocalDateTime startDateTime = startOfWeek.atStartOfDay();
-        // Lấy thời điểm 00:00:00 của ngày đầu tuần tiếp theo (để truy vấn < endDateTime)
-        LocalDateTime endDateTime = startDateTime.plusDays(7);
+        LocalDateTime startDateTime = LocalDateTime.from(startOfWeek.atStartOfDay());
+
+        LocalDateTime endDateTime = LocalDateTime.from(startDateTime.plusDays(7));
 
         // 2. Gọi phương thức repository tương ứng (phần này vẫn giữ nguyên vì đã hợp lý)
         List<WorkShift> workShifts;

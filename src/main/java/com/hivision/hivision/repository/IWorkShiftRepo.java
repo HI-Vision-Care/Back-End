@@ -16,21 +16,26 @@ import java.util.List;
 
 @Repository
 public interface IWorkShiftRepo extends JpaRepository<WorkShift, Integer> {
-    @Query("SELECT ws FROM WorkShift ws WHERE ws.doctor.doctorID = :doctorID AND ws.date >= :startDate AND ws.date < :endDate ORDER BY ws.startTime ASC")
+    @Query("SELECT ws FROM WorkShift ws WHERE ws.doctor.doctorID = :doctorID AND ws.startTime >= :startDate AND ws.startTime < :endDate ORDER BY ws.startTime ASC")
     List<WorkShift> findShiftsBetweenDatesForDoctor(
             @Param("doctorID") String doctorID,
-            @Param("startDate") LocalDateTime startDate,
-            @Param("endDate") LocalDateTime  endDate
-    );
-
-    @Query("SELECT ws FROM WorkShift ws WHERE ws.date >= :startDate AND ws.date < :endDate ORDER BY ws.startTime ASC")
-    List<WorkShift> findShiftsBetweenDates(
             @Param("startDate") LocalDateTime startDate,
             @Param("endDate") LocalDateTime endDate
     );
 
+    @Query("SELECT ws FROM WorkShift ws WHERE ws.startTime >= :startDate AND ws.startTime < :endDate ORDER BY ws.startTime ASC")
+    List<WorkShift> findShiftsBetweenDates(
+            @Param("startDate") LocalDateTime startDate,
+            @Param("endDate") LocalDateTime endDate
+    );
+//
     @Query("SELECT ws FROM WorkShift ws WHERE ws.doctor.doctorID = :doctorID ORDER BY ws.date ASC, ws.startTime ASC")
     List<WorkShift> findShiftsByDoctorId(@Param("doctorID") String doctorID);
+//    List<WorkShift> findShiftsBetweenDatesForDoctor(String doctorId, LocalDateTime startDate, LocalDateTime endDate);
+//
+//    // Phương thức cho trường hợp không có doctorId
+//    List<WorkShift> findShiftsBetweenDates(LocalDateTime startDate, LocalDateTime endDate);
+
 
     WorkShift findWorkShiftBySlotAndDoctorAndDate(String slot, Doctor doctor, LocalDate date);
 
