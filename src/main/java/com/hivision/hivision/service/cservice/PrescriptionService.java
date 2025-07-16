@@ -41,24 +41,27 @@ public class PrescriptionService implements IPrescriptionService {
 
 
     @Override
-    public PrescriptionResponse createPrescription(PrescriptionRequest request, List<ArvRequest> arvRequests, String patientId) {
-        Patient patient = patientRepo.findById(patientId)
-                .orElseThrow(() -> new AppException(ErrorCode.PATIENT_NOT_FOUND));
-        if(prescriptionRepo.existsByPatientAndStatus(patient,PresStatus.CREATED)){
-            throw new AppException(ErrorCode.PRES_ALREADY_EXISTS);
-        }
+    public PrescriptionResponse createPrescription(PrescriptionRequest request, List<ArvRequest> arvRequests, String appointmentID) {
+        Appointment appointment = appointmentRepo.findById(appointmentID)
+                .orElseThrow(() -> new AppException(ErrorCode.APPOINTMENT_NOT_FOUND));
+
+        Patient patient = appointment.getPatient();
+
+
+//        if(prescriptionRepo.existsByPatientAndStatus(patient,PresStatus.CREATED)){
+//            throw new AppException(ErrorCode.PRES_ALREADY_EXISTS);
+//        }
         Prescription prescription = Prescription.builder()
                 .patient(patient)
                 .date(Instant.now())
                 .prescribeBy(request.getPrescribeBy())
                 .status(PresStatus.CREATED)
+                .appointment(appointment)
                 .build();
         prescriptionRepo.save(prescription);
         List<PrescriptionARV> preARVsToSave = new ArrayList<>();
         List<PreArvResponse> preArvResponses = new ArrayList<>();
         for (ArvRequest arvRequest : arvRequests) {
-            Patient patients = patientRepo.findById(patientId)
-                    .orElseThrow(() -> new AppException(ErrorCode.PATIENT_NOT_FOUND));
 
             prescription = prescriptionRepo.findByPatientAndStatus(patient, PresStatus.CREATED);
 
@@ -86,11 +89,13 @@ public class PrescriptionService implements IPrescriptionService {
         preARVRepo.saveAll(preARVsToSave);
 
         // Update lại isPrescriptionCreated trong Appointment
-        appointmentRepo.findByPatientAndIsPrescriptionCreated(patient, false)
-                .ifPresent(appointment -> {
-                    appointment.setIsPrescriptionCreated(true);
-                    appointmentRepo.save(appointment);
-                });
+//        appointmentRepo.findByPatientAndIsPrescriptionCreated(patient, false)
+//                .ifPresent(appointment -> {
+//                    appointment.setIsPrescriptionCreated(true);
+//                    appointmentRepo.save(appointment);
+//                });
+        appointment.setIsPrescriptionCreated(true);
+        appointmentRepo.save(appointment);
 
         return PrescriptionResponse.builder()
                 .patient(patient)

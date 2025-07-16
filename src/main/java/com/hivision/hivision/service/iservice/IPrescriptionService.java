@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface IPrescriptionService {
 
-    PrescriptionResponse createPrescription(PrescriptionRequest request, List<ArvRequest> ArvRequest, String patientId);
+    PrescriptionResponse createPrescription(PrescriptionRequest request, List<ArvRequest> ArvRequest, String appointmentID);
     PrescriptionArvResponse getPresArvByApppointment(String appointmentID);
     List<PrescriptionArvResponse> getAllPresArvByPatient(String patientId);
 }
