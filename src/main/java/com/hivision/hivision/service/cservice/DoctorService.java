@@ -7,6 +7,7 @@ import com.hivision.hivision.enums.ErrorCode;
 import com.hivision.hivision.enums.Role;
 import com.hivision.hivision.exception.AppException;
 import com.hivision.hivision.mapper.*;
+import com.hivision.hivision.payload.request.CreateMedicalRecordRequest;
 import com.hivision.hivision.payload.request.MedicalRecordRequest;
 import com.hivision.hivision.pojo.*;
 
@@ -154,14 +155,15 @@ public class DoctorService implements IDoctorService {
     }
 
     @Override
-    public MedicalRecordDTO createMedicalRecord(String appointmentId, MedicalRecordRequest request) {
+    public MedicalRecordDTO createMedicalRecord(String appointmentId, CreateMedicalRecordRequest request) {
         Appointment appointment = appointmentRepo.findById(appointmentId)
                 .orElseThrow(() -> new AppException(ErrorCode.APPOINTMENT_NOT_FOUND));
 
-        if( appointment.getStatus() != AppointmentStatus.ONGOING) {
+        if (appointment.getStatus() != AppointmentStatus.ONGOING) {
             throw new AppException(ErrorCode.APPOINTMENT_NOT_ONGOING);
         }
-        // check nếu appointmentId đã có MedicalRecord thì không cho tạo mới
+
+        // Nếu appointmentId đã có MedicalRecord -> không tạo mới
         if (medicalRecordRepo.existsByAppointment(appointment)) {
             throw new AppException(ErrorCode.MEDICAL_RECORD_ALREADY_EXISTS);
         }
@@ -174,13 +176,66 @@ public class DoctorService implements IDoctorService {
                 .build();
         medicalRecordRepo.save(medicalRecord);
 
-        // Cập nhật trạng thái của appointment
+        List<LabResultDTO> labResultDTOs = List.of(); // mặc định rỗng
+        if (request.getLabResults() != null && !request.getLabResults().isEmpty()) {
+            List<LabResult> labResults = request.getLabResults().stream()
+                    .map(lr -> LabResult.builder()
+                            .medicalRecord(medicalRecord)
+                            .testType(lr.getTestType())
+                            .resultText(lr.getResultText())
+                            .resultValue(lr.getResultValue())
+                            .unit(lr.getUnit())
+                            .referenceRange(lr.getReferenceRange())
+                            .testDate(Instant.now())
+                            .performedBy(lr.getPerformedBy())
+                            .build()
+                    ).toList();
+
+            labResultRepo.saveAll(labResults);
+
+            // Convert sang DTO
+            labResultDTOs = labResultMapper.toLabResultDTO(labResults);
+        }
+
+        // Cập nhật trạng thái appointment
         appointment.setIsRecordCreated(true);
         appointmentRepo.save(appointment);
 
-    return medicalRecordMapper.toMedicalRecordDTO(medicalRecord);
+        // Build DTO trả về kèm LabResultDTO
+        MedicalRecordDTO medicalRecordDTO = medicalRecordMapper.toMedicalRecordDTO(medicalRecord);
+        medicalRecordDTO.setLabResults(labResultDTOs);
 
+        return medicalRecordDTO;
     }
+
+//    @Override
+//    public MedicalRecordDTO createMedicalRecord(String appointmentId, MedicalRecordRequest request) {
+//        Appointment appointment = appointmentRepo.findById(appointmentId)
+//                .orElseThrow(() -> new AppException(ErrorCode.APPOINTMENT_NOT_FOUND));
+//
+//        if( appointment.getStatus() != AppointmentStatus.ONGOING) {
+//            throw new AppException(ErrorCode.APPOINTMENT_NOT_ONGOING);
+//        }
+//        // check nếu appointmentId đã có MedicalRecord thì không cho tạo mới
+//        if (medicalRecordRepo.existsByAppointment(appointment)) {
+//            throw new AppException(ErrorCode.MEDICAL_RECORD_ALREADY_EXISTS);
+//        }
+//
+//        MedicalRecord medicalRecord = MedicalRecord.builder()
+//                .appointment(appointment)
+//                .diagnosis(request.getDiagnosis())
+//                .createDate(Instant.now())
+//                .note(request.getNote())
+//                .build();
+//        medicalRecordRepo.save(medicalRecord);
+//
+//        // Cập nhật trạng thái của appointment
+//        appointment.setIsRecordCreated(true);
+//        appointmentRepo.save(appointment);
+//
+//    return medicalRecordMapper.toMedicalRecordDTO(medicalRecord);
+//
+//    }
 
     @Override
     public LabResultDTO createLabResult(LabResultDTO labResultDTO) {

@@ -60,6 +60,7 @@ public class Appointment {
     String note;
 
     @Column(name = "PaymentStatus")
+//    @Enumerated(EnumType.STRING)
     PaymentStatus paymentStatus;
 
     @Column(name = "CreateAt")

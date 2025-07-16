@@ -1,22 +1,18 @@
-package com.hivision.hivision.dto;
+package com.hivision.hivision.payload.request;
 
+import com.hivision.hivision.dto.LabResultDTO;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.time.Instant;
 import java.util.List;
 
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class MedicalRecordDTO {
-    String recordId;
-    String appointmentId;
-    String diagnosis; // chẩn đoán bệnh
-    Instant createDate;
+public class CreateMedicalRecordRequest {
+    String diagnosis;
     String note;
-
     List<LabResultDTO> labResults;
 }
