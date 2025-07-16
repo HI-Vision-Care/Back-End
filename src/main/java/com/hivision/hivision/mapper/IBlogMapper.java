@@ -15,8 +15,10 @@ import java.util.List;
 public interface IBlogMapper {
 
     @Mapping(source = "account.email", target = "author")
+    @Mapping(source = "hide", target = "hide")
     BlogPostDTO toBlogPostDTO(BlogPost blogPost);
     List<BlogPostDTO> toBlogPostDTOs(List<BlogPost> blogPosts);
+
 
     void updateBlogPost(@MappingTarget BlogPost blogPost, BlogPostRequest blogPostRequest);
     void updateContent(@MappingTarget Content content, ContentRequest contentRequest);

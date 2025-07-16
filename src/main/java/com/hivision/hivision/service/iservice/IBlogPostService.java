@@ -1,11 +1,10 @@
 package com.hivision.hivision.service.iservice;
 
 import com.hivision.hivision.dto.BlogPostDTO;
-import com.hivision.hivision.payload.request.BlogPostDataWrapper;
 import com.hivision.hivision.payload.request.BlogPostRequest;
 import com.hivision.hivision.payload.request.ContentRequest;
 import com.hivision.hivision.payload.response.BlogPostResponse;
-import com.hivision.hivision.pojo.BlogPost;
+import com.hivision.hivision.pojo.Reaction;
 
 import java.util.List;
 
@@ -20,6 +19,9 @@ public interface IBlogPostService {
     BlogPostResponse getContentByBlog(int blogID);
     List<BlogPostDTO> getAllBlogPost();
     List<BlogPostDTO> getBlogPostIsHide();
-    List<BlogPostDTO> getBlogPostIsShow();
+    List<BlogPostDTO> getBlogPostIsShow(String accountID);
     void deleteBlogPost(int blogID);
+    Reaction likeBlogPost(int blogID,String accountID);
+    Reaction unlikeBlogPost(int blogID,String accountID);
+
 }

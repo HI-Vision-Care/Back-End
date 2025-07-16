@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import org.springframework.security.core.authority.mapping.NullAuthoritiesMapper;
+import org.hibernate.annotations.Nationalized;
 
 import java.time.Instant;
 
@@ -23,15 +23,17 @@ public class BlogPost {
     @Column(name = "BlogID", nullable = false)
     Integer id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "AccountID")
     Account account;
 
     @Size(max = 255)
+    @Nationalized
     @Column(name = "Title")
     String title;
 
     @Size(max = 255)
+    @Nationalized
     @Column(name = "Topic")
     String topic;
 
@@ -39,15 +41,18 @@ public class BlogPost {
     @Column(name = "Banner")
     String banner;
 
-    @Builder.Default
     @Column(name = "CreateAt")
-    Instant createAt = Instant.now();
+    Instant createAt;
 
-//    @Builder.Default
+    @Size(max = 25)
+    @Column(name = "Status", length = 25)
+    BlogStatus status;
+
     @Column(name = "isHide")
-    Boolean isHide;
+    Boolean hide;
 
-    @Builder.Default
-    @Column(name = "Status")
-    BlogStatus status = BlogStatus.PENDING;
+    @Column(name = "Total")
+    Integer total;
+
+
 }
