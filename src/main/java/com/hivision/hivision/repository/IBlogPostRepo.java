@@ -10,5 +10,5 @@ import java.util.List;
 @Repository
 public interface IBlogPostRepo extends JpaRepository<BlogPost, Integer> {
     BlogPost findBlogPostByAccount(Account account);
-    List<BlogPost> findBlogPostByIsHide(boolean isHide);
+    List<BlogPost> findBlogPostByHide(boolean isHide);
 }

@@ -12,9 +12,11 @@ import com.hivision.hivision.payload.response.ContentResponse;
 import com.hivision.hivision.pojo.Account;
 import com.hivision.hivision.pojo.BlogPost;
 import com.hivision.hivision.pojo.Content;
+import com.hivision.hivision.pojo.Reaction;
 import com.hivision.hivision.repository.IAccountRepo;
 import com.hivision.hivision.repository.IBlogPostRepo;
 import com.hivision.hivision.repository.IContentRepo;
+import com.hivision.hivision.repository.IReactionRepo;
 import com.hivision.hivision.service.iservice.IBlogPostService;
 import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
@@ -32,6 +34,7 @@ public class BlogPostService implements IBlogPostService {
     IBlogPostRepo blogPostRepo;
     IContentRepo contentRepo;
     IAccountRepo accountRepo;
+    IReactionRepo reactionRepo;
 
     IBlogMapper blogMapper;
 
@@ -102,7 +105,7 @@ public class BlogPostService implements IBlogPostService {
 
         BlogPost blogPost = blogPostRepo.findById(blogID)
                 .orElseThrow(() -> new AppException(ErrorCode.BLOG_NOT_FOUND));
-        blogPost.setIsHide(true);
+        blogPost.setHide(true);
         blogPostRepo.save(blogPost);
     }
 
@@ -111,7 +114,7 @@ public class BlogPostService implements IBlogPostService {
         BlogPost blogPost = blogPostRepo.findById(blogID)
                 .orElseThrow(() -> new AppException(ErrorCode.BLOG_NOT_FOUND));
 
-        blogPost.setIsHide(false);
+        blogPost.setHide(false);
         blogPostRepo.save(blogPost);
     }
 
@@ -182,14 +185,29 @@ public class BlogPostService implements IBlogPostService {
 
     @Override
     public List<BlogPostDTO> getBlogPostIsHide() {
-        List<BlogPost> blogPosts = blogPostRepo.findBlogPostByIsHide(true);
+        List<BlogPost> blogPosts = blogPostRepo.findBlogPostByHide(true);
         return blogMapper.toBlogPostDTOs(blogPosts);
     }
 
     @Override
-    public List<BlogPostDTO> getBlogPostIsShow() {
-        List<BlogPost> blogPosts = blogPostRepo.findBlogPostByIsHide(false);
-        return blogMapper.toBlogPostDTOs(blogPosts);
+    public List<BlogPostDTO> getBlogPostIsShow(String accountID) {
+        Account account = accountRepo.findById(accountID)
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+        List<BlogPost> blogPosts = blogPostRepo.findBlogPostByHide(false);
+        List<BlogPostDTO> blogPostDTOS = blogMapper.toBlogPostDTOs(blogPosts);
+        for (BlogPostDTO blogPostDTO : blogPostDTOS){
+            BlogPost blogPost = blogPostRepo.findById(blogPostDTO.getId())
+                    .orElseThrow(() -> new AppException(ErrorCode.BLOG_NOT_FOUND));
+            Reaction reaction = reactionRepo.findReactionByAccountAndBlog(account, blogPost);
+            if(reaction == null){
+                blogPostDTO.setReact(false);
+            }else {
+                blogPostDTO.setReact(reaction.getReact());
+            }
+
+        }
+
+        return blogPostDTOS;
     }
 
     @Override
@@ -199,5 +217,36 @@ public class BlogPostService implements IBlogPostService {
                         .orElseThrow(() -> new AppException(ErrorCode.BLOG_NOT_FOUND));
         contentRepo.deleteByBlogPost(blogPost);
         blogPostRepo.deleteById(blogID);
+    }
+
+    @Override
+    public Reaction likeBlogPost(int blogID, String accountID) {
+        Account account = accountRepo.findById(accountID)
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+        BlogPost blogPost = blogPostRepo.findById(blogID)
+                .orElseThrow(() -> new AppException(ErrorCode.BLOG_NOT_FOUND));
+        blogPost.setTotal(blogPost.getTotal() + 1);
+        blogPostRepo.save(blogPost);
+
+        return Reaction.builder()
+                .blog(blogPost)
+                .account(account)
+                .react(true)
+                .build();
+    }
+
+    @Override
+    public Reaction unlikeBlogPost(int blogID, String accountID) {
+        Account account = accountRepo.findById(accountID)
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+        BlogPost blogPost = blogPostRepo.findById(blogID)
+                .orElseThrow(() -> new AppException(ErrorCode.BLOG_NOT_FOUND));
+        blogPost.setTotal(blogPost.getTotal() - 1);
+        blogPostRepo.save(blogPost);
+
+        Reaction reaction = reactionRepo.findReactionByAccountAndBlog(account,blogPost);
+        reaction.setReact(false);
+
+        return reactionRepo.save(reaction);
     }
 }

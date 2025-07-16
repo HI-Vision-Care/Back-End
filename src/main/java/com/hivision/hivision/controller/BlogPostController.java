@@ -5,7 +5,6 @@ import com.hivision.hivision.payload.request.BlogPostDataWrapper;
 import com.hivision.hivision.payload.request.BlogPostRequest;
 import com.hivision.hivision.payload.request.ContentRequest;
 import com.hivision.hivision.payload.response.BlogPostResponse;
-import com.hivision.hivision.pojo.BlogPost;
 import com.hivision.hivision.service.iservice.IBlogPostService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.AccessLevel;
@@ -85,9 +84,9 @@ public class BlogPostController {
         return ResponseEntity.ok(blogPostService.getBlogPostIsHide());
     }
 
-    @GetMapping("/isShow")
-    public ResponseEntity<List<BlogPostDTO>> getAllBlogPostIsShow() {
-        return ResponseEntity.ok(blogPostService.getBlogPostIsShow());
+    @GetMapping("/isShow/{accountID}")
+    public ResponseEntity<List<BlogPostDTO>> getAllBlogPostIsShow(@PathVariable String accountID) {
+        return ResponseEntity.ok(blogPostService.getBlogPostIsShow(accountID));
     }
 
     @DeleteMapping("/{blogID}")
