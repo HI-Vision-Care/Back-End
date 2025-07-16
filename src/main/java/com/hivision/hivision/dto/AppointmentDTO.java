@@ -4,6 +4,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.Instant;
+import java.time.LocalDate;
 
 @Data
 @AllArgsConstructor
@@ -19,7 +20,7 @@ public class AppointmentDTO {
     MedicalServiceDTO medicalService;
     DoctorDTO doctor;
 
-    Instant appointmentDate;
+    LocalDate appointmentDate;
     Boolean isAnonymous;
     Boolean isRecordCreated;
     Boolean isPrescriptionCreated;

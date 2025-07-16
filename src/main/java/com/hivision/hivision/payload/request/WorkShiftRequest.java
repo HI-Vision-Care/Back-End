@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class WorkShiftRequest {
     String slot;
-    Instant  date;
+    LocalDate date;
     LocalDateTime startTime;
     LocalDateTime endTime;
 }

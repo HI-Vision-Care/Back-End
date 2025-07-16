@@ -18,6 +18,7 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
@@ -66,7 +67,10 @@ public class AppointmentService implements IAppointmentService {
                 .build();
         appointment = appointmentRepo.save(appointment);
 
-        WorkShift workShift = workShiftRepo.findWorkShiftBySlotAndDoctorAndDate(request.getSlot(),doctor,request.getAppointmentDate());
+        WorkShift workShift = workShiftRepo.findWorkShiftBySlotAndDoctorAndDate(request.getSlot(),doctor, request.getAppointmentDate());
+        if(workShift == null){
+            throw new AppException(ErrorCode.WORK_SHIFT_NOT_FOUND);
+        }
         workShift.setStatus(WorkShiftStatus.SCHEDULED);
         workShiftRepo.save(workShift);
 

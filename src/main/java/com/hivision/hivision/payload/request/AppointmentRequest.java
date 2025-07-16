@@ -4,6 +4,8 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @Builder
@@ -14,7 +16,7 @@ public class AppointmentRequest {
     Long serviceID;
     String doctorID;
     String slot;
-    Instant appointmentDate;
+    LocalDate appointmentDate;
     Boolean isAnonymous;
     String note;
 

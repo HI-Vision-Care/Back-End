@@ -8,6 +8,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.Instant;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "Appointment")
@@ -36,7 +37,7 @@ public class Appointment {
     MedicalService medicalService;
 
     @Column(name = "AppointmentDate")
-    Instant appointmentDate;
+    LocalDate appointmentDate;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "Status")

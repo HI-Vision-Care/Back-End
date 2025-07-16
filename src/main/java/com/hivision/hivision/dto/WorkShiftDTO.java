@@ -7,6 +7,7 @@ import lombok.Value;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
@@ -18,7 +19,7 @@ public class WorkShiftDTO implements Serializable {
     Doctor doctor;
     @Size(max = 50)
     String slot;
-    Instant date;
+    LocalDate date;
     LocalDateTime startTime;
     LocalDateTime endTime;
     @Size(max = 50)
