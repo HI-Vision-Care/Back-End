@@ -51,7 +51,8 @@ public class Filter extends OncePerRequestFilter {
             "/HiVision/swagger-resources/**", // Allow Swagger resources
             "/HiVision/oauth2/**",
 
-            "/HiVision/appointment/book-consultation-guest"
+            "/HiVision/appointment/book-consultation-guest",
+            "/HiVision/medical-service"
 
 //            "/BidKoi/shipping/**",
 //            "/BidKoi/account/number/**"
@@ -77,7 +78,7 @@ public class Filter extends OncePerRequestFilter {
         //response.setHeader("Access-Control-Allow-Origin", "https://auctionkoi.azurewebsites.net"); // Hoặc thay thế "*" bằng nguồn cụ thể nếu muốn bảo mật
 //        response.setHeader("Access-Control-Allow-Origin", "http://localhost:5174");
         response.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
-        response.setHeader("Access-Control-Allow-Origin", "https://hivisionwebdeploy.vercel.app/");
+//        response.setHeader("Access-Control-Allow-Origin", "https://hivisionwebdeploy.vercel.app/");
         //response.setHeader("Access-Control-Allow-Origin", "https://bid-koi-n1yy.vercel.app");
 
 
