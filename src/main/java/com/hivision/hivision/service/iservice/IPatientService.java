@@ -1,5 +1,6 @@
 package com.hivision.hivision.service.iservice;
 
+import com.hivision.hivision.dto.AppointmentDTO;
 import com.hivision.hivision.dto.LabResultDTO;
 import com.hivision.hivision.dto.PatientDTO;
 import com.hivision.hivision.payload.request.PatientRequest;
@@ -18,4 +19,6 @@ public interface IPatientService {
 
     // chức năng tra cứu thông tin xét nghiệm (phác đồ ARV, CD4, tải lượng HIV),
     List<LabResultDTO> getLabResults(String patientId);
+
+    List<AppointmentDTO> getAppointmentsByPatient(String patientId);
 }

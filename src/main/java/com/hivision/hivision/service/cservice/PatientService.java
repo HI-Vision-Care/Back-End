@@ -1,10 +1,13 @@
 package com.hivision.hivision.service.cservice;
 
+import com.hivision.hivision.dto.AppointmentDTO;
 import com.hivision.hivision.dto.LabResultDTO;
 import com.hivision.hivision.dto.PatientDTO;
+import com.hivision.hivision.dto.TestItemDTO;
 import com.hivision.hivision.enums.ErrorCode;
 import com.hivision.hivision.enums.Role;
 import com.hivision.hivision.exception.AppException;
+import com.hivision.hivision.mapper.IAppointmentMapper;
 import com.hivision.hivision.mapper.ILabResultMapper;
 import com.hivision.hivision.mapper.IPatientMapper;
 import com.hivision.hivision.payload.request.PatientRequest;
@@ -27,12 +30,14 @@ public class PatientService implements IPatientService{
     IAccountRepo accountRepo;
     IPatientRepo patientRepo;
     IPatientMapper patientMapper;
+    IServiceTestItemRepo serviceTestItemRepo;
 
     IAppointmentRepo appointmentRepo;
     IMedicalRecordRepo medicalRecordRepo;
 
     ILabResultRepo labResultRepo;
     ILabResultMapper labResultMapper;
+    IAppointmentMapper appointmentMapper;
 
     IDiseaseRepo diseaseRepo;
     IPatientDiseaseRepo patientDiseaseRepo;
@@ -165,6 +170,42 @@ public class PatientService implements IPatientService{
         );
 
         return labResultMapper.toLabResultDTO(results);
+    }
+
+    @Override
+    public List<AppointmentDTO> getAppointmentsByPatient(String patientId) {
+        Patient patient = patientRepo.findById(patientId)
+                .orElseThrow(() -> new AppException(ErrorCode.PATIENT_NOT_FOUND));
+        List<Appointment> appointments = appointmentRepo.findByPatient(patient);
+
+        return appointments.stream().map(appt -> {
+            AppointmentDTO dto = appointmentMapper.toAppointmentDTO(appt);
+
+            // Gắn testItems cho MedicalService trong AppointmentDTO
+            if (dto.getMedicalService() != null) {
+                List<TestItemDTO> testItems = serviceTestItemRepo.findByMedicalService_ServiceID(
+                                dto.getMedicalService().getServiceID()
+                        ).stream()
+                        .map(sti -> TestItemDTO.builder()
+//                                .testID(sti.getTestItem().getTestID())
+                                        .testName(sti.getTestItem().getTestName())
+                                        .testDescription(sti.getTestItem().getTestDescription())
+                                        .unit(sti.getTestItem().getUnit())
+                                        .referenceRange(sti.getTestItem().getReferenceRange())
+                                        .build()
+                        ).toList();
+
+                dto.getMedicalService().setTestItems(testItems);
+            }
+            return dto;
+        }).toList();
+
+//        if (appointments.isEmpty()) {
+//            throw new AppException(ErrorCode.APPOINTMENT_NOT_FOUND);
+//        }
+//        return appointments;
+//        return appointmentMapper.toAppointmentDTOs(appointments);
+
     }
 
 
