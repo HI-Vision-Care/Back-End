@@ -4,6 +4,7 @@ import com.hivision.hivision.dto.AppointmentDTO;
 import com.hivision.hivision.dto.DoctorDTO;
 import com.hivision.hivision.dto.LabResultDTO;
 import com.hivision.hivision.dto.MedicalRecordDTO;
+import com.hivision.hivision.payload.request.CreateMedicalRecordRequest;
 import com.hivision.hivision.payload.request.DoctorRequest;
 import com.hivision.hivision.payload.request.MedicalRecordRequest;
 import com.hivision.hivision.payload.response.AppointmentResponse;
@@ -27,8 +28,10 @@ public interface IDoctorService {
     void updateDoctor(String doctorId, DoctorRequest request);
     void deleteDoctor(String doctorId);
 
+    MedicalRecordDTO createMedicalRecord(String appointmentId, CreateMedicalRecordRequest request);
+
     //tạo medical record
-    MedicalRecordDTO createMedicalRecord(String appointmentId, MedicalRecordRequest request);
+//    MedicalRecordDTO createMedicalRecord(String appointmentId, MedicalRecordRequest request);
     List<MedicalRecordDTO> getAllMedicalRecord();
 
     LabResultDTO createLabResult(LabResultDTO labResultDTO);

@@ -4,6 +4,7 @@ import com.hivision.hivision.dto.AppointmentDTO;
 import com.hivision.hivision.dto.DoctorDTO;
 import com.hivision.hivision.dto.LabResultDTO;
 import com.hivision.hivision.dto.MedicalRecordDTO;
+import com.hivision.hivision.payload.request.CreateMedicalRecordRequest;
 import com.hivision.hivision.payload.request.DoctorRequest;
 import com.hivision.hivision.payload.request.MedicalRecordRequest;
 import com.hivision.hivision.payload.response.AppointmentResponse;
@@ -69,10 +70,16 @@ public class DoctorController {
         return ResponseEntity.noContent().build();
     }
 
+
     @PostMapping("/create-medical-record/{appointmentId}")
-    public ResponseEntity<MedicalRecordDTO> createMedicalRecord(@PathVariable String appointmentId, @RequestBody @Valid MedicalRecordRequest request) {
+    public ResponseEntity<MedicalRecordDTO> createMedicalRecord(@PathVariable String appointmentId, @RequestBody @Valid CreateMedicalRecordRequest request) {
         return ResponseEntity.ok(doctorService.createMedicalRecord(appointmentId, request));
     }
+
+//    @PostMapping("/create-medical-record/{appointmentId}")
+//    public ResponseEntity<MedicalRecordDTO> createMedicalRecord(@PathVariable String appointmentId, @RequestBody @Valid MedicalRecordRequest request) {
+//        return ResponseEntity.ok(doctorService.createMedicalRecord(appointmentId, request));
+//    }
 
     @GetMapping("/get-all-medical-records")
     public ResponseEntity<List<MedicalRecordDTO>> getAllMedicalRecords() {
