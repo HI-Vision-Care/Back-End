@@ -8,4 +8,5 @@ import java.util.List;
 public interface IMedicalService {
     List<MedicalService> getAllMedicalServices();
     MedicalServiceDTO getMedicalServiceById(Long id);
+    List<MedicalServiceDTO> getAllServicesWithTests();
 }

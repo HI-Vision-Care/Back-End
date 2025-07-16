@@ -37,7 +37,8 @@ public class SecurityConfig implements WebMvcConfigurer {
                                 "/ws/**",
                                 "/account/**",
                                 "/account/register",
-                                "/appointment/book-consultation-guest"
+                                "/appointment/book-consultation-guest",
+                                "/medical-service"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )

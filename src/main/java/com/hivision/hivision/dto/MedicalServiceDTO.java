@@ -1,14 +1,17 @@
 package com.hivision.hivision.dto;
 
+import lombok.Builder;
 import lombok.Value;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.List;
 
 /**
  * DTO for {@link com.hivision.hivision.pojo.MedicalService}
  */
 @Value
+@Builder
 public class MedicalServiceDTO implements Serializable {
     Long serviceID;
     String name;
@@ -20,4 +23,6 @@ public class MedicalServiceDTO implements Serializable {
     Boolean isOnline;
     Instant createAt;
     String img;
+
+    List<TestItemDTO> testItems;
 }

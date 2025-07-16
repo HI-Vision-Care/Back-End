@@ -22,13 +22,19 @@ public class MedicalServiceController {
     IMedicalService medicalServiceService;
 
 
-    @GetMapping
-    public ResponseEntity<List<MedicalService>> getAllMedicalServices() {
-        return ResponseEntity.ok(medicalServiceService.getAllMedicalServices());
-    }
+//    @GetMapping
+//    public ResponseEntity<List<MedicalService>> getAllMedicalServices() {
+//        return ResponseEntity.ok(medicalServiceService.getAllMedicalServices());
+//    }
 
     @GetMapping("/{id}")
     public ResponseEntity<MedicalServiceDTO> getMedicalServicesById(@PathVariable Long id) {
         return ResponseEntity.ok(medicalServiceService.getMedicalServiceById(id));
     }
+
+    @GetMapping
+    public ResponseEntity<List<MedicalServiceDTO>> getAllServicesWithTests() {
+        return ResponseEntity.ok(medicalServiceService.getAllServicesWithTests());
+    }
+
 }
