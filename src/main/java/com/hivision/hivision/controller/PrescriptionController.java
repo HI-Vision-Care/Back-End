@@ -35,12 +35,12 @@ public class PrescriptionController {
 //    }
 
     @PostMapping("/create")
-    public ResponseEntity<PrescriptionResponse> createPrescription(@RequestBody PresDataWrapper dataWrapper, @RequestParam("patientId") String patientId) {
+    public ResponseEntity<PrescriptionResponse> createPrescription(@RequestBody PresDataWrapper dataWrapper, @RequestParam("appointmentId") String appointmentId) {
 ////        try {
 //            List<PrescriptionARV> addPreArv = preArvService.addPreArv(request);
         PrescriptionRequest prescriptionRequest = dataWrapper.getPrescriptionRequest();
         List<ArvRequest> arvRequests = dataWrapper.getArvRequests();
-            return new ResponseEntity<>(prescriptionService.createPrescription(prescriptionRequest,arvRequests,patientId), HttpStatus.CREATED);
+            return new ResponseEntity<>(prescriptionService.createPrescription(prescriptionRequest,arvRequests,appointmentId), HttpStatus.CREATED);
 //        } catch (Exception e) {
 //            // Có thể tạo một lớp xử lý lỗi toàn cục (GlobalExceptionHandler) để code sạch hơn
 //            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
