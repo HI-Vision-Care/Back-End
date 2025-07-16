@@ -1,10 +1,7 @@
 package com.hivision.hivision.service.cservice;
 
-import com.hivision.hivision.dto.AppointmentDTO;
-import com.hivision.hivision.dto.DoctorDTO;
+import com.hivision.hivision.dto.*;
 
-import com.hivision.hivision.dto.LabResultDTO;
-import com.hivision.hivision.dto.MedicalRecordDTO;
 import com.hivision.hivision.enums.AppointmentStatus;
 import com.hivision.hivision.enums.ErrorCode;
 import com.hivision.hivision.enums.Role;
@@ -48,6 +45,8 @@ public class DoctorService implements IDoctorService {
     ILabResultRepo labResultRepo;
     ILabResultMapper labResultMapper;
 
+    IServiceTestItemRepo serviceTestItemRepo;
+
 //    @Override
 //    public List<DoctorDTO> getAllDoctors() {
 //        // trà về danh sách các bác sĩ theo DoctorDTO
@@ -89,11 +88,34 @@ public class DoctorService implements IDoctorService {
         Doctor doctor = doctorRepo.findById(doctorID)
                 .orElseThrow(() -> new AppException(ErrorCode.DOCTOR_NOT_FOUND));
         List<Appointment> appointments = appointmentRepo.findByDoctor(doctor);
+
+        return appointments.stream().map(appt -> {
+            AppointmentDTO dto = appointmentMapper.toAppointmentDTO(appt);
+
+            // Gắn testItems cho MedicalService trong AppointmentDTO
+            if (dto.getMedicalService() != null) {
+                List<TestItemDTO> testItems = serviceTestItemRepo.findByMedicalService_ServiceID(
+                                dto.getMedicalService().getServiceID()
+                        ).stream()
+                        .map(sti -> TestItemDTO.builder()
+//                                .testID(sti.getTestItem().getTestID())
+                                .testName(sti.getTestItem().getTestName())
+                                .testDescription(sti.getTestItem().getTestDescription())
+                                .unit(sti.getTestItem().getUnit())
+                                .referenceRange(sti.getTestItem().getReferenceRange())
+                                .build()
+                        ).toList();
+
+                dto.getMedicalService().setTestItems(testItems);
+            }
+            return dto;
+        }).toList();
+
 //        if (appointments.isEmpty()) {
 //            throw new AppException(ErrorCode.APPOINTMENT_NOT_FOUND);
 //        }
 //        return appointments;
-        return appointmentMapper.toAppointmentDTOs(appointments);
+//        return appointmentMapper.toAppointmentDTOs(appointments);
     }
 
     @Override
