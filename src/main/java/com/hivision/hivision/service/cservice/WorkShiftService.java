@@ -2,6 +2,7 @@ package com.hivision.hivision.service.cservice;
 
 import com.hivision.hivision.dto.WorkShiftDTO;
 import com.hivision.hivision.enums.ErrorCode;
+import com.hivision.hivision.enums.WorkShiftStatus;
 import com.hivision.hivision.exception.AppException;
 import com.hivision.hivision.mapper.IWSMapper;
 import com.hivision.hivision.payload.request.WorkShiftRequest;
@@ -45,7 +46,7 @@ public class WorkShiftService implements IWSService {
                     .date(ws.getDate())
                     .startTime(ws.getStartTime())
                     .endTime(ws.getEndTime())
-                    .status("Available")
+                    .status(WorkShiftStatus.AVAILABLE)
                     .build();
             wsRepo.save(workShift);
         }
@@ -87,5 +88,14 @@ public class WorkShiftService implements IWSService {
             throw new AppException(ErrorCode.WORK_SHIFT_NOT_FOUND);
         }
         return wsMapper.toListWorkShiftDTO(workShifts);
+    }
+
+    @Override
+    public void finishWorkShift(int wsID) {
+        WorkShift workShift = wsRepo.findById(wsID)
+                .orElseThrow(() -> new AppException(ErrorCode.WORK_SHIFT_NOT_FOUND));
+
+        workShift.setStatus(WorkShiftStatus.FINISHED);
+        wsRepo.save(workShift);
     }
 }

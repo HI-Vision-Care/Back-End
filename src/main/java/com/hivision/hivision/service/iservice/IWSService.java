@@ -13,4 +13,5 @@ public interface IWSService {
     String regisWS(List<WorkShiftRequest> workShifts,String doctorID);
     List<WorkShiftDTO> getShiftsForWeek(LocalDate dateInWeek, String doctorId);
     List<WorkShiftDTO> getShiftsByDoctorId(String doctorId);
+    void finishWorkShift(int wsID);
 }

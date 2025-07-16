@@ -1,5 +1,6 @@
 package com.hivision.hivision.pojo;
 
+import com.hivision.hivision.enums.WorkShiftStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.*;
@@ -41,7 +42,7 @@ public class WorkShift {
 
     @Size(max = 50)
     @Column(name = "Status", length = 50)
-    String status;
+    WorkShiftStatus status;
 
     @Lob
     @Column(name = "Note")
