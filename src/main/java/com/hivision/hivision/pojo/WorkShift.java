@@ -31,7 +31,7 @@ public class WorkShift {
     String slot;
 
     @Column(name = "Date")
-    LocalDateTime  date;
+    Instant  date;
 
     @Column(name = "StartTime")
     LocalDateTime startTime;

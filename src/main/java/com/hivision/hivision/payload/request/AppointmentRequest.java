@@ -13,6 +13,7 @@ import java.time.Instant;
 public class AppointmentRequest {
     Long serviceID;
     String doctorID;
+    String slot;
     Instant appointmentDate;
     Boolean isAnonymous;
     String note;

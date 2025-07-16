@@ -34,6 +34,7 @@ public class AppointmentService implements IAppointmentService {
     IDoctorRepo doctorRepo;
     IMedicalServiceRepo serviceRepo;
     IConsultationNoteRepo consultationNoteRepo;
+    IWorkShiftRepo workShiftRepo;
 
     IAppointmentMapper mapper;
 
@@ -62,6 +63,10 @@ public class AppointmentService implements IAppointmentService {
 //                .createAt(Instant.now())
                 .build();
         appointment = appointmentRepo.save(appointment);
+
+        WorkShift workShift = workShiftRepo.findWorkShiftBySlotAndDoctorAndDate(request.getSlot(),doctor,request.getAppointmentDate());
+        workShift.setStatus("SCHEDULED");
+        workShiftRepo.save(workShift);
 
         return mapper.toAppointmentDTO(appointment);
     }
