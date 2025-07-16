@@ -97,6 +97,22 @@ public class AppointmentService implements IAppointmentService {
         return mapper.toAppointmentDTO(appointmentRepo.save(appointment));
     }
 
+    @Override
+    public AppointmentDTO updatePaymentStatus(String appointmentId, String staffID) {
+        Appointment appointment = appointmentRepo.findById(appointmentId)
+                .orElseThrow(() -> new AppException(ErrorCode.APPOINTMENT_NOT_FOUND));
+//        if (appointment.getPaymentStatus() != PaymentStatus.UNPAID) {
+//            throw new AppException(ErrorCode.APPOINTMENT_ALREADY_PAID);
+//        }
+        Account staff = accountRepo.findAccountById(staffID);
+        if (staff == null) {
+            throw new AppException(ErrorCode.STAFF_NOT_FOUND);
+        }
+        appointment.setPaymentStatus(PaymentStatus.PAID);
+
+        return mapper.toAppointmentDTO(appointmentRepo.save(appointment));
+    }
+
 //    @Override
 //    public AppointmentDTO createOnlineAppointment(String phone, ConsultationRequest request) {
 //

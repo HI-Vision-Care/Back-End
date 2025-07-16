@@ -41,6 +41,8 @@ public class MedicalProvisionService implements IMedicalService {
 //                        .testID(sti.getTestItem().getTestID())
                         .testName(sti.getTestItem().getTestName())
                         .testDescription(sti.getTestItem().getTestDescription())
+                        .unit(sti.getTestItem().getUnit())
+                        .referenceRange(sti.getTestItem().getReferenceRange())
                         .build()
                 )
                 .toList();
@@ -72,6 +74,8 @@ public class MedicalProvisionService implements IMedicalService {
 //                            .testID(test.getTestID())
                             .testName(test.getTestName())
                             .testDescription(test.getTestDescription())
+                            .unit(test.getUnit())
+                            .referenceRange(test.getReferenceRange())
                             .build())
                     .toList();
 

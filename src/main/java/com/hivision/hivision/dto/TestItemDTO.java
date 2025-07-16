@@ -12,4 +12,6 @@ public class TestItemDTO {
 //    Long testID;
     String testName;
     String testDescription;
+    String unit;
+    String referenceRange;
 }
