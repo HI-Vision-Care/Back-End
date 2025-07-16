@@ -66,8 +66,8 @@ public class PatientController {
 
     // Cancel appointment by patient
     @PutMapping("/cancel-appointment/{appointmentId}")
-    public ResponseEntity<Void> cancelAppointment(@PathVariable String appointmentId, @RequestParam String patientId) {
-        appointmentService.cancelAppointment(appointmentId, patientId);
+    public ResponseEntity<Void> cancelAppointment(@PathVariable String appointmentId) {
+        appointmentService.cancelAppointmentByPatient(appointmentId);
         return ResponseEntity.noContent().build();
     }
 }

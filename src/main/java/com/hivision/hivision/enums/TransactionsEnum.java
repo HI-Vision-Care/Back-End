@@ -12,5 +12,6 @@ public enum TransactionsEnum {
     WITHDRAWAL,
     TRANSFER,
     CASH_PAYMENT,
+    ROLLBACK
 
 }

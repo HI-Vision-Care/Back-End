@@ -3,10 +3,7 @@ package com.hivision.hivision.service.cservice;
 import com.hivision.hivision.dto.AppointmentDTO;
 import com.hivision.hivision.dto.ConsultationNoteDTO;
 import com.hivision.hivision.dto.TestItemDTO;
-import com.hivision.hivision.enums.AppointmentStatus;
-import com.hivision.hivision.enums.ErrorCode;
-import com.hivision.hivision.enums.PaymentStatus;
-import com.hivision.hivision.enums.WorkShiftStatus;
+import com.hivision.hivision.enums.*;
 import com.hivision.hivision.exception.AppException;
 import com.hivision.hivision.mapper.IAppointmentMapper;
 import com.hivision.hivision.payload.request.AppointmentRequest;
@@ -37,6 +34,8 @@ public class AppointmentService implements IAppointmentService {
     IMedicalServiceRepo serviceRepo;
     IConsultationNoteRepo consultationNoteRepo;
     IWorkShiftRepo workShiftRepo;
+    IWalletRepo walletRepo;
+    ITransactionsRepo transactionsRepo;
 
     IAppointmentMapper mapper;
     IServiceTestItemRepo serviceTestItemRepo;
@@ -246,15 +245,46 @@ public class AppointmentService implements IAppointmentService {
 
     }
 
+
     @Override
-    public void cancelAppointment(String appointmentID,String patientID) {
+    public void cancelAppointmentByStaff(String appointmentID) {
         Appointment appointment = appointmentRepo.findById(appointmentID)
                 .orElseThrow(() -> new AppException(ErrorCode.APPOINTMENT_NOT_FOUND));
-        if (!appointment.getPatient().getPatientID().equals(patientID)) {
-            throw new AppException(ErrorCode.APPOINTMENT_NOT_BELONG_TO_PATIENT);
-        }
-        appointment.setStatus(AppointmentStatus.CANCELLED);
 
+
+        appointment.setStatus(AppointmentStatus.CANCELLED_BY_STAFF);
+
+        double deposit = appointment.getMedicalService().getPrice();
+        Wallet wallet = walletRepo.findWalletByAccount(appointment.getPatient().getAccount());
+        wallet.setBalance(wallet.getBalance()+deposit*0.5);
+        walletRepo.save(wallet);
+        transactionsRepo.save(Transactions.builder()
+                .amount(deposit)
+                .type(TransactionsEnum.ROLLBACK)
+                .date(Instant.now())
+                .wallet(wallet)
+                .build());
+        appointmentRepo.save(appointment);
+    }
+
+    @Override
+    public void cancelAppointmentByPatient(String appointmentID) {
+
+        Appointment appointment = appointmentRepo.findById(appointmentID)
+                .orElseThrow(() -> new AppException(ErrorCode.APPOINTMENT_NOT_FOUND));
+
+
+        appointment.setStatus(AppointmentStatus.CANCELLED_BY_PATIENT);
+        double deposit = appointment.getMedicalService().getPrice();
+        Wallet wallet = walletRepo.findWalletByAccount(appointment.getPatient().getAccount());
+        wallet.setBalance(wallet.getBalance()+deposit);
+        walletRepo.save(wallet);
+        transactionsRepo.save(Transactions.builder()
+                .amount(deposit)
+                .type(TransactionsEnum.ROLLBACK)
+                .date(Instant.now())
+                .wallet(wallet)
+                .build());
         appointmentRepo.save(appointment);
     }
 
