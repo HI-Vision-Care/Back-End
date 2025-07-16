@@ -178,4 +178,16 @@ public class BlogPostService implements IBlogPostService {
     public List<BlogPostDTO> getAllBlogPost() {
         return blogMapper.toBlogPostDTOs(blogPostRepo.findAll());
     }
+
+    @Override
+    public List<BlogPostDTO> getBlogPostIsHide() {
+        List<BlogPost> blogPosts = blogPostRepo.findBlogPostByIsHide(true);
+        return blogMapper.toBlogPostDTOs(blogPosts);
+    }
+
+    @Override
+    public List<BlogPostDTO> getBlogPostIsShow() {
+        List<BlogPost> blogPosts = blogPostRepo.findBlogPostByIsHide(false);
+        return blogMapper.toBlogPostDTOs(blogPosts);
+    }
 }

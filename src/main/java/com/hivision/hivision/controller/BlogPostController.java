@@ -79,4 +79,14 @@ public class BlogPostController {
     public ResponseEntity<List<BlogPostDTO>> getAllBlogPost() {
         return ResponseEntity.ok(blogPostService.getAllBlogPost());
     }
+
+    @GetMapping("/isHide")
+    public ResponseEntity<List<BlogPostDTO>> getAllBlogPostIsHide() {
+        return ResponseEntity.ok(blogPostService.getBlogPostIsHide());
+    }
+
+    @GetMapping("/isShow")
+    public ResponseEntity<List<BlogPostDTO>> getAllBlogPostIsShow() {
+        return ResponseEntity.ok(blogPostService.getBlogPostIsShow());
+    }
 }

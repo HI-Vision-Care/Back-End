@@ -19,4 +19,6 @@ public interface IBlogPostService {
     void adjustBlogPost(int blogID,String accountID);
     BlogPostResponse getContentByBlog(int blogID);
     List<BlogPostDTO> getAllBlogPost();
+    List<BlogPostDTO> getBlogPostIsHide();
+    List<BlogPostDTO> getBlogPostIsShow();
 }
