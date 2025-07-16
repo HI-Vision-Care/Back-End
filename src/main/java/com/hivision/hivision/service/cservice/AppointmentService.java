@@ -39,7 +39,7 @@ public class AppointmentService implements IAppointmentService {
 
     IAppointmentMapper mapper;
     IServiceTestItemRepo serviceTestItemRepo;
-
+    IStaffRepo staffRepo;
 
     @Override
     public AppointmentDTO bookAppointment(AppointmentRequest request, String patientId) {
@@ -157,11 +157,13 @@ public class AppointmentService implements IAppointmentService {
 //        if (appointment.getPaymentStatus() != PaymentStatus.UNPAID) {
 //            throw new AppException(ErrorCode.APPOINTMENT_ALREADY_PAID);
 //        }
-        Account staff = accountRepo.findAccountById(staffID);
-        if (staff == null) {
-            throw new AppException(ErrorCode.STAFF_NOT_FOUND);
-        }
+//        Account staff = accountRepo.findAccountById(staffID);
+//        if (staff == null) {
+//            throw new AppException(ErrorCode.STAFF_NOT_FOUND);
+//        }
+        Staff staff = staffRepo.findById(staffID).orElseThrow(() -> new AppException(ErrorCode.STAFF_NOT_FOUND));
         appointment.setPaymentStatus(PaymentStatus.PAID);
+
 
         return mapper.toAppointmentDTO(appointmentRepo.save(appointment));
     }
