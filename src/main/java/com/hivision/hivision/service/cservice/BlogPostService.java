@@ -16,6 +16,7 @@ import com.hivision.hivision.repository.IAccountRepo;
 import com.hivision.hivision.repository.IBlogPostRepo;
 import com.hivision.hivision.repository.IContentRepo;
 import com.hivision.hivision.service.iservice.IBlogPostService;
+import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -189,5 +190,14 @@ public class BlogPostService implements IBlogPostService {
     public List<BlogPostDTO> getBlogPostIsShow() {
         List<BlogPost> blogPosts = blogPostRepo.findBlogPostByIsHide(false);
         return blogMapper.toBlogPostDTOs(blogPosts);
+    }
+
+    @Override
+    @Transactional
+    public void deleteBlogPost(int blogID) {
+        BlogPost blogPost = blogPostRepo.findById(blogID)
+                        .orElseThrow(() -> new AppException(ErrorCode.BLOG_NOT_FOUND));
+        contentRepo.deleteByBlogPost(blogPost);
+        blogPostRepo.deleteById(blogID);
     }
 }

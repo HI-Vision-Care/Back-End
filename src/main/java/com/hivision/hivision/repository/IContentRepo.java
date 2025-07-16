@@ -10,4 +10,5 @@ import java.util.List;
 @Repository
 public interface IContentRepo extends JpaRepository<Content, Integer> {
         List<Content> findByBlogPost(BlogPost blogPost);
+        void deleteByBlogPost(BlogPost blogPost);
 }
