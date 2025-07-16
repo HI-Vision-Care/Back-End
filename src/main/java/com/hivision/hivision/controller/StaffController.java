@@ -19,18 +19,19 @@ import org.springframework.web.bind.annotation.*;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class StaffController {
 
+    IAppointmentService appointmentService;
     IStaffService staffService;
 
     @GetMapping("/profile/{accountId}")
     public ResponseEntity<Staff> getStaffByAccountID(@PathVariable String accountId) {
         return ResponseEntity.ok(staffService.getStaffByAccountID(accountId));
+    }
 
-    IAppointmentService appointmentService;
+
 
     @PutMapping("/cancel-appointment/{appointmentId}")
     public ResponseEntity<Void> cancelAppointment(@PathVariable String appointmentId) {
         appointmentService.cancelAppointmentByStaff(appointmentId);
         return ResponseEntity.noContent().build();
-
     }
 }
