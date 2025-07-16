@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Instant;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -41,6 +42,7 @@ public class WorkShiftController {
     public ResponseEntity<List<WorkShiftDTO>> getWorkShiftsByWeek(
             @RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
             @RequestParam(name = "doctorId", required = false) String doctorId) {
+
 
         List<WorkShiftDTO> shifts = wsService.getShiftsForWeek(date, doctorId);
         return ResponseEntity.ok(shifts);

@@ -54,28 +54,32 @@ public class WorkShiftService implements IWSService {
     }
 
     @Override
+// SỬA LẠI: Thay đổi kiểu tham số từ Instant sang LocalDate để khớp với controller
     public List<WorkShiftDTO> getShiftsForWeek(LocalDate dateInWeek, String doctorId) {
-        // 1. Tính toán ngày bắt đầu và kết thúc của tuần
-        // Giả sử tuần bắt đầu từ Thứ Hai (Monday)
+        // 1. Tính toán ngày bắt đầu và kết thúc của tuần một cách đơn giản hơn.
+        // Giả sử tuần bắt đầu từ Thứ Hai (MONDAY)
+        // SỬA LẠI: Logic tính toán đơn giản hơn vì đầu vào đã là LocalDate
         LocalDate startOfWeek = dateInWeek.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
-        // Nếu bạn muốn tuần bắt đầu từ Chủ Nhật (Sunday)
-        // LocalDate startOfWeek = dateInWeek.with(TemporalAdjusters.previousOrSame(DayOfWeek.SUNDAY));
 
-        LocalDateTime startDateTime = startOfWeek.atStartOfDay(); // 00:00:00 của ngày đầu tuần
-        LocalDateTime  endDateTime = startDateTime.plusDays(7);   // 00:00:00 của ngày đầu tuần tiếp theo
+        // Lấy thời điểm 00:00:00 của ngày đầu tuần (Thứ Hai)
+        LocalDateTime startDateTime = startOfWeek.atStartOfDay();
+        // Lấy thời điểm 00:00:00 của ngày đầu tuần tiếp theo (để truy vấn < endDateTime)
+        LocalDateTime endDateTime = startDateTime.plusDays(7);
 
-        // 2. Gọi phương thức repository tương ứng
+        // 2. Gọi phương thức repository tương ứng (phần này vẫn giữ nguyên vì đã hợp lý)
+        List<WorkShift> workShifts;
         if (StringUtils.hasText(doctorId)) {
-            // Nếu có doctorId, gọi phương thức có lọc
+            // Kiểm tra sự tồn tại của bác sĩ trước khi truy vấn
             if (!docRepo.existsByDoctorID(doctorId)) {
                 throw new AppException(ErrorCode.DOCTOR_NOT_FOUND);
             }
-            return wsMapper.toListWorkShiftDTO(wsRepo.findShiftsBetweenDatesForDoctor(doctorId, startDateTime, endDateTime));
+            workShifts = wsRepo.findShiftsBetweenDatesForDoctor(doctorId, startDateTime, endDateTime);
+        } else {
+            workShifts = wsRepo.findShiftsBetweenDates(startDateTime, endDateTime);
         }
-            else {
-            // Nếu không, gọi phương thức không lọc
-            return wsMapper.toListWorkShiftDTO(wsRepo.findShiftsBetweenDates(startDateTime, endDateTime));
-        }
+
+        // 3. Map kết quả sang DTO và trả về
+        return wsMapper.toListWorkShiftDTO(workShifts);
     }
 
     @Override

@@ -44,8 +44,8 @@ public class BlogPost {
     @Column(name = "CreateAt")
     Instant createAt;
 
-    @Size(max = 25)
-    @Column(name = "Status", length = 25)
+    @Enumerated(EnumType.STRING)
+    @Column(name = "Status")
     BlogStatus status;
 
     @Column(name = "isHide")
