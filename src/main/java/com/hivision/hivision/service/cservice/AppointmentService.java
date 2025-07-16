@@ -6,6 +6,7 @@ import com.hivision.hivision.dto.TestItemDTO;
 import com.hivision.hivision.enums.AppointmentStatus;
 import com.hivision.hivision.enums.ErrorCode;
 import com.hivision.hivision.enums.PaymentStatus;
+import com.hivision.hivision.enums.WorkShiftStatus;
 import com.hivision.hivision.exception.AppException;
 import com.hivision.hivision.mapper.IAppointmentMapper;
 import com.hivision.hivision.payload.request.AppointmentRequest;
@@ -35,6 +36,7 @@ public class AppointmentService implements IAppointmentService {
     IDoctorRepo doctorRepo;
     IMedicalServiceRepo serviceRepo;
     IConsultationNoteRepo consultationNoteRepo;
+    IWorkShiftRepo workShiftRepo;
 
     IAppointmentMapper mapper;
     IServiceTestItemRepo serviceTestItemRepo;
@@ -64,6 +66,10 @@ public class AppointmentService implements IAppointmentService {
 //                .createAt(Instant.now())
                 .build();
         appointment = appointmentRepo.save(appointment);
+
+        WorkShift workShift = workShiftRepo.findWorkShiftBySlotAndDoctorAndDate(request.getSlot(),doctor,request.getAppointmentDate());
+        workShift.setStatus(WorkShiftStatus.SCHEDULED);
+        workShiftRepo.save(workShift);
 
         return mapper.toAppointmentDTO(appointment);
     }

@@ -50,4 +50,10 @@ public class WorkShiftController {
         List<WorkShiftDTO> shifts = wsService.getShiftsByDoctorId(doctorId);
         return ResponseEntity.ok(shifts);
     }
+
+    @PatchMapping("/{wsID}")
+    public ResponseEntity<List<WorkShiftDTO>> getWorkShiftsByDoctor(@PathVariable int wsID) {
+        wsService.finishWorkShift(wsID);
+        return ResponseEntity.noContent().build();
+    }
 }
