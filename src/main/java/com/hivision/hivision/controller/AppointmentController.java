@@ -54,6 +54,12 @@ public class AppointmentController {
     public ResponseEntity<AppointmentDTO> updateAppointment(@PathVariable String appointmentId, @RequestBody UpdateAppointmentRequest request) {
         return ResponseEntity.ok(appointmentService.updateAppointment(appointmentId, request));
     }
+
+    @PatchMapping("/update-payment-status/{appointmentId}")
+    public ResponseEntity<String> updatePaymentStatus(@PathVariable String appointmentId, @RequestParam String staffId) {
+        return ResponseEntity.ok("Payment status updated to: " + appointmentService.updatePaymentStatus(appointmentId, staffId).getPaymentStatus());
+    }
+
     // đặt lịch hẹn với tài khoản đã đăng nhập
     @PostMapping("/book-consultation-with-account/{patientId}")
     public ResponseEntity<String> bookConsultationWithAccount(@RequestBody @Valid ConsultationRequest request, @PathVariable String patientId) {

@@ -21,4 +21,10 @@ public class TestItem {
 
     @Column(name = "Description")
     String testDescription;
+
+    @Column(name = "Unit")
+    String unit;
+
+    @Column(name = "ReferenceRange")
+    String referenceRange;
 }
