@@ -2,6 +2,7 @@ package com.hivision.hivision.service.cservice;
 
 import com.hivision.hivision.dto.AppointmentDTO;
 import com.hivision.hivision.dto.ConsultationNoteDTO;
+import com.hivision.hivision.dto.TestItemDTO;
 import com.hivision.hivision.enums.AppointmentStatus;
 import com.hivision.hivision.enums.ErrorCode;
 import com.hivision.hivision.enums.PaymentStatus;
@@ -36,6 +37,7 @@ public class AppointmentService implements IAppointmentService {
     IConsultationNoteRepo consultationNoteRepo;
 
     IAppointmentMapper mapper;
+    IServiceTestItemRepo serviceTestItemRepo;
 
 
     @Override
@@ -70,21 +72,67 @@ public class AppointmentService implements IAppointmentService {
     public List<AppointmentDTO> getAppointmentsByPatient(String patientID) {
         Patient patient = patientRepo.findById(patientID)
                 .orElseThrow(() -> new AppException(ErrorCode.PATIENT_NOT_FOUND));
+
+        List<Appointment> appointments = appointmentRepo.findByPatient(patient);
+
+        return appointments.stream().map(appt -> {
+            AppointmentDTO dto = mapper.toAppointmentDTO(appt);
+
+            // Gắn testItems cho MedicalService trong AppointmentDTO
+            if (dto.getMedicalService() != null) {
+                List<TestItemDTO> testItems = serviceTestItemRepo.findByMedicalService_ServiceID(
+                                dto.getMedicalService().getServiceID()
+                        ).stream()
+                        .map(sti -> TestItemDTO.builder()
+//                                .testID(sti.getTestItem().getTestID())
+                                        .testName(sti.getTestItem().getTestName())
+                                        .testDescription(sti.getTestItem().getTestDescription())
+                                        .unit(sti.getTestItem().getUnit())
+                                        .referenceRange(sti.getTestItem().getReferenceRange())
+                                        .build()
+                        ).toList();
+
+                dto.getMedicalService().setTestItems(testItems);
+            }
+            return dto;
+        }).toList();
 //        List<Appointment> appointments = appointmentRepo.findByPatient(patient);
 //        if (appointments.isEmpty()) {
 //            throw new AppException(ErrorCode.APPOINTMENT_NOT_FOUND);
 //        }
 //        return appointmentRepo.findByPatient(patient);
-        return mapper.toAppointmentDTOs(appointmentRepo.findByPatient(patient));
+//        return mapper.toAppointmentDTOs(appointmentRepo.findByPatient(patient));
     }
 
     @Override
     public List<AppointmentDTO> getAppointments() {
         List<Appointment> appointments = appointmentRepo.findAll();
-        if (appointments.isEmpty()) {
-            throw new AppException(ErrorCode.APPOINTMENT_NOT_FOUND);
-        }
-        return mapper.toAppointmentDTOs(appointments);
+
+        return appointments.stream().map(appt -> {
+            AppointmentDTO dto = mapper.toAppointmentDTO(appt);
+
+            // Gắn testItems cho MedicalService trong AppointmentDTO
+            if (dto.getMedicalService() != null) {
+                List<TestItemDTO> testItems = serviceTestItemRepo.findByMedicalService_ServiceID(
+                                dto.getMedicalService().getServiceID()
+                        ).stream()
+                        .map(sti -> TestItemDTO.builder()
+//                                .testID(sti.getTestItem().getTestID())
+                                        .testName(sti.getTestItem().getTestName())
+                                        .testDescription(sti.getTestItem().getTestDescription())
+                                        .unit(sti.getTestItem().getUnit())
+                                        .referenceRange(sti.getTestItem().getReferenceRange())
+                                        .build()
+                        ).toList();
+
+                dto.getMedicalService().setTestItems(testItems);
+            }
+            return dto;
+        }).toList();
+//        if (appointments.isEmpty()) {
+//            throw new AppException(ErrorCode.APPOINTMENT_NOT_FOUND);
+//        }
+//        return mapper.toAppointmentDTOs(appointments);
     }
 
     @Override

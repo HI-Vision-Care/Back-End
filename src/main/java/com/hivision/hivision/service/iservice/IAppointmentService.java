@@ -25,7 +25,7 @@ public interface IAppointmentService {
     // Cập nhật thông tin lịch hẹn
      AppointmentDTO updateAppointment(String appointmentID, UpdateAppointmentRequest request);
 
-    AppointmentDTO updatePaymentStatus(String appointmentId, String staffID);
+     AppointmentDTO updatePaymentStatus(String appointmentId, String staffID);
 
      // đặt lịch hẹn trực tuyến với bác sĩ
 //    AppointmentDTO createOnlineAppointment(String phone, ConsultationRequest request);
