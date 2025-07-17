@@ -19,7 +19,7 @@ public class WorkShiftDTO implements Serializable {
     Doctor doctor;
     @Size(max = 50)
     String slot;
-    LocalDateTime date;
+    LocalDate date;
     LocalDateTime startTime;
     LocalDateTime endTime;
     @Size(max = 50)
