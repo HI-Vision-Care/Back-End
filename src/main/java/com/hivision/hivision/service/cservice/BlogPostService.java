@@ -47,6 +47,7 @@ public class BlogPostService implements IBlogPostService {
                 .title(request.getTitle())
                 .banner(request.getBanner())
                 .topic(request.getTopic())
+                .total(0)
                 .build();
         blogPostRepo.save(blogPost);
         for (ContentRequest contentRequest : contentRequests) {
