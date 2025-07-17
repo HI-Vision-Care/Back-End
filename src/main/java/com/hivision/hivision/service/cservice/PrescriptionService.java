@@ -42,6 +42,7 @@ public class PrescriptionService implements IPrescriptionService {
 
     @Override
     public PrescriptionResponse createPrescription(PrescriptionRequest request, List<ArvRequest> arvRequests, String appointmentID) {
+
         Appointment appointment = appointmentRepo.findById(appointmentID)
                 .orElseThrow(() -> new AppException(ErrorCode.APPOINTMENT_NOT_FOUND));
 
@@ -102,6 +103,66 @@ public class PrescriptionService implements IPrescriptionService {
         return PrescriptionResponse.builder()
                 .patient(patient)
                 .prescribeBy(request.getPrescribeBy())
+                .preArvResponses(preArvResponses)
+                .build();
+    }
+
+    @Override
+    public PrescriptionResponse updatePrescription(PrescriptionRequest request, List<ArvRequest> arvRequests, String appointmentID) {
+
+        Appointment appointment = appointmentRepo.findById(appointmentID)
+                .orElseThrow(() -> new AppException(ErrorCode.APPOINTMENT_NOT_FOUND));
+
+        Prescription prescription = prescriptionRepo.findByAppointment(appointment);
+//                .orElseThrow(() -> new AppException(ErrorCode.PRESCRIPTION_NOT_FOUND)); // Giả sử bạn có ErrorCode này
+
+        Patient patient = prescription.getPatient();
+
+
+        List<PrescriptionARV> oldPreARVs = preARVRepo.findByPrescription(prescription);
+        if (oldPreARVs != null && !oldPreARVs.isEmpty()) {
+            preARVRepo.deleteAll(oldPreARVs);
+        }
+
+
+        List<PrescriptionARV> preARVsToSave = new ArrayList<>();
+        List<PreArvResponse> preArvResponses = new ArrayList<>();
+
+        for (ArvRequest arvRequest : arvRequests) {
+            ARV arv = arvRepo.findByArvId(arvRequest.getArvID());
+            if (arv == null) {
+                throw new AppException(ErrorCode.ARV_NOT_FOUND);
+            }
+
+            PrescriptionARV preArv = PrescriptionARV.builder()
+                    .arv(arv)
+                    .dosage(arvRequest.getDosage())
+                    .duration(arvRequest.getDuration())
+                    .prescription(prescription)
+                    .build();
+            preARVsToSave.add(preArv);
+
+            // Chuẩn bị response
+            PreArvResponse preArvResponse = PreArvResponse.builder()
+                    .arvID(arv.getArvId()) // Lấy ID từ đối tượng arv đã tìm được cho chắc chắn
+                    .dosage(arvRequest.getDosage())
+                    .duration(arvRequest.getDuration())
+                    .build();
+            preArvResponses.add(preArvResponse);
+        }
+
+        // Lưu tất cả các chi tiết đơn thuốc ARV mới
+        preARVRepo.saveAll(preARVsToSave);
+
+        // 5. Cập nhật thông tin trên chính đơn thuốc đó
+        prescription.setPrescribeBy(request.getPrescribeBy());
+        prescription.setDate(Instant.now()); // Cập nhật ngày thành thời điểm hiện tại
+        prescriptionRepo.save(prescription);
+
+        // 6. Xây dựng và trả về response
+        return PrescriptionResponse.builder()
+                .patient(patient)
+                .prescribeBy(prescription.getPrescribeBy())
                 .preArvResponses(preArvResponses)
                 .build();
     }
