@@ -289,7 +289,10 @@ public class DoctorService implements IDoctorService {
     public void complete(String appointmentId) {
         Appointment appointment = appointmentRepo.findById(appointmentId)
                 .orElseThrow(() -> new AppException(ErrorCode.APPOINTMENT_NOT_FOUND));
-
+        MedicalRecord medicalRecord = medicalRecordRepo.findByAppointment(appointment);
+        if (medicalRecord == null) {
+            throw new AppException(ErrorCode.MEDICAL_RECORD_NOT_FOUND);
+        }
 //        Prescription prescription = prescriptionRepo.findByPatientAndStatus(appointment.getPatient(), PresStatus.CREATED);
 //        prescription.setStatus(PresStatus.CLOSED);
 //        prescriptionRepo.save(prescription);
