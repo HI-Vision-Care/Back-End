@@ -65,6 +65,7 @@ public class PrescriptionService implements IPrescriptionService {
 
             prescription = prescriptionRepo.findByPatientAndStatus(patient, PresStatus.CREATED);
 
+
             // kiểm tra xem ARV có tồn tại không
 //            ARV arv = arvRepo.findByArvId(arvRequest.getArvID());
 //            if (arv == null) {
@@ -96,7 +97,8 @@ public class PrescriptionService implements IPrescriptionService {
 //                });
         appointment.setIsPrescriptionCreated(true);
         appointmentRepo.save(appointment);
-
+        prescription.setStatus(PresStatus.CLOSED);
+        prescriptionRepo.save(prescription);
         return PrescriptionResponse.builder()
                 .patient(patient)
                 .prescribeBy(request.getPrescribeBy())
