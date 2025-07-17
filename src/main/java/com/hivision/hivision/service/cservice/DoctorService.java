@@ -4,6 +4,7 @@ import com.hivision.hivision.dto.*;
 
 import com.hivision.hivision.enums.AppointmentStatus;
 import com.hivision.hivision.enums.ErrorCode;
+import com.hivision.hivision.enums.PresStatus;
 import com.hivision.hivision.enums.Role;
 import com.hivision.hivision.exception.AppException;
 import com.hivision.hivision.mapper.*;
@@ -36,6 +37,7 @@ public class DoctorService implements IDoctorService {
     IDoctorRepo doctorRepo;
     IDoctorMapper doctorMapper;
     IAppointmentRepo appointmentRepo;
+    PrescriptionRepo prescriptionRepo;
 
     IAppointmentMapper appointmentMapper;
 
@@ -287,6 +289,10 @@ public class DoctorService implements IDoctorService {
     public void complete(String appointmentId) {
         Appointment appointment = appointmentRepo.findById(appointmentId)
                 .orElseThrow(() -> new AppException(ErrorCode.APPOINTMENT_NOT_FOUND));
+
+//        Prescription prescription = prescriptionRepo.findByPatientAndStatus(appointment.getPatient(), PresStatus.CREATED);
+//        prescription.setStatus(PresStatus.CLOSED);
+//        prescriptionRepo.save(prescription);
         if (appointment.getStatus() == AppointmentStatus.COMPLETED) {
             throw new AppException(ErrorCode.APPOINTMENT_IS_COMPLETED);
         }

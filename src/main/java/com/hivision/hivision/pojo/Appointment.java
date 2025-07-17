@@ -39,6 +39,9 @@ public class Appointment {
     @Column(name = "AppointmentDate")
     LocalDate appointmentDate;
 
+    @Column(name = "Slot")
+    String slot;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "Status")
     AppointmentStatus status;
@@ -61,7 +64,7 @@ public class Appointment {
     String note;
 
     @Column(name = "PaymentStatus")
-//    @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.STRING)
     PaymentStatus paymentStatus;
 
     @Column(name = "CreateAt")
