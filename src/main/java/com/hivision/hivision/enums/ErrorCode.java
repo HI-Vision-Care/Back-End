@@ -9,6 +9,7 @@ import lombok.experimental.FieldDefaults;
 public enum ErrorCode {
     USER_EXISTED(422, "Username already existed!"),
     USER_NOT_FOUND(404,"User not found"),
+    FACILITY_NOT_FOUND(404,"Facility not found"),
     DOCTOR_NOT_FOUND(404,"Doctor not found"),
     PATIENT_NOT_FOUND(404,"Patient not found"),
     STAFF_NOT_FOUND(404,"Staff not found"),

@@ -32,4 +32,7 @@ public class Doctor {
     @Column(name = "Degrees")
     String degrees;
 
+    @ManyToOne
+    @JoinColumn(name = "FacilityID")
+    MedicalFacility medicalFacility;
 }
