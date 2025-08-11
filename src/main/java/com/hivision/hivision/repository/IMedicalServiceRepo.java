@@ -13,4 +13,5 @@ public interface IMedicalServiceRepo extends JpaRepository<MedicalService, Long>
 //    MedicalServiceDTO findMedicalServiceByServiceID(Long id);
     Optional<MedicalService> findByServiceID(Long id);
     List<MedicalService> findByIsActiveTrue();
+//    List<MedicalService> findByFac();
 }

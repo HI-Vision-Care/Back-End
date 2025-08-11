@@ -48,5 +48,7 @@ public class MedicalService {
 
     @Column(name = "CreateAt")
     Instant createAt;
-  
+
+
+
 }
