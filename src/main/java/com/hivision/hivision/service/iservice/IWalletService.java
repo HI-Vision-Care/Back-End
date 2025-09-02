@@ -10,4 +10,5 @@ public interface IWalletService {
 
     WalletDTO getWallet(String accountId);
     void deposit(String accountId, WalletRequest request);
+    void withdraw(String accountId, double amount);
 }

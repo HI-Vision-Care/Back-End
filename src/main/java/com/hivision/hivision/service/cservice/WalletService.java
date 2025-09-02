@@ -73,7 +73,8 @@ public class WalletService implements IWalletService {
         String vnpUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
 
         // Return URL after payment
-        String returnUrl = "http://192.168.222.57:8081/success?transactionId=" + transactionId;
+        String returnUrl = "http://10.87.52.113:8081/success?transactionId=" + transactionId;
+//        String returnUrl = "http://192.168.222.57:8081/success?transactionId=" + transactionId;
 
         String currCode = "VND";
 
@@ -178,5 +179,29 @@ public class WalletService implements IWalletService {
 
         wallet.setBalance(wallet.getBalance() + request.getBalance());
         walletRepo.save(wallet);
+    }
+
+    @Override
+    public void withdraw(String accountId, double amount) {
+        Account account = accountRepo.findById(accountId)
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+        Wallet wallet = walletRepo.findWalletByAccount(account);
+        if (wallet.getBalance() < amount) {
+            throw new AppException(ErrorCode.INSUFFICIENT_BALANCE);
+        }
+
+        wallet.setBalance(wallet.getBalance() - amount);
+
+        Transactions transactions = Transactions.builder()
+                .wallet(wallet)
+                .amount(-amount)
+                .description("Withdraw from Wallet")
+                .type(TransactionsEnum.WITHDRAWAL)
+                .status("COMPLETED")
+                .date(Instant.now())
+                .build();
+
+        walletRepo.save(wallet);
+        transactionsRepo.save(transactions);
     }
 }

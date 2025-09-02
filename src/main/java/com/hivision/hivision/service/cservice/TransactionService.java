@@ -52,8 +52,12 @@ public class TransactionService implements ITransactionService {
         if (wallet.getBalance() < price) {
             throw new AppException(ErrorCode.INSUFFICIENT_BALANCE);
         }
+
+//        if (appointment.getPaymentStatus() == PaymentStatus.PAID) {
+//            throw new AppException(ErrorCode.APPOINTMENT_ALREADY_PAID);
+//        }
+
         wallet.setBalance(wallet.getBalance() - price);
-        walletRepo.save(wallet);
 
         Transactions transaction = Transactions.builder()
                 .wallet(wallet)
@@ -63,6 +67,9 @@ public class TransactionService implements ITransactionService {
                 .type(TransactionsEnum.TRANSFER)
                 .status("COMPLETED")
                 .build();
+
+
+        walletRepo.save(wallet);
         transactionsRepo.save(transaction);
 
         appointment.setPaymentStatus(PaymentStatus.PAID);
