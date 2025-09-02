@@ -47,6 +47,19 @@ public class PrescriptionController {
 //        }
     }
 
+    @PutMapping("/update")
+    public ResponseEntity<PrescriptionResponse> updatePrescription(@RequestBody PresDataWrapper dataWrapper, @RequestParam("appointmentId") String appointmentId) {
+////        try {
+//            List<PrescriptionARV> addPreArv = preArvService.addPreArv(request);
+        PrescriptionRequest prescriptionRequest = dataWrapper.getPrescriptionRequest();
+        List<ArvRequest> arvRequests = dataWrapper.getArvRequests();
+        return new ResponseEntity<>(prescriptionService.updatePrescription(prescriptionRequest,arvRequests,appointmentId), HttpStatus.CREATED);
+//        } catch (Exception e) {
+//            // Có thể tạo một lớp xử lý lỗi toàn cục (GlobalExceptionHandler) để code sạch hơn
+//            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+//        }
+    }
+
     @GetMapping("/pre-arv/{appointmentID}")
     public ResponseEntity<PrescriptionArvResponse> getAllPresArvByAppointment(@PathVariable String appointmentID) {
         PrescriptionArvResponse prescriptionARVs = prescriptionService.getPresArvByApppointment(appointmentID);

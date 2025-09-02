@@ -73,8 +73,10 @@ public class WalletService implements IWalletService {
         String vnpUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
 
         // Return URL after payment
+
         String returnUrl = "http://10.87.52.113:8081/success?transactionId=" + transactionId;
 //        String returnUrl = "http://192.168.222.57:8081/success?transactionId=" + transactionId;
+
 
         String currCode = "VND";
 

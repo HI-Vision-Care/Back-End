@@ -21,6 +21,7 @@ public class AppointmentDTO {
     DoctorDTO doctor;
 
     LocalDate appointmentDate;
+    String slot;
     Boolean isAnonymous;
     Boolean isRecordCreated;
     Boolean isPrescriptionCreated;

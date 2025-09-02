@@ -3,6 +3,7 @@ package com.hivision.hivision.repository;
 import com.hivision.hivision.dto.DoctorDTO;
 import com.hivision.hivision.pojo.Account;
 import com.hivision.hivision.pojo.Doctor;
+import com.hivision.hivision.pojo.MedicalFacility;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -15,5 +16,5 @@ public interface IDoctorRepo extends JpaRepository<Doctor, String> {
     Doctor findDoctorByAccount(Account account);
     Doctor findDoctorByDoctorID(String doctorID);
     boolean existsByDoctorID(String doctorID);
-
+    List<Doctor> findByMedicalFacility(MedicalFacility facility);
 }
