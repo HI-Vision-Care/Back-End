@@ -49,6 +49,9 @@ public enum ErrorCode {
     WORK_SHIFT_NOT_FOUND(404, "Work shift not found!"),
     BLOG_NOT_FOUND(404,"Blog Post not found"),
     CHATBOX_NOT_FOUND(404,"Chat box not found"),
+    WITHDRAW_NOT_FOUND(404,"Withdraw request not found"),
+    WITHDRAW_ALREADY_APPROVED(409,"Withdraw request already approved"),
+    WITHDRAW_ALREADY_REJECTED(409,"Withdraw request already rejected"),
     ;
 
     int code;
