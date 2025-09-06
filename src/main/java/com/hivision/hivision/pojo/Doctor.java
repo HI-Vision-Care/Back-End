@@ -11,6 +11,7 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Doctor {
+
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "DoctorID")
@@ -34,5 +35,5 @@ public class Doctor {
 
     @ManyToOne
     @JoinColumn(name = "FacilityID")
-    MedicalFacility medicalFacility;
+    Facility facility;
 }

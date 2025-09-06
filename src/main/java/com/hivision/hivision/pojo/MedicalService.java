@@ -49,6 +49,8 @@ public class MedicalService {
     @Column(name = "CreateAt")
     Instant createAt;
 
-
+    @ManyToOne
+    @JoinColumn(name = "FacilityID")
+    Facility facility;
 
 }

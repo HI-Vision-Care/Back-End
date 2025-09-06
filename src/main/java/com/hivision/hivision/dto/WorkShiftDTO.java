@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @Value
 public class WorkShiftDTO implements Serializable {
     Integer id;
-    Doctor doctor;
+//    Doctor doctor;
     @Size(max = 50)
     String slot;
     LocalDate date;
