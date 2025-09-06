@@ -1,8 +1,8 @@
 package com.hivision.hivision.controller;
 
 import com.hivision.hivision.payload.response.FacilityResponse;
-import com.hivision.hivision.pojo.MedicalFacility;
-import com.hivision.hivision.service.iservice.IMedicalFacilityService;
+import com.hivision.hivision.pojo.Facility;
+import com.hivision.hivision.service.iservice.IFacilityService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +19,7 @@ import java.util.List;
 @SecurityRequirement(name = "api")
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class FacilityController {
-    IMedicalFacilityService facilityService;
+    IFacilityService facilityService;
 
     @GetMapping("/{facilityID}")
     ResponseEntity<FacilityResponse> facility(@PathVariable String facilityID) {
@@ -27,7 +27,7 @@ public class FacilityController {
     }
 
     @GetMapping()
-    ResponseEntity<List<MedicalFacility>> getAllFacility() {
+    ResponseEntity<List<Facility>> getAllFacility() {
         return ResponseEntity.ok(facilityService.getAll());
     }
 

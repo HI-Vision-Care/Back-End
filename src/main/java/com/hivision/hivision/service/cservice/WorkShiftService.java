@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.time.DayOfWeek;
-import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.TemporalAdjusters;
@@ -79,7 +78,9 @@ public class WorkShiftService implements IWSService {
 
     @Override
     public List<WorkShiftDTO> getShiftsByDoctorId(String doctorId) {
-        if (!docRepo.existsByDoctorID(doctorId)) {
+
+        boolean exist = docRepo.existsByDoctorID(doctorId);
+        if (!exist) {
             throw new AppException(ErrorCode.DOCTOR_NOT_FOUND);
         }
         List<WorkShift> workShifts = wsRepo.findShiftsByDoctorId(doctorId);

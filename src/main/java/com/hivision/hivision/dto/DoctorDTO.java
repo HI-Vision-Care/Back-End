@@ -11,7 +11,7 @@ import lombok.experimental.FieldDefaults;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class DoctorDTO {
-//    String doctorID;
+    String doctorID;
     String name;
     String gender;
     String specialty;

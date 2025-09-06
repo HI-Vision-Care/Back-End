@@ -4,7 +4,6 @@ import com.hivision.hivision.dto.MedicalServiceDTO;
 import com.hivision.hivision.dto.TestItemDTO;
 import com.hivision.hivision.enums.ErrorCode;
 import com.hivision.hivision.exception.AppException;
-import com.hivision.hivision.mapper.IMedicalServiceMapper;
 import com.hivision.hivision.pojo.MedicalService;
 import com.hivision.hivision.repository.IMedicalServiceRepo;
 import com.hivision.hivision.repository.IServiceTestItemRepo;
@@ -19,7 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Service
-public class MedicalProvisionService implements IMedicalService {
+public class ProvisionService implements IMedicalService {
     IMedicalServiceRepo medicalServiceRepo;
     IServiceTestItemRepo serviceTestItemRepo;
 

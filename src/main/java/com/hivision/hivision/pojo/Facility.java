@@ -15,7 +15,7 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class MedicalFacility {
+public class Facility {
     @Id
     @Size(max = 255)
     @Column(name = "FacilityID", nullable = false)
@@ -32,6 +32,10 @@ public class MedicalFacility {
     @Size(max = 50)
     @Column(name = "Phone", length = 50)
     String phone;
+
+
+    @Column(name = "Description", length = 50)
+    String des;
 
     @Size(max = 255)
     @Column(name = "Img")

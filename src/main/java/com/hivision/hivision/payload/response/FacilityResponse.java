@@ -18,6 +18,9 @@ public class FacilityResponse {
     String name;
     String address;
     String phone;
+    String img;
+    String des;
+    String time;
     List<DoctorDTO> doctors;
     List<MedicalServiceDTO> medicalServices;
 }
