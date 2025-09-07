@@ -64,7 +64,7 @@ public class AccountService implements IAccountService {
                 .role(user.getRole())
                 .patient(patientRepo.findPatientByAccount(user))
                 .doctor(doctorRepo.findDoctorByAccount(user))
-//                .staff(staffRepo.findDoctorByAccount(user))
+                .staff(staffRepo.findStaffByAccount(user))
                 .build();
     }
 

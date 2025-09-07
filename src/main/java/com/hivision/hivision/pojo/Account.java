@@ -39,15 +39,22 @@ public class Account implements Serializable, UserDetails {
     @Column(name = "Is_Deleted")
     Boolean isDeleted;
 
-    @JsonIgnore
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() { // getAuthorities: lấy danh sách quyền
-        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        if (this.role != null) {
-            authorities.add(new SimpleGrantedAuthority(this.role.toString()));
-        }
-        return authorities;
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        // Authority chính là "quyền" mà @PreAuthorize sẽ kiểm tra
+        // Bạn có thể trả về một danh sách các quyền
+        // Thông thường, người ta hay gán role làm authority
+        return List.of(new SimpleGrantedAuthority(role.name()));
     }
+//    @JsonIgnore
+//    @Override
+//    public Collection<? extends GrantedAuthority> getAuthorities() { // getAuthorities: lấy danh sách quyền
+//        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+//        if (this.role != null) {
+//            authorities.add(new SimpleGrantedAuthority(this.role.toString()));
+//        }
+//        return authorities;
+//    }
 
     @JsonIgnore
     @Override
