@@ -106,23 +106,48 @@ public class PatientService implements IPatientService{
         patient.setMedNo(request.getMedNo());
         patient.setMedDate(request.getMedDate());
         patient.setMedFac(request.getMedFac());
+        //check nếu người dùng không cập nhật avatar thì giữ nguyên avatar cũ
+        if (request.getAvatar() != null && !request.getAvatar().isEmpty()) {
+            account.setAvatar(request.getAvatar());
+        }
+        accountRepo.save(account);
 
-        patientDiseaseRepo.deleteByPatient(patient); // Xóa các bản ghi cũ
+        // Xóa bệnh cũ bằng orphanRemoval
+        patient.getPatientDiseases().clear();
 
         if (request.getUnderlyingDiseases() != null) {
             for (String diseaseName : request.getUnderlyingDiseases()) {
                 Disease disease = diseaseRepo.findByName(diseaseName)
                         .orElseGet(() -> diseaseRepo.save(Disease.builder().name(diseaseName).build()));
 
-                patientDiseaseRepo.save(PatientDisease.builder()
+                PatientDisease pd = PatientDisease.builder()
                         .patient(patient)
                         .disease(disease)
-                        .build());
+                        .build();
+
+                patient.getPatientDiseases().add(pd);
             }
         }
 
         patientRepo.save(patient);
         return patientMapper.toPatientDTO(patient);
+
+//        patientDiseaseRepo.deleteByPatient(patient); // Xóa các bản ghi cũ
+//
+//        if (request.getUnderlyingDiseases() != null) {
+//            for (String diseaseName : request.getUnderlyingDiseases()) {
+//                Disease disease = diseaseRepo.findByName(diseaseName)
+//                        .orElseGet(() -> diseaseRepo.save(Disease.builder().name(diseaseName).build()));
+//
+//                patientDiseaseRepo.save(PatientDisease.builder()
+//                        .patient(patient)
+//                        .disease(disease)
+//                        .build());
+//            }
+//        }
+//
+//        patientRepo.save(patient);
+//        return patientMapper.toPatientDTO(patient);
 
 //        patientMapper.updatePatient(patient, request);
 //
