@@ -21,5 +21,6 @@ public class PatientRequest {
     String medNo;
     String medDate;
     String medFac;
+    String avatar;
     List<String> underlyingDiseases;
 }
