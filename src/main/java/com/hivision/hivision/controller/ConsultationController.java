@@ -24,10 +24,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping("/consultation")
 @RequiredArgsConstructor
 @CrossOrigin("*")
 @SecurityRequirement(name = "api")
-@RequestMapping("/consultation")
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class ConsultationController {
     SimpMessagingTemplate messagingTemplate;
