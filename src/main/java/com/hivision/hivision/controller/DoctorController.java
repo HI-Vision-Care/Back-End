@@ -31,7 +31,7 @@ import java.util.List;
 @SecurityRequirement(name = "api")
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 //@PreAuthorize("hasAuthority('DOCTOR')")
-@PreAuthorize("hasAnyAuthority('DOCTOR', 'STAFF')")
+//@PreAuthorize("hasAnyAuthority('DOCTOR', 'STAFF')")
 public class DoctorController {
 
     IDoctorService doctorService;

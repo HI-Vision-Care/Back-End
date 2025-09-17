@@ -29,7 +29,7 @@ public class WorkShiftController {
 
 
     @GetMapping
-    @PreAuthorize("hasAuthority('DOCTOR')")
+//    @PreAuthorize("hasAuthority('DOCTOR')")
     public ResponseEntity<List<WorkShiftDTO>> getAllWorkShifts() {
         List<WorkShiftDTO> workShiftDTOList = wsService.getAll();
         return ResponseEntity.ok(workShiftDTOList);

@@ -59,7 +59,7 @@ public class AccountService implements IAccountService {
         var token = tokenService.generateToken(user);
         return LoginResponse.builder()
                 .token(token)
-                .username(user.getUsername())
+                .username(user.getEmail())
                 .avatar(user.getAvatar())
                 .role(user.getRole())
                 .patient(patientRepo.findPatientByAccount(user))
