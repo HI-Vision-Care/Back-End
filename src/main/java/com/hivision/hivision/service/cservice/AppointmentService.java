@@ -41,20 +41,29 @@ public class AppointmentService implements IAppointmentService {
     IAppointmentMapper mapper;
     IServiceTestItemRepo serviceTestItemRepo;
     IStaffRepo staffRepo;
+    IFacilityRepo facilityRepo;
 
     @Override
     public AppointmentDTO bookAppointment(AppointmentRequest request, String patientId) {
         Patient patient = patientRepo.findById(patientId)
                 .orElseThrow(() -> new AppException(ErrorCode.PATIENT_NOT_FOUND));
-        Doctor doctor = doctorRepo.findById(request.getDoctorID())
-                .orElseThrow(() -> new AppException(ErrorCode.DOCTOR_NOT_FOUND));
+        Facility facility = facilityRepo.findById(request.getFacilityID())
+                .orElseThrow(() -> new AppException(ErrorCode.FACILITY_NOT_FOUND));
         MedicalService medicalService = serviceRepo.findById(request.getServiceID())
                 .orElseThrow(() -> new AppException(ErrorCode.SERVICE_NOT_FOUND));
 
+        if(!medicalService.getFacility().getFacilityID() .equals(facility.getFacilityID())){
+            throw new AppException(ErrorCode.SERVICE_NOT_IN_FACILITY);
+        }
+
+        Doctor doctor = doctorRepo.findById(request.getDoctorID())
+                .orElseThrow(() -> new AppException(ErrorCode.DOCTOR_NOT_FOUND));
+
         Appointment appointment = Appointment.builder()
                 .patient(patient)
-                .doctor(doctor)
+                .facility(facility)
                 .medicalService(medicalService)
+                .doctor(doctor)
                 .appointmentDate(request.getAppointmentDate())
                 .slot(request.getSlot())
                 .isAnonymous(request.getIsAnonymous())
@@ -66,7 +75,7 @@ public class AppointmentService implements IAppointmentService {
                 .createAt(ZonedDateTime.now(ZoneId.of("Asia/Ho_Chi_Minh")).toInstant())
 //                .createAt(Instant.now())
                 .build();
-        appointment = appointmentRepo.save(appointment);
+
 
         WorkShift workShift = workShiftRepo.findWorkShiftBySlotAndDoctorAndDate(request.getSlot(),doctor, request.getAppointmentDate());
         if(workShift == null){
@@ -74,6 +83,8 @@ public class AppointmentService implements IAppointmentService {
         }
         workShift.setStatus(WorkShiftStatus.SCHEDULED);
         workShiftRepo.save(workShift);
+
+        appointment = appointmentRepo.save(appointment);
 
         return mapper.toAppointmentDTO(appointment);
     }
