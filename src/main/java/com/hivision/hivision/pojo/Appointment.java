@@ -29,6 +29,10 @@ public class Appointment {
     Patient patient;
 
     @ManyToOne
+    @JoinColumn(name = "FacilityID", referencedColumnName = "FacilityID")
+    Facility facility;
+
+    @ManyToOne
     @JoinColumn(name = "DoctorID", referencedColumnName = "DoctorID")
     Doctor doctor;
 

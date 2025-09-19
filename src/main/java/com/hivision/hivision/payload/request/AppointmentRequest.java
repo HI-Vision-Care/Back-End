@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class AppointmentRequest {
+    String facilityID;
     Long serviceID;
     String doctorID;
     String slot;

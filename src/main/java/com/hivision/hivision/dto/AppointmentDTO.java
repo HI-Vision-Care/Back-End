@@ -19,6 +19,7 @@ public class AppointmentDTO {
     PatientDTO patient;
     MedicalServiceDTO medicalService;
     DoctorDTO doctor;
+    FacilityDTO facility;
 
     LocalDate appointmentDate;
     String slot;
