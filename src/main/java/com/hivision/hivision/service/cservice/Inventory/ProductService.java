@@ -1,7 +1,9 @@
 package com.hivision.hivision.service.cservice.Inventory;
 
+import com.hivision.hivision.dto.ProductDTO;
 import com.hivision.hivision.enums.ErrorCode;
 import com.hivision.hivision.exception.AppException;
+import com.hivision.hivision.mapper.IProductMapper;
 import com.hivision.hivision.payload.request.ProductRequest;
 import com.hivision.hivision.pojo.Inventory.Category;
 import com.hivision.hivision.pojo.Inventory.Product;
@@ -26,6 +28,8 @@ class ProductService implements IProductService {
     ICategoryRepo categoryRepo;
     ISupplierRepo supplierRepo;
 
+    IProductMapper productMapper;
+
     @Override
     public void createProduct(ProductRequest request) {
         Category category = categoryRepo.findById(request.getCategoryID())
@@ -47,19 +51,32 @@ class ProductService implements IProductService {
     }
 
     @Override
-    public Product updateProduct(Product product) {
-        Product updateProduce = Product.builder()
-                .productName(product.getProductName())
-                .price(product.getPrice())
-                .description(product.getDescription())
-                .unit(product.getUnit())
-                .imageUrl(product.getImageUrl())
-                .build();
-        return productRepo.save(updateProduce);
+    public void updateProduct(ProductDTO dto, Integer productID) {
+        Product product = productRepo.findById(productID)
+                .orElseThrow(()-> new AppException(ErrorCode.PRODUCT_NOT_FOUND));
+        product.setSku(dto.getSku());
+        product.setProductName(dto.getProductName());
+        product.setDescription(dto.getDescription());
+        product.setPrice(dto.getPrice());
+        product.setUnit(dto.getUnit());
+        product.setImageUrl(dto.getImageUrl());
+        productRepo.save(product);
     }
 
     @Override
-    public void deleteProduct(Product product) {
+    public void unactiveProduct(Integer productID) {
+        Product product = productRepo.findById(productID)
+                .orElseThrow(()-> new AppException(ErrorCode.PRODUCT_NOT_FOUND));
+        product.setIsActive(false);
+        productRepo.save(product);
+    }
+
+    @Override
+    public void activeProduct(Integer productID) {
+        Product product = productRepo.findById(productID)
+                .orElseThrow(()-> new AppException(ErrorCode.PRODUCT_NOT_FOUND));
+        product.setIsActive(true);
+        productRepo.save(product);
 
     }
 
