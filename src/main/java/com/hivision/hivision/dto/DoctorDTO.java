@@ -14,6 +14,8 @@ public class DoctorDTO {
     String doctorID;
     String name;
     String gender;
+    String email;
+    String phone;
     String specialty;
     String degrees;
     String avatar;

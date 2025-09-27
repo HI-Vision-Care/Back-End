@@ -12,8 +12,8 @@ public class FacilityDTO {
     String name;
     String address;
     String phone;
-    String description;
-    String image;
+    String des;
+    String img;
     String time;
     String rating;
     String latitude;
