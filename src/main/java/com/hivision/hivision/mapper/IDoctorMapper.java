@@ -13,6 +13,8 @@ import java.util.List;
 public interface IDoctorMapper {
 
     @Mapping(source = "account.avatar", target = "avatar")
+    @Mapping(source = "account.email", target = "email")
+    @Mapping(source = "account.phone", target = "phone")
     DoctorDTO toDoctorDTO(Doctor doctor);
     List<DoctorDTO> toDoctorDTO(List<Doctor> doctors);
     void updateDoctor(@MappingTarget Doctor doctor, DoctorRequest request);

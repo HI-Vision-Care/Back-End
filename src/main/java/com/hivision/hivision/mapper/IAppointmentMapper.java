@@ -12,7 +12,8 @@ import java.util.List;
 @Mapper(componentModel = "spring", uses = {
         IPatientMapper.class,
         IDoctorMapper.class,
-        IMedicalServiceMapper.class
+        IMedicalServiceMapper.class,
+        IFacilityMapper.class
 })
 public interface IAppointmentMapper {
     Appointment toAppointment(AppointmentRequest appointmentRequest);
