@@ -6,10 +6,7 @@ import com.hivision.hivision.enums.ErrorCode;
 import com.hivision.hivision.enums.Role;
 import com.hivision.hivision.exception.AppException;
 import com.hivision.hivision.mapper.IAccountMapper;
-import com.hivision.hivision.payload.request.AccountCreationRequest;
-import com.hivision.hivision.payload.request.LoginRequest;
-import com.hivision.hivision.payload.request.RegisterRequest;
-import com.hivision.hivision.payload.request.UpdateAccountRequest;
+import com.hivision.hivision.payload.request.*;
 import com.hivision.hivision.payload.response.LoginResponse;
 import com.hivision.hivision.pojo.*;
 import com.hivision.hivision.repository.*;
@@ -21,7 +18,9 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -36,6 +35,8 @@ public class AccountService implements IAccountService {
     IStaffRepo staffRepo;
     IWalletRepo walletRepo;
     IChatBoxRepo chatBoxRepo;
+    IPasswordResetTokenRepo passwordResetTokenRepo;
+    EmailService emailService;
 
     private final TokenService tokenService;
     private final PasswordEncoder passwordEncoder;
@@ -199,6 +200,81 @@ public class AccountService implements IAccountService {
         account.setRole(Role.BANNED);
         account.setIsDeleted(true);
         iAccountRepository.save(account);
+    }
+
+
+    // Helper để tạo OTP
+    private String generateOtp() {
+        // Tạo một mã OTP 6 chữ số ngẫu nhiên
+        return String.format("%06d", new java.util.Random().nextInt(999999));
+    }
+
+    @Override
+    @Transactional
+    public void forgotPassword(ForgotPasswordRequest request) {
+        Account account = iAccountRepository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new AppException(ErrorCode.INVALID_EMAIL));
+        if (account.getIsDeleted() != null && account.getIsDeleted()) {
+            throw new AppException(ErrorCode.ACCOUNT_DELETED);
+        }
+
+        // 2. Xóa Token cũ (nếu có)
+        passwordResetTokenRepo.deleteByAccount_Id(account.getId());
+        // 3. Tạo OTP mới
+        String otp = generateOtp();
+        LocalDateTime expiryDate = LocalDateTime.now().plusMinutes(5); // OTP hết hạn sau 5 phút
+
+        PasswordResetToken token = PasswordResetToken.builder()
+                .token(otp)
+                .account(account)
+                .expiryDate(expiryDate)
+                .build();
+
+        passwordResetTokenRepo.save(token);
+
+        // 4. Gửi OTP qua Email
+        emailService.sendOtpEmail(account.getEmail(), otp);
+        System.out.println("Gửi OTP: " + otp + " đến Email: " + account.getEmail());
+
+    }
+
+    @Override
+    public void verifyOtp(VerifyOtpRequest request) {
+        // 1. Tìm Account theo Email
+        Account user = iAccountRepository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+
+        // 2. Tìm Token theo Account
+        PasswordResetToken token = passwordResetTokenRepo.findByToken(request.getOtp())
+                .orElseThrow(() -> new AppException(ErrorCode.INVALID_OTP));
+
+        // 3. Kiểm tra Token có thuộc về Account và chưa hết hạn không
+        if (!token.getAccount().getId().equals(user.getId()) || token.isExpired()) {
+            throw new AppException(ErrorCode.INVALID_OR_EXPIRED_OTP);
+        }
+    }
+
+    @Override
+    @Transactional
+    public void resetPassword(ResetPasswordRequest request) {
+        // 1. Tìm Account theo Email
+        Account user = iAccountRepository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+
+        // 2. Tìm và Xác thực Token (Giống verifyOtp)
+        PasswordResetToken token = passwordResetTokenRepo.findByToken(request.getOtp())
+                .orElseThrow(() -> new AppException(ErrorCode.INVALID_OTP));
+
+        if (!token.getAccount().getId().equals(user.getId()) || token.isExpired()) {
+            throw new AppException(ErrorCode.INVALID_OR_EXPIRED_OTP);
+        }
+
+        // 3. Cập nhật mật khẩu mới
+        user.setPassword(passwordEncoder.encode(request.getNewPassword()));
+        iAccountRepository.save(user);
+
+        // 4. Xóa Token sau khi sử dụng thành công
+        passwordResetTokenRepo.delete(token);
     }
 
 
