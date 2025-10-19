@@ -56,6 +56,8 @@ public enum ErrorCode {
     WITHDRAW_ALREADY_APPROVED(409,"Withdraw request already approved"),
     WITHDRAW_ALREADY_REJECTED(409,"Withdraw request already rejected"),
     SERVICE_NOT_IN_FACILITY(400, "Service does not belong to this facility!"),
+    INVALID_OTP(401, "Invalid OTP code!"),
+    INVALID_OR_EXPIRED_OTP(401, "Invalid or expired OTP code!"),
     ;
 
     int code;

@@ -52,7 +52,9 @@ public class Filter extends OncePerRequestFilter {
             "/HiVision/oauth2/**",
 
             "/HiVision/appointment/book-consultation-guest",
-            "/HiVision/medical-service"
+            "/HiVision/medical-service",
+            "/HiVision/blog-post",
+            "/HiVision/payment/payos_transfer_handler"
 
 //            "/BidKoi/shipping/**",
 //            "/BidKoi/account/number/**"
@@ -77,7 +79,8 @@ public class Filter extends OncePerRequestFilter {
 
         //response.setHeader("Access-Control-Allow-Origin", "https://auctionkoi.azurewebsites.net"); // Hoặc thay thế "*" bằng nguồn cụ thể nếu muốn bảo mật
 //        response.setHeader("Access-Control-Allow-Origin", "http://localhost:5174");
-        response.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+        response.setHeader("Access-Control-Allow-Origin", "https://hi-vision.io");
+//        response.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
 //        response.setHeader("Access-Control-Allow-Origin", "https://hivision.vercel.app");
 //        response.setHeader("Access-Control-Allow-Origin", "https://hivisionwebdeploy.vercel.app/");
         //response.setHeader("Access-Control-Allow-Origin", "https://bid-koi-n1yy.vercel.app");
@@ -88,6 +91,10 @@ public class Filter extends OncePerRequestFilter {
         response.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
         response.setHeader("Access-Control-Allow-Credentials", "true");
 
+
+//        log.info("🔍 Request URI: {}", request.getRequestURI());  // ✅ Thêm dòng này
+//        log.info("🔍 Request Method: {}", request.getMethod());   // ✅ Thêm dòng này
+
         if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
             response.setStatus(HttpServletResponse.SC_OK);
             return;
@@ -95,6 +102,7 @@ public class Filter extends OncePerRequestFilter {
 
         //check xem api mà nguười dùng yc có phải là một public api hay ko
         boolean isPublicAPI = checkIsPublicAPI(request.getRequestURI());
+//        log.info("🔍 Is Public API: {}", isPublicAPI);  // ✅ Thêm dòng này
 
         if (isPublicAPI) {
             filterChain.doFilter(request, response);

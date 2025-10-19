@@ -1,10 +1,7 @@
 package com.hivision.hivision.controller;
 
 import com.hivision.hivision.dto.AccountDTO;
-import com.hivision.hivision.payload.request.AccountCreationRequest;
-import com.hivision.hivision.payload.request.LoginRequest;
-import com.hivision.hivision.payload.request.RegisterRequest;
-import com.hivision.hivision.payload.request.UpdateAccountRequest;
+import com.hivision.hivision.payload.request.*;
 import com.hivision.hivision.payload.response.ApiResponse;
 import com.hivision.hivision.payload.response.LoginResponse;
 import com.hivision.hivision.service.iservice.IAccountService;
@@ -59,6 +56,36 @@ public class AccountController {
     public ResponseEntity<ApiResponse<String>> deleteAccount(@PathVariable String accountId) {
         iAccountService.deleteAccount(accountId);
         ApiResponse<String> response = ApiResponse.<String>builder().data("Account deleted successfully!").build();
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    // 6.1. Yêu cầu gửi OTP
+    @PostMapping("/forgot-password")
+    public ResponseEntity<ApiResponse<String>> forgotPassword(@RequestBody @Valid ForgotPasswordRequest request) {
+        iAccountService.forgotPassword(request);
+        ApiResponse<String> response = ApiResponse.<String>builder()
+                .data("Mã OTP đã được gửi đến email của bạn.")
+                .build();
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    // 6.2. Xác thực OTP
+    @PostMapping("/verify-otp")
+    public ResponseEntity<ApiResponse<String>> verifyOtp(@RequestBody @Valid VerifyOtpRequest request) {
+        iAccountService.verifyOtp(request);
+        ApiResponse<String> response = ApiResponse.<String>builder()
+                .data("Xác thực OTP thành công. Bạn có thể đặt lại mật khẩu.")
+                .build();
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    // 6.3. Đặt lại mật khẩu
+    @PostMapping("/reset-password")
+    public ResponseEntity<ApiResponse<String>> resetPassword(@RequestBody @Valid ResetPasswordRequest request) {
+        iAccountService.resetPassword(request);
+        ApiResponse<String> response = ApiResponse.<String>builder()
+                .data("Đặt lại mật khẩu thành công.")
+                .build();
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }
