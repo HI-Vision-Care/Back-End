@@ -1,6 +1,9 @@
 package com.hivision.hivision.controller;
 
+import com.hivision.hivision.payload.request.TopupRequest;
 import com.hivision.hivision.payload.request.WalletRequest;
+import com.hivision.hivision.payload.response.ApiResponse;
+import com.hivision.hivision.service.cservice.PayosPaymentService;
 import com.hivision.hivision.service.iservice.IWalletService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.AccessLevel;
@@ -20,6 +23,17 @@ import org.springframework.web.bind.annotation.*;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class WalletController {
     IWalletService walletService;
+    private final PayosPaymentService paymentService;
+
+    @PostMapping("/{accountId}/topup-by-payos")
+    public ResponseEntity<String> topup(@PathVariable String accountId, @RequestBody TopupRequest request) throws Exception {
+        // URL frontend khi thanh toán thành công hoặc hủy
+        String returnUrl = "https://hi-vision.io/payment/success";
+        String cancelUrl = "https://hi-vision.io/payment/cancel";
+
+        String checkoutUrl = paymentService.createPaymentLink(accountId, request.getAmount(), returnUrl, cancelUrl);
+        return ResponseEntity.ok(checkoutUrl);
+    }
 
     @PostMapping("/{accountId}")
     public ResponseEntity<String> createWallet(@RequestBody WalletRequest request, @PathVariable String accountId) throws Exception {

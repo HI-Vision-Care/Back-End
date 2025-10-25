@@ -19,7 +19,11 @@ import java.util.List;
 public class TransactionController {
     ITransactionService transactionService;
 
-
+    @PutMapping("/{orderCode}/cancel")
+    public ResponseEntity<?> cancelTransaction(@PathVariable Long orderCode) {
+        transactionService.cancelTransaction(orderCode);
+        return ResponseEntity.ok("Transaction cancelled");
+    }
 
     @GetMapping("/view/{accountId}")
     public ResponseEntity<List<TransactionsDTO>> getTransaction(@PathVariable String accountId) {

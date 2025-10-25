@@ -101,6 +101,19 @@ public class TransactionService implements ITransactionService {
     }
 
     @Override
+    public void cancelTransaction(Long orderCode){
+        Transactions transaction = transactionsRepo.findByPayosOrderCode(orderCode)
+                .orElseThrow(() -> new AppException(ErrorCode.TRANSACTION_NOT_FOUND));
+
+        if (!"COMPLETED".equals(transaction.getStatus())) {
+            transaction.setStatus("CANCELLED");
+            transaction.setDescription("Thanh toán bị hủy bởi người dùng");
+            transaction.setDate(Instant.now());
+            transactionsRepo.save(transaction);
+        }
+    }
+
+    @Override
     public void rollBack(String patientID) {
         Patient patient = patientRepo.findById(patientID)
                 .orElseThrow(() -> new AppException(ErrorCode.PATIENT_NOT_FOUND));

@@ -9,5 +9,6 @@ public interface ITransactionService {
     void transferToAppointment(String appointmentId, String accountId);
     List<TransactionsDTO> getTransactions(String accountId);
     List<TransactionsDTO> getAllTransactions();
+    void cancelTransaction(Long orderCode);
     void rollBack(String patientId);
 }
