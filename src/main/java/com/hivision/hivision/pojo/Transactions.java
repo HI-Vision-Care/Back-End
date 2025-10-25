@@ -37,6 +37,9 @@ public class Transactions {
     @Column(name = "Date")
     Instant date;
 
+    @Column(name = "OrderCode", unique = true) // <--- THÊM CỘT NÀY
+    Long payosOrderCode;
+
     @ManyToOne
     @JoinColumn(name = "WalletID",referencedColumnName = "WalletID")
     Wallet wallet;
